@@ -209,11 +209,10 @@
 
     /* Tú contra ti */
     .yvy-wrap { text-align: center; }
-    .yvy-title { font-size: 1.55rem; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 0.35rem; }
-    .yvy-intro { font-size: 0.85rem; color: #999; line-height: 1.5; margin: 0.8rem auto 0; max-width: 30rem; }
+    .yvy-intro { font-size: 0.85rem; color: #999; line-height: 1.5; margin: -0.3rem 0 1.3rem; }
     .yvy-mount {
-      width: min(100%, 480px);
-      margin: 0 auto;
+      width: 220px;
+      margin: 0 auto 1rem;
     }
     .yvy-panel {
       text-align: left;
@@ -810,12 +809,6 @@
       const projDominant = identityCategories.reduce((max, c) => (proj[c.key] > proj[max.key] ? c : max), identityCategories[0]);
 
       el.innerHTML = `
-        <div class="yvy-wrap">
-          <div class="future-eyebrow">Tú contra ti</div>
-          <div class="yvy-title">¿En quién te estás convirtiendo?</div>
-          <div class="yvy-mount" id="yvyMount"></div>
-          <p class="yvy-intro">Toca la mente, el corazón o el cuerpo de la figura para descubrirlo.</p>
-        </div>
         <div class="future-period-tabs">
           <button data-period="30" class="${futurePeriod === 30 ? 'active' : ''}">30 días</button>
           <button data-period="90" class="${futurePeriod === 90 ? 'active' : ''}">90 días</button>
@@ -824,7 +817,12 @@
         <div class="future-hero">
           <p>Mantén el ritmo de hoy ${futurePeriod} días más y habrás acumulado <strong>${projTotalHours.toFixed(1)} horas</strong> en total — ${growthPct >= 0 ? '+' : ''}${growthPct}% frente a hoy. Seguirás siendo ${projDominant.key === dominant.key ? dominant.phrase : projDominant.phrase}, solo que más avanzado en el mismo camino.</p>
         </div>
-        <div class="yvy-panel" id="yvyPanel"></div>
+        <div class="yvy-wrap">
+          <div class="future-eyebrow">Tú contra ti</div>
+          <p class="yvy-intro">Toca la mente, el corazón o el cuerpo de la figura para ver en quién te estás convirtiendo.</p>
+          <div class="yvy-mount" id="yvyMount"></div>
+          <div class="yvy-panel" id="yvyPanel"></div>
+        </div>
       `;
       el.querySelectorAll('.future-period-tabs button').forEach(btn => {
         btn.addEventListener('click', () => {
