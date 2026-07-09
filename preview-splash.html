@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Focus — Preview del splash</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Inter',sans-serif;background:#100F19;color:#fff;min-height:100vh;
+         display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;}
+    h1{font-size:2rem;font-weight:700;}
+    p{color:#777;font-size:.9rem;max-width:32rem;text-align:center;padding:0 1rem;}
+    .row{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;}
+    button{padding:.75rem 1.25rem;border:none;border-radius:12px;font-family:inherit;font-weight:600;
+           font-size:.95rem;cursor:pointer;background:linear-gradient(180deg,#201F28,#171620);
+           color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.07);transition:transform .2s;}
+    button:hover{transform:translateY(-2px);}
+    button.accent{background:#57e32c;color:#000;}
+  </style>
+</head>
+<body>
+  <h1>Focus.</h1>
+  <p>Esta página solo sirve para previsualizar la animación de entrada. Elige una variante y se reproducirá tal y como la vería el usuario.</p>
+  <div class="row">
+    <button onclick="play(null)">Reapertura de la app</button>
+    <button onclick="play('login')">Tras iniciar sesión</button>
+    <button class="accent" onclick="play('signup')">Tras registrarse</button>
+  </div>
+  <script>
+    function play(entry){
+      sessionStorage.removeItem("focus-splash-shown");
+      if (entry) sessionStorage.setItem("focus-entry", entry);
+      else sessionStorage.removeItem("focus-entry");
+      var old = document.getElementById("focus-splash"); if (old) old.remove();
+      var oldStyle = document.getElementById("focus-splash-style"); if (oldStyle) oldStyle.remove();
+      var s = document.createElement("script");
+      s.src = "splash.js?" + Date.now();
+      document.body.appendChild(s);
+    }
+  </script>
+</body>
+</html>
