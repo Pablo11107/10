@@ -21,9 +21,9 @@ const ZONES = ["mind", "heart", "body"];
 const ZONE_LABELS = { mind: "Mente", heart: "Corazón", body: "Cuerpo" };
 // Posición relativa (0..1) de cada punto sobre el contenedor.
 const ZONE_POSITIONS = {
-  mind:  { x: 0.5,   y: 0.09 },
-  heart: { x: 0.5,   y: 0.30 },
-  body:  { x: 0.775, y: 0.335 }
+  mind:  { x: 0.49,  y: 0.07 },
+  heart: { x: 0.515, y: 0.265 },
+  body:  { x: 0.64,  y: 0.275 }
 };
 
 // Silueta humana trazada directamente desde la imagen real subida
