@@ -1,0 +1,192 @@
+/* ==========================================================
+   YOU VS YOU — componente visual aislado
+   Silueta humana vectorial simétrica sobre tarjeta con foco de
+   luz, y puntos interactivos ("masas") de cristal con anillo de
+   pulso y acento dorado (paleta del Legado, #D4AF6D).
+   No depende de ningún otro estilo de la página que lo monta.
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800&display=swap');
+
+.yvy2-wrap {
+  --yvy2-gold: #D4AF6D;
+  --yvy2-font: 'Inter', system-ui, sans-serif;
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 5 / 8;
+  margin: 0 auto;
+  background:
+    radial-gradient(120% 85% at 50% 32%, #1B1A27 0%, #100F19 55%, #0B0A12 100%);
+  border-radius: 28px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 24px 60px -30px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+/* ---------- Figura ---------- */
+.yvy2-figure {
+  position: absolute;
+  inset: 4% 0 2% 0;
+  width: 100%;
+  height: 94%;
+  z-index: 2;
+  pointer-events: none;
+}
+.yvy2-figure-body {
+  filter:
+    drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.22))
+    drop-shadow(0 0 26px rgba(212, 175, 109, 0.10));
+}
+
+/* ---------- Masas: cristal + pulso ---------- */
+.yvy2-hotspot {
+  position: absolute;
+  z-index: 3;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* anillo de pulso: invita a tocar */
+.yvy2-hotspot::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(212, 175, 109, 0.55);
+  animation: yvy2Pulse 2.8s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+}
+@keyframes yvy2Pulse {
+  0%   { transform: scale(0.55); opacity: 0.9; }
+  70%  { transform: scale(1.45); opacity: 0; }
+  100% { transform: scale(1.45); opacity: 0; }
+}
+.yvy2-hotspot:nth-of-type(2)::before { animation-delay: 0.9s; }
+.yvy2-hotspot:nth-of-type(3)::before { animation-delay: 1.8s; }
+
+/* la masa: vidrio esmerilado con forma orgánica que respira suave */
+.yvy2-hotspot-dot {
+  position: absolute;
+  inset: 8px;
+  background:
+    radial-gradient(circle at 32% 28%,
+      rgba(255, 255, 255, 0.34) 0%,
+      rgba(255, 255, 255, 0.14) 42%,
+      rgba(255, 255, 255, 0.07) 100%);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 46% 54% 57% 43% / 45% 47% 53% 55%;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.35),
+    inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  animation: yvy2Breathe 9s ease-in-out infinite;
+  transition:
+    transform 0.28s cubic-bezier(0.33, 1, 0.68, 1),
+    background 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+@keyframes yvy2Breathe {
+  0%, 100% { border-radius: 46% 54% 57% 43% / 45% 47% 53% 55%; }
+  33%      { border-radius: 55% 45% 44% 56% / 52% 55% 45% 48%; }
+  66%      { border-radius: 48% 52% 55% 45% / 57% 44% 56% 43%; }
+}
+
+/* núcleo */
+.yvy2-hotspot-dot::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 7px; height: 7px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* hover / focus */
+.yvy2-hotspot:hover .yvy2-hotspot-dot,
+.yvy2-hotspot:focus-visible .yvy2-hotspot-dot {
+  transform: scale(1.18);
+  border-color: rgba(212, 175, 109, 0.85);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.4),
+    0 0 22px 2px rgba(212, 175, 109, 0.30),
+    inset 0 1px 2px rgba(255, 255, 255, 0.6);
+}
+
+/* activo: la masa se "enciende" en dorado */
+.yvy2-hotspot.is-active .yvy2-hotspot-dot {
+  transform: scale(1.26);
+  background:
+    radial-gradient(circle at 32% 28%,
+      rgba(255, 244, 220, 0.55) 0%,
+      rgba(212, 175, 109, 0.38) 45%,
+      rgba(212, 175, 109, 0.18) 100%);
+  border-color: rgba(212, 175, 109, 0.95);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.45),
+    0 0 26px 4px rgba(212, 175, 109, 0.45),
+    inset 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+.yvy2-hotspot.is-active .yvy2-hotspot-dot::after {
+  background: #fff;
+  box-shadow: 0 0 10px rgba(255, 235, 200, 0.9);
+}
+.yvy2-hotspot.is-active::before {
+  border-color: rgba(212, 175, 109, 0.9);
+}
+
+/* ---------- Etiqueta ---------- */
+.yvy2-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translate(-50%, 5px);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(13, 12, 20, 0.92);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: #F5F5F7;
+  font-family: var(--yvy2-font);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  border: 1px solid rgba(212, 175, 109, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.yvy2-tooltip::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--yvy2-gold);
+}
+.yvy2-hotspot:hover .yvy2-tooltip,
+.yvy2-hotspot:focus-visible .yvy2-tooltip,
+.yvy2-hotspot.is-active .yvy2-tooltip {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yvy2-hotspot-dot { animation: none; }
+  .yvy2-hotspot::before { animation: none; opacity: 0; }
+}
