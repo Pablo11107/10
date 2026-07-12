@@ -207,6 +207,37 @@
     .future-period-tabs button.active { background-color: #D4AF6D; color: #100F19; }
     .future-empty { text-align: center; color: #777; font-size: 0.9rem; padding: 2.5rem 1.5rem; }
 
+    /* Escenarios de proyección */
+    .future-scenarios { display: flex; gap: 0.6rem; margin-bottom: 1.25rem; }
+    .scenario-card {
+      flex: 1; background: linear-gradient(180deg, #201F28, #171620);
+      border-radius: 14px; padding: 0.85rem 0.5rem; text-align: center;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.05);
+    }
+    .scenario-card.main { box-shadow: 0 0 0 1px rgba(212,175,109,0.45); }
+    .scenario-num { display: block; font-size: 1.15rem; font-weight: 700; color: #F5F5F7; }
+    .scenario-card.main .scenario-num { color: #D4AF6D; }
+    .scenario-label { display: block; font-size: 0.62rem; color: #888; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 0.3rem; line-height: 1.3; }
+
+    /* Análisis de constancia */
+    .future-analysis-title {
+      font-size: 0.7rem; color: #D4AF6D; text-transform: uppercase;
+      letter-spacing: 0.08em; font-weight: 700; margin: 0 0 0.6rem;
+      text-align: left;
+    }
+    .future-insights { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1.25rem; }
+    .insight-card {
+      background-color: #171620; border-radius: 14px; padding: 0.9rem;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.05); text-align: left;
+    }
+    .insight-num { font-size: 1.3rem; font-weight: 700; color: #F5F5F7; }
+    .insight-num .up { color: #57e32c; } .insight-num .down { color: #e05b5b; }
+    .insight-label { font-size: 0.66rem; color: #D4AF6D; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 0.15rem; }
+    .insight-sub { font-size: 0.74rem; color: #999; line-height: 1.45; margin-top: 0.35rem; }
+    .habit-track { height: 7px; background-color: #100F19; border-radius: 4px; margin-top: 0.5rem; overflow: hidden; }
+    .habit-fill { height: 100%; background: linear-gradient(90deg, #D4AF6D, #E8CA8E); border-radius: 4px; }
+    .future-note { font-size: 0.72rem; color: #777; line-height: 1.5; margin-bottom: 1.25rem; text-align: left; }
+
     /* Tú contra ti */
     .yvy-wrap { text-align: center; }
     .yvy-intro { font-size: 0.85rem; color: #999; line-height: 1.5; margin: -0.3rem 0 1.3rem; }
@@ -231,7 +262,43 @@
     .yvy-quote { font-style: italic; color: #F5F5F7; }
     .yvy-hint, .yvy-empty { text-align: center; color: #888; font-size: 0.88rem; padding: 1rem 0.5rem; }
 
-    /* Compañero */
+    /* Mentor */
+    /* Retrato del yo futuro */
+    .portrait-card {
+      background: linear-gradient(180deg, rgba(212,175,109,0.08), rgba(212,175,109,0.015));
+      border: 1px solid rgba(212,175,109,0.25);
+      border-radius: 18px; padding: 1.4rem 1.3rem; margin: 1.4rem 0 1rem;
+    }
+    .portrait-date {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #D4AF6D; margin-bottom: 0.6rem;
+    }
+    .portrait-text { font-size: 0.95rem; line-height: 1.65; color: #ddd; }
+    .portrait-text strong { color: #fff; }
+    .diverge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 1rem 0; }
+    @media (max-width: 560px) { .diverge-grid { grid-template-columns: 1fr; } }
+    .diverge-card { border-radius: 16px; padding: 1.1rem 1rem; font-size: 0.85rem; line-height: 1.55; }
+    .diverge-card .diverge-title {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 0.55rem;
+    }
+    .diverge-card ul { margin: 0; padding-left: 1.05rem; }
+    .diverge-card li { margin-bottom: 0.35rem; }
+    .diverge-card.keep { background: rgba(212,175,109,0.08); border: 1px solid rgba(212,175,109,0.3); color: #e8dcc4; }
+    .diverge-card.keep .diverge-title { color: #D4AF6D; }
+    .diverge-card.drop { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); color: #999; }
+    .diverge-card.drop .diverge-title { color: #888; }
+    .future-letter {
+      background: #171620; border-radius: 18px; padding: 1.4rem 1.3rem; margin-top: 1rem;
+      border-left: 3px solid #D4AF6D;
+    }
+    .future-letter .letter-eyebrow {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #D4AF6D; margin-bottom: 0.6rem;
+    }
+    .future-letter p { font-size: 0.92rem; line-height: 1.65; color: #ccc; margin-bottom: 0.6rem; font-style: italic; }
+    .future-letter p:last-child { margin-bottom: 0; }
+    .future-letter .letter-sign { text-align: right; font-style: normal; color: #D4AF6D; font-weight: 600; font-size: 0.88rem; }
     .companion-intro { font-size: 0.85rem; color: #888; text-align: center; margin-bottom: 1rem; line-height: 1.5; }
     .companion-chat {
       display: flex; flex-direction: column; gap: 0.7rem;
@@ -310,7 +377,7 @@
     <button id="evidenceTabBtn" class="active">Evidencia.</button>
     <button id="originsTabBtn">¿Por qué? / Orígenes</button>
     <button id="futureTabBtn">Yo futuro</button>
-    <button id="companionTabBtn">Compañero</button>
+    <button id="companionTabBtn">Mentor.</button>
   </div>
 
   <!-- EVIDENCIA -->
@@ -695,6 +762,164 @@
     renderOrigins();
 
     // =======================================================
+    // 8a) ANALÍTICA — patrones extraídos de tus días activos
+    // =======================================================
+    const ANALYTICS = (() => {
+      const DOW = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+      const days = [...dateSet].sort();
+      const activeDays = days.length;
+      const consistencyPct = Math.min(100, Math.round((activeDays / daysSinceStart) * 100));
+
+      // Patrón semanal: cuántas veces has estado activo cada día de la semana
+      const dowCounts = [0, 0, 0, 0, 0, 0, 0];
+      days.forEach(k => { dowCounts[new Date(k + 'T00:00:00').getDay()]++; });
+      let bestDowIdx = 0, worstDowIdx = 0;
+      dowCounts.forEach((c, i) => {
+        if (c > dowCounts[bestDowIdx]) bestDowIdx = i;
+        if (c < dowCounts[worstDowIdx]) worstDowIdx = i;
+      });
+
+      // Momentum: últimos 30 días frente a los 30 anteriores
+      const now = Date.now();
+      const inWindow = (k, from, to) => {
+        const t = new Date(k + 'T00:00:00').getTime();
+        return t > from && t <= to;
+      };
+      const last30 = days.filter(k => inWindow(k, now - 30 * 864e5, now)).length;
+      const prev30 = days.filter(k => inWindow(k, now - 60 * 864e5, now - 30 * 864e5)).length;
+      const momentumPct = prev30 > 0
+        ? Math.round(((last30 - prev30) / prev30) * 100)
+        : (last30 > 0 ? null : 0); // null = sin base de comparación aún
+
+      // Huecos entre días activos
+      let longestGap = 0;
+      for (let i = 1; i < days.length; i++) {
+        const g = Math.round((new Date(days[i] + 'T00:00:00') - new Date(days[i - 1] + 'T00:00:00')) / 864e5) - 1;
+        if (g > longestGap) longestGap = g;
+      }
+
+      // Índice de equilibrio entre categorías (uniformidad de Shannon, 0-100)
+      const catKeys = ['read', 'trained', 'meditated', 'worked'];
+      const mins = catKeys.map(k => timeSpent[k]);
+      const totalCat = mins.reduce((a, b) => a + b, 0);
+      let balance = 0;
+      if (totalCat > 0) {
+        const ps = mins.filter(m => m > 0).map(m => m / totalCat);
+        const H = -ps.reduce((a, p) => a + p * Math.log(p), 0);
+        balance = Math.round((H / Math.log(catKeys.length)) * 100);
+      }
+
+      // Progreso hacia la automatización (media de 66 días, Lally et al. 2010)
+      const habitPct = Math.min(100, Math.round((activeDays / 66) * 100));
+
+      const CAT_LABELS = { read: 'Lectura', trained: 'Entrenamiento', meditated: 'Meditación', worked: 'Trabajo enfocado' };
+      let weakestCat = catKeys[0];
+      catKeys.forEach(k => { if (timeSpent[k] < timeSpent[weakestCat]) weakestCat = k; });
+
+      return {
+        DOW, activeDays, consistencyPct, dowCounts,
+        bestDow: DOW[bestDowIdx], bestDowCount: dowCounts[bestDowIdx],
+        worstDow: DOW[worstDowIdx], worstDowCount: dowCounts[worstDowIdx],
+        last30, prev30, momentumPct, longestGap, balance, habitPct,
+        weakestCat, weakestCatLabel: CAT_LABELS[weakestCat], CAT_LABELS
+      };
+    })();
+
+    // =======================================================
+    // 8b) ANALÍTICA AVANZADA — tendencia, regularidad y
+    //     estimaciones psicológicas construidas con tus datos
+    // =======================================================
+    const ADV = (() => {
+      const days = [...dateSet].sort();
+      const n = days.length;
+      const toT = k => new Date(k + 'T00:00:00').getTime();
+
+      // --- Tendencia: regresión lineal sobre días activos por semana ---
+      let trendPerMonth = 0, weeksTracked = 0;
+      if (n > 0) {
+        const start = toT(days[0]);
+        const weeks = [];
+        days.forEach(k => {
+          const w = Math.floor((toT(k) - start) / (7 * 864e5));
+          weeks[w] = (weeks[w] || 0) + 1;
+        });
+        for (let i = 0; i < weeks.length; i++) if (!weeks[i]) weeks[i] = 0;
+        weeksTracked = weeks.length;
+        if (weeks.length >= 3) {
+          const m = weeks.length;
+          const mx = (m - 1) / 2;
+          const my = weeks.reduce((a, b) => a + b, 0) / m;
+          let num = 0, den = 0;
+          for (let i = 0; i < m; i++) { num += (i - mx) * (weeks[i] - my); den += (i - mx) ** 2; }
+          trendPerMonth = den ? (num / den) * 4.33 : 0; // días activos ganados/perdidos al mes
+        }
+      }
+
+      // --- Pausas: cuánto duran de media y cuánto tardas en volver ---
+      const gaps = [];
+      for (let i = 1; i < n; i++) {
+        const g = Math.round((toT(days[i]) - toT(days[i - 1])) / 864e5) - 1;
+        if (g > 0) gaps.push(g);
+      }
+      const avgGap = gaps.length ? gaps.reduce((a, b) => a + b, 0) / gaps.length : 0;
+
+      // --- Regularidad del ritmo: coef. de variación de los intervalos (0-100) ---
+      let regularity = n >= 2 ? 100 : 0;
+      if (n >= 5) {
+        const iv = [];
+        for (let i = 1; i < n; i++) iv.push(Math.round((toT(days[i]) - toT(days[i - 1])) / 864e5));
+        const mu = iv.reduce((a, b) => a + b, 0) / iv.length;
+        const sd = Math.sqrt(iv.reduce((a, b) => a + (b - mu) ** 2, 0) / iv.length);
+        const cv = mu ? sd / mu : 0;
+        regularity = Math.max(0, Math.round(100 * (1 - Math.min(1, cv))));
+      }
+
+      // --- Entre semana vs fin de semana (normalizado por días disponibles) ---
+      let wkend = 0;
+      days.forEach(k => { const d = new Date(k + 'T00:00:00').getDay(); if (d === 0 || d === 6) wkend++; });
+      const wkendRate = wkend / 2, wkdayRate = (n - wkend) / 5;
+      const weekendLean = (wkendRate + wkdayRate) > 0
+        ? Math.round(100 * wkendRate / (wkendRate + wkdayRate)) : 50;
+
+      // --- Distribución de rachas ---
+      const streaks = [];
+      let cur = n > 0 ? 1 : 0;
+      for (let i = 1; i < n; i++) {
+        const d = Math.round((toT(days[i]) - toT(days[i - 1])) / 864e5);
+        if (d === 1) cur++; else { streaks.push(cur); cur = 1; }
+      }
+      if (n > 0) streaks.push(cur);
+      const streaks3 = streaks.filter(s => s >= 3).length;
+      const avgStreak = streaks.length ? streaks.reduce((a, b) => a + b, 0) / streaks.length : 0;
+
+      // --- Índice de fuerza del hábito (compuesto 0-100) ---
+      // 35% consistencia + 25% camino a lo automático + 20% regularidad + 20% momentum
+      const momentumNorm = ANALYTICS.momentumPct === null
+        ? 50 : Math.max(0, Math.min(100, 50 + ANALYTICS.momentumPct / 2));
+      const hsi = Math.round(
+        0.35 * ANALYTICS.consistencyPct + 0.25 * ANALYTICS.habitPct +
+        0.20 * regularity + 0.20 * momentumNorm);
+
+      // --- Proyección de días activos del próximo mes (base + tendencia) ---
+      const expNext30 = Math.max(0, Math.min(30, Math.round(ANALYTICS.last30 + trendPerMonth)));
+
+      // --- Radiografía psicológica: estimaciones orientativas con tus datos ---
+      // Autoeficacia (Bandura, 1977): su fuente nº1 son las "experiencias de dominio".
+      const selfEfficacy = n === 0 ? 0 : Math.min(100, Math.round(
+        20 + 0.5 * ANALYTICS.consistencyPct + Math.min(30, longestStreak * 2)));
+      // Perseverancia tipo "grit" (Duckworth, 2007): volver tras las pausas.
+      const grit = n === 0 ? 0 : Math.min(100, Math.round(
+        Math.min(40, ANALYTICS.activeDays) + streaks3 * 10 +
+        (gaps.length === 0 ? 20 : avgGap <= 2 ? 20 : avgGap <= 4 ? 10 : 0)));
+      // Identidad (Oyserman / James Clear): cada sesión es un "voto" por quien eliges ser.
+      const identity = Math.min(100, Math.round(totalSessions * 2));
+
+      return { trendPerMonth, weeksTracked, avgGap, gapsCount: gaps.length, regularity,
+               weekendLean, streaks3, avgStreak, hsi, expNext30,
+               selfEfficacy, grit, identity };
+    })();
+
+    // =======================================================
     // 8) YO FUTURO — proyección a partir del ritmo actual
     //    + "Tú contra ti": mente / corazón / cuerpo
     // =======================================================
@@ -730,7 +955,9 @@
               <div class="yvy-metric"><span class="yvy-metric-num">${mindProj.toFixed(1)}h</span><span class="yvy-metric-label">mente entrenada en ${periodLabel(period)}</span></div>
               <div class="yvy-metric"><span class="yvy-metric-num">${booksProj}</span><span class="yvy-metric-label">libros equivalentes leídos</span></div>
             </div>
-            <p class="yvy-text">Tu cerebro cambia físicamente con lo que repites — a esto la neurociencia lo llama <strong>neuroplasticidad</strong>. Cada hora de lectura suma a lo que el estudio Rush Memory and Aging (Wilson et al.) llama <em>reserva cognitiva</em>: quienes mantienen más actividad mental a lo largo de su vida muestran un deterioro de memoria significativamente más lento. Cada sesión de meditación, según el trabajo de Sara Lazar en Harvard, se asocia con más densidad de materia gris en las zonas del cerebro ligadas a la atención y la regulación emocional. Y cada hora de trabajo enfocado es lo que Anders Ericsson llamaba <em>práctica deliberada</em>: el camino más fiable hacia la maestría.</p>
+            <p class="yvy-text">Tu cerebro cambia físicamente con lo que repites — a esto la neurociencia lo llama <strong>neuroplasticidad</strong>, y no es una metáfora: Draganski y colegas (Nature, 2004) escanearon a personas aprendiendo una habilidad nueva y vieron crecer su materia gris en semanas; Eleanor Maguire (UCL, 2000) encontró hipocampos más desarrollados en taxistas de Londres tras años memorizando la ciudad. Cada hora de lectura suma a lo que el estudio Rush Memory and Aging (Wilson et al.) llama <em>reserva cognitiva</em>: quienes mantienen más actividad mental muestran un deterioro de memoria significativamente más lento. Cada sesión de meditación, según el trabajo de Sara Lazar en Harvard, se asocia con más densidad de materia gris en las zonas ligadas a la atención y la regulación emocional. Y cada hora de trabajo enfocado es lo que Anders Ericsson llamaba <em>práctica deliberada</em>: el camino más fiable hacia la maestría.</p>
+            <p class="yvy-text">Tus datos: tu día más productivo suele ser el <strong>${ANALYTICS.bestDow}</strong>, y llevas un ${ANALYTICS.habitPct}% del camino hacia los 66 días que, de media, tarda un hábito en volverse automático (Lally et al., 2010).</p>
+            <p class="yvy-text">Dos hallazgos más juegan a tu favor. Carol Dweck (Stanford) demostró que creer que las capacidades se entrenan — la <em>mentalidad de crecimiento</em> — cambia cómo respondes al error: deja de ser un veredicto y pasa a ser información; tus ${ADV.streaks3} racha${ADV.streaks3 === 1 ? '' : 's'} de 3+ días son la versión conductual de esa creencia. Y Mihaly Csikszentmihalyi documentó que el estado de <em>flow</em> — la concentración total y placentera — no aparece por azar: llega cuando el reto y la habilidad crecen juntos, algo que solo ocurre con práctica acumulada como la que estás registrando.</p>
             <p class="yvy-text">Hoy llevas ${mindNow.toFixed(1)} horas de mente entrenada. Si mantienes tu ritmo, dentro de ${periodLabel(period)} serán <strong>${mindProj.toFixed(1)} horas</strong> (${growth >= 0 ? '+' : ''}${growth}%). Ese es el cerebro que estás construyendo, sesión a sesión.</p>
           `;
         }
@@ -752,7 +979,9 @@
               <div class="yvy-metric"><span class="yvy-metric-num">${currentStreak}</span><span class="yvy-metric-label">días de racha actual</span></div>
               <div class="yvy-metric"><span class="yvy-metric-num">${projSessions}</span><span class="yvy-metric-label">sesiones estimadas en ${periodLabel(period)}</span></div>
             </div>
-            <p class="yvy-text">El investigador Hal Hershfield (UCLA) descubrió que las personas que se sienten más conectadas con quienes serán en el futuro toman mejores decisiones hoy: cuidan más su salud, ahorran más, se rinden menos. Cada vez que registras algo en FOCUS, refuerzas esa conexión con quien vas a ser.</p>
+            <p class="yvy-text">El investigador Hal Hershfield (UCLA) descubrió que las personas que se sienten más conectadas con quienes serán en el futuro toman mejores decisiones hoy: cuidan más su salud, ahorran más, se rinden menos. Katy Milkman y su equipo (Wharton) documentaron además el <em>efecto de borrón y cuenta nueva</em>: los inicios — un lunes, un mes nuevo, un día después de un tropiezo — son ventanas donde retomar cuesta menos. Y la psicóloga Daphna Oyserman demostró que la motivación más duradera es la <em>basada en identidad</em>: no "tengo que entrenar", sino "soy alguien que entrena". Cada registro en FOCUS es exactamente eso.</p>
+            <p class="yvy-text">Tus datos: consistencia del <strong>${ANALYTICS.consistencyPct}%</strong> (${ANALYTICS.activeDays} de ${daysSinceStart} días activos)${ANALYTICS.momentumPct !== null ? ` y un momentum de ${ANALYTICS.momentumPct >= 0 ? '+' : ''}${ANALYTICS.momentumPct}% frente al mes anterior` : ''}. Tu autoeficacia estimada es de ${ADV.selfEfficacy}/100 y tu perseverancia de ${ADV.grit}/100.</p>
+            <p class="yvy-text">Sobre esas dos cifras: Albert Bandura (1977) demostró que la creencia "soy capaz" no nace de frases motivacionales sino de <em>experiencias de dominio</em> — cada sesión completada es un ladrillo de esa creencia. Y Angela Duckworth (2007) midió que el <em>grit</em> — la perseverancia sostenida — predice quién termina lo que empieza mejor que el talento o el CI: en tus datos se ve en lo rápido que vuelves después de cada pausa.</p>
             <p class="yvy-text">El escritor David Brooks distingue entre las "virtudes de currículum" — lo que logras — y las "virtudes de elogio fúnebre" — quién eres, lo que la gente recordará de ti. Tus ${totalSessions} sesiones y tu racha de ${longestStreak} días no son solo números: son la prueba, día a día, de que estás eligiendo a alguien de quien sentirte orgulloso.</p>
             ${reasonBlock}
             <p class="yvy-text">Si sigues así, dentro de ${periodLabel(period)} habrás sumado unas ${Math.max(projSessions - totalSessions, 0)} sesiones más. Tu legado no es un día perfecto — es la suma de todos los días en los que apareciste.</p>
@@ -775,7 +1004,9 @@
               <div class="yvy-metric"><span class="yvy-metric-num">${weeksProj}</span><span class="yvy-metric-label">semanas OMS acumuladas</span></div>
             </div>
             <p class="yvy-text">La Organización Mundial de la Salud recomienda al menos 150 minutos semanales de actividad moderada. Con tus ${Math.round(timeSpent.trained)} minutos registrados ya llevas el equivalente a ${weeksNow} semanas de esa recomendación.</p>
-            <p class="yvy-text">El neurocientífico John Ratey (autor de <em>Spark</em>) documentó cómo el ejercicio eleva el BDNF, una proteína que ayuda a tu cerebro a crear nuevas conexiones: entrenar tu cuerpo también entrena tu mente. Y el histórico Harvard Alumni Health Study (Paffenbarger et al.) fue de los primeros en demostrar que la actividad física regular se asocia con una vida más larga, más allá de otros factores.</p>
+            <p class="yvy-text">El neurocientífico John Ratey (autor de <em>Spark</em>) documentó cómo el ejercicio eleva el BDNF, una proteína que ayuda a tu cerebro a crear nuevas conexiones: entrenar tu cuerpo también entrena tu mente. Kirk Erickson y colegas (PNAS, 2011) lo comprobaron en un ensayo controlado: un año de ejercicio aeróbico regular <em>aumentó</em> el tamaño del hipocampo, revirtiendo en la práctica uno o dos años de envejecimiento cerebral. El histórico Harvard Alumni Health Study (Paffenbarger et al.) fue de los primeros en demostrar que la actividad física regular se asocia con una vida más larga, y el metaanálisis de Arem et al. (JAMA Internal Medicine, 2015, con más de 660.000 personas) precisó la dosis: los mayores beneficios llegan justo en el rango de la recomendación de la OMS que estás acumulando.</p>
+            <p class="yvy-text">Tus datos: tu mayor hueco sin actividad ha sido de ${ANALYTICS.longestGap} día${ANALYTICS.longestGap === 1 ? '' : 's'}${ANALYTICS.longestGap <= 2 ? ' — prácticamente sin pausas' : ''}. La regla que protege tu progreso: nunca dos días seguidos en blanco.</p>
+            <p class="yvy-text">El cuerpo también devuelve el favor a la cabeza: Chekroud y colegas (The Lancet Psychiatry, 2018) analizaron a 1,2 millones de personas y encontraron que quienes hacen ejercicio reportan bastantes menos días de mala salud mental al mes, con el mayor beneficio en torno a 3-5 sesiones semanales de ~45 minutos — un objetivo perfectamente alcanzable a tu ritmo. Y la investigación de Sabine Sonnentag sobre <em>recuperación</em> muestra que el descanso de calidad no es lo contrario del progreso, sino la fase donde se consolida: los días sin entrenar también trabajan para ti.</p>
             <p class="yvy-text">Si mantienes tu ritmo, dentro de ${periodLabel(period)} tendrás <strong>${bodyProjH.toFixed(1)} horas</strong> entrenadas — unas ${weeksProj} semanas de la recomendación de la OMS. Ese es el cuerpo que estás construyendo.</p>
           `;
         }
@@ -808,6 +1039,12 @@
       const growthPct = totalMinutes > 0 ? Math.round(((projTotalMinutes - totalMinutes) / totalMinutes) * 100) : 0;
       const projDominant = identityCategories.reduce((max, c) => (proj[c.key] > proj[max.key] ? c : max), identityCategories[0]);
 
+      const dailyRateAll = totalMinutes / daysSinceStart;
+      const scenarioH = mult => ((totalMinutes + dailyRateAll * mult * futurePeriod) / 60).toFixed(0);
+      const momentumHtml = ANALYTICS.momentumPct === null
+        ? `<div class="insight-num">—</div><div class="insight-label">Momentum 30 días</div><div class="insight-sub">Aún no hay 60 días de historial para comparar. Sigue registrando.</div>`
+        : `<div class="insight-num"><span class="${ANALYTICS.momentumPct >= 0 ? 'up' : 'down'}">${ANALYTICS.momentumPct >= 0 ? '+' : ''}${ANALYTICS.momentumPct}%</span></div><div class="insight-label">Momentum 30 días</div><div class="insight-sub">${ANALYTICS.last30} días activos en el último mes frente a ${ANALYTICS.prev30} en el anterior. ${ANALYTICS.momentumPct >= 0 ? 'Estás acelerando — el "principio del progreso" (Amabile y Kramer, Harvard) predice que esto retroalimenta tu motivación.' : 'Vas algo más lento que el mes pasado — no es una crisis, es información. Un día pequeño hoy invierte la tendencia.'}</div>`;
+
       el.innerHTML = `
         <div class="future-period-tabs">
           <button data-period="30" class="${futurePeriod === 30 ? 'active' : ''}">30 días</button>
@@ -817,6 +1054,158 @@
         <div class="future-hero">
           <p>Mantén el ritmo de hoy ${futurePeriod} días más y habrás acumulado <strong>${projTotalHours.toFixed(1)} horas</strong> en total — ${growthPct >= 0 ? '+' : ''}${growthPct}% frente a hoy. Seguirás siendo ${projDominant.key === dominant.key ? dominant.phrase : projDominant.phrase}, solo que más avanzado en el mismo camino.</p>
         </div>
+        <div class="future-scenarios">
+          <div class="scenario-card"><span class="scenario-num">${scenarioH(0.7)}h</span><span class="scenario-label">Escenario conservador (70% del ritmo)</span></div>
+          <div class="scenario-card main"><span class="scenario-num">${scenarioH(1)}h</span><span class="scenario-label">A tu ritmo actual</span></div>
+          <div class="scenario-card"><span class="scenario-num">${scenarioH(1.25)}h</span><span class="scenario-label">Escenario ambicioso (+25%)</span></div>
+        </div>
+        ${(() => {
+          // ---- Retrato del yo futuro: fecha real + narrativa en 2ª persona ----
+          const fd = new Date(Date.now() + futurePeriod * 864e5);
+          const fdStr = fd.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+          const projStreakRecord = Math.max(longestStreak, Math.round(ADV.avgStreak > 0 ? longestStreak + futurePeriod / 45 : longestStreak));
+          const projBooks = (proj.read / 60 / 6).toFixed(1);
+          const projTrainH = (proj.trained / 60).toFixed(0);
+          const projMindH = ((proj.read + proj.meditated + proj.worked) / 60).toFixed(0);
+          const projSessionsP = Math.round(totalSessions + (totalSessions / daysSinceStart) * futurePeriod);
+          const projActiveDays = Math.min(futurePeriod, Math.round((ANALYTICS.activeDays / daysSinceStart) * futurePeriod)) + ANALYTICS.activeDays;
+          const automaticBy = daysSinceStart < 66
+            ? new Date(Date.now() + (66 - daysSinceStart) * 864e5).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })
+            : null;
+          const portrait = `Es <strong>${fdStr}</strong>. Te levantas y no negocias contigo: lo que hace ${futurePeriod} días requería fuerza de voluntad ${daysSinceStart + futurePeriod >= 66 ? 'ya funciona en piloto automático — cruzaste la frontera de los 66 días' + (automaticBy ? ` alrededor del ${automaticBy}` : '') : 'cada vez pide menos esfuerzo'}. Acumulas <strong>${projTotalHours.toFixed(0)} horas</strong> invertidas en ti: ${projMindH}h de mente${Number(projBooks) > 0 ? ` (el equivalente a ${projBooks} libros)` : ''} y ${projTrainH}h de cuerpo. Tu historial marca ~${projSessionsP} sesiones en ~${projActiveDays} días activos, y sigues siendo, cada vez con más derecho, ${projDominant.phrase}. La persona que hoy lee esto es el borrador; esa es la versión firmada.`;
+          // ---- Bifurcación: seguir vs abandonar (aversión a la pérdida) ----
+          const dropLine1 = `Las ${projTotalHours.toFixed(0)} horas se quedan en ${totalHours.toFixed(1)} — las ${(projTotalHours - totalHours).toFixed(0)} restantes no existirán.`;
+          const dropLine2 = daysSinceStart < 66
+            ? `El contador hacia lo automático se congela en el ${ANALYTICS.habitPct}% y empieza a retroceder: lo andado se paga dos veces.`
+            : `El piloto automático que ya ganaste se va oxidando: reconstruirlo cuesta más que mantenerlo.`;
+          const dropLine3 = `Tu récord queda en ${longestStreak} día${longestStreak === 1 ? '' : 's'} para siempre — la racha 2.0 nunca llega a nacer.`;
+          // ---- Carta de tu yo futuro ----
+          const reasonRef = (profileInfo.reason && profileInfo.reason.trim())
+            ? `Aún recuerdo por qué empezamos: &ldquo;${escapeHtml(profileInfo.reason)}&rdquo;. Tenías razón.`
+            : `Ni siquiera escribiste todavía el porqué — hazlo hoy en la pestaña "¿Por qué?": yo lo leo a menudo.`;
+          return `
+        <div class="portrait-card">
+          <div class="portrait-date">Retrato · dentro de ${periodLabel(futurePeriod)}</div>
+          <p class="portrait-text">${portrait}</p>
+        </div>
+        <div class="diverge-grid">
+          <div class="diverge-card keep">
+            <div class="diverge-title">Si sigues como hoy</div>
+            <ul>
+              <li><strong>${projTotalHours.toFixed(0)} horas</strong> acumuladas (${growthPct >= 0 ? '+' : ''}${growthPct}%).</li>
+              <li>${daysSinceStart + futurePeriod >= 66 ? 'Hábito en piloto automático: deja de costar.' : `${Math.min(100, Math.round(((daysSinceStart + futurePeriod) / 66) * 100))}% del camino a lo automático.`}</li>
+              <li>Récord de racha con margen para llegar a ~${projStreakRecord} días.</li>
+              <li>${Math.max(projSessionsP - totalSessions, 0)} votos más por tu identidad (Oyserman).</li>
+            </ul>
+          </div>
+          <div class="diverge-card drop">
+            <div class="diverge-title">Si lo dejas hoy</div>
+            <ul>
+              <li>${dropLine1}</li>
+              <li>${dropLine2}</li>
+              <li>${dropLine3}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="future-note">Kahneman y Tversky demostraron que perder pesa aproximadamente el doble que ganar lo mismo. Mira la columna derecha: eso es lo que hay encima de la mesa cada día que decides aparecer.</div>
+        <div class="future-letter">
+          <div class="letter-eyebrow">Carta de tu yo de dentro de ${periodLabel(futurePeriod)}</div>
+          <p>No te escribo para meterte prisa. Te escribo porque desde aquí se ve algo que desde ahí no se ve: ninguna de mis ${projTotalHours.toFixed(0)} horas fue heroica. Fueron días normales — como el tuyo de hoy — en los que apareciste igualmente.</p>
+          <p>${reasonRef}</p>
+          <p>Hershfield (UCLA) dice que cuanto más real te resulto, mejores decisiones tomas. Pues aquí estoy: soy lo que pasa si no te rindes. La sesión de hoy no es para ti — es para mí. Y te prometo que la vamos a usar bien.</p>
+          <p class="letter-sign">— Tú, ${periodLabel(futurePeriod)} después</p>
+        </div>`;
+        })()}
+        <div class="future-analysis-title">Análisis de tu constancia · ${ANALYTICS.activeDays} día${ANALYTICS.activeDays === 1 ? '' : 's'} activo${ANALYTICS.activeDays === 1 ? '' : 's'}</div>
+        <div class="future-insights">
+          <div class="insight-card">
+            <div class="insight-num">${ANALYTICS.consistencyPct}%</div>
+            <div class="insight-label">Consistencia</div>
+            <div class="insight-sub">Has estado activo ${ANALYTICS.activeDays} de ${daysSinceStart} días. La investigación de Lally (UCL) muestra que la regularidad pesa más que la intensidad para consolidar un hábito.</div>
+          </div>
+          <div class="insight-card">${momentumHtml}</div>
+          <div class="insight-card">
+            <div class="insight-num" style="text-transform:capitalize;">${ANALYTICS.bestDow}</div>
+            <div class="insight-label">Tu mejor día</div>
+            <div class="insight-sub">${ANALYTICS.bestDowCount} día${ANALYTICS.bestDowCount === 1 ? '' : 's'} activo${ANALYTICS.bestDowCount === 1 ? '' : 's'} en ${ANALYTICS.bestDow}. Tu día más flojo es el ${ANALYTICS.worstDow} — anclar ahí una versión mínima del hábito es la mejora más barata disponible.</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">${ANALYTICS.habitPct}%</div>
+            <div class="insight-label">Camino a lo automático</div>
+            <div class="habit-track"><div class="habit-fill" style="width:${ANALYTICS.habitPct}%"></div></div>
+            <div class="insight-sub">Progreso hacia la media de 66 días que la UCL (Lally et al., 2010) midió para que un hábito se vuelva automático — su rango real fue de 18 a 254 días, así que es una brújula, no un contrato.</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">${ANALYTICS.balance}/100</div>
+            <div class="insight-label">Equilibrio de categorías</div>
+            <div class="insight-sub">${ANALYTICS.balance >= 60 ? 'Perfil equilibrado: repartes tu tiempo entre varias áreas.' : `Perfil especialista: tu energía se concentra en ${dominant.phrase.replace('alguien que ', '').toLowerCase()}. Tu área menos trabajada es ${ANALYTICS.weakestCatLabel}.`}</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">${ANALYTICS.longestGap}</div>
+            <div class="insight-label">Mayor hueco (días)</div>
+            <div class="insight-sub">${ANALYTICS.longestGap <= 2 ? 'Apenas has dejado huecos — la regla "nunca dos días seguidos sin registrar" ya es tuya.' : 'Tu mayor pausa entre días activos. Lally et al. comprobaron que saltarse un día no arruina el hábito; lo que lo erosiona es encadenar ausencias.'}</div>
+          </div>
+        </div>
+        <div class="future-analysis-title">Análisis avanzado · patrones profundos de tu comportamiento</div>
+        <div class="future-insights">
+          <div class="insight-card">
+            <div class="insight-num">${ADV.hsi}/100</div>
+            <div class="insight-label">Fuerza del hábito</div>
+            <div class="habit-track"><div class="habit-fill" style="width:${ADV.hsi}%"></div></div>
+            <div class="insight-sub">Índice compuesto: 35% consistencia, 25% automatización, 20% regularidad y 20% momentum. Inspirado en el Self-Report Habit Index de Verplanken y Orbell (2003), el instrumento estándar para medir fuerza de hábito.</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num"><span class="${ADV.trendPerMonth >= 0 ? 'up' : 'down'}">${ADV.trendPerMonth >= 0 ? '+' : ''}${ADV.trendPerMonth.toFixed(1)}</span></div>
+            <div class="insight-label">Tendencia (días/mes)</div>
+            <div class="insight-sub">${ADV.weeksTracked >= 3
+              ? `Regresión lineal sobre tus ${ADV.weeksTracked} semanas de historial: ${ADV.trendPerMonth >= 0 ? 'ganas' : 'pierdes'} ~${Math.abs(ADV.trendPerMonth).toFixed(1)} días activos al mes. Si nada cambia, el mes que viene apunta a ~${ADV.expNext30} días activos.`
+              : 'Con al menos 3 semanas de historial calcularé aquí tu línea de tendencia por regresión. Sigue registrando.'}</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">${ADV.regularity}/100</div>
+            <div class="insight-label">Regularidad del ritmo</div>
+            <div class="insight-sub">${ADV.regularity >= 70
+              ? 'Tus días activos llegan a intervalos muy estables — el patrón que Wood y Neal (Duke) asocian con hábitos anclados al contexto, no a la fuerza de voluntad.'
+              : 'Alternas etapas densas con pausas (medido por la variabilidad de tus intervalos). No es malo, pero fijar un mismo momento del día — Gollwitzer lo llama "intención de implementación" — lo estabilizaría.'}</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">${ADV.streaks3}</div>
+            <div class="insight-label">Rachas de 3+ días</div>
+            <div class="insight-sub">Racha media de ${ADV.avgStreak.toFixed(1)} días.${ADV.gapsCount > 0 ? ` Tras una pausa tardas de media ${ADV.avgGap.toFixed(1)} día${ADV.avgGap.toFixed(1) === '1.0' ? '' : 's'} en volver — esa capacidad de rebote es lo que Duckworth llama <em>grit</em>, y predice el logro a largo plazo mejor que el talento.` : ' Todavía sin pausas que medir: rebote perfecto por ahora.'}</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">${ADV.weekendLean}%</div>
+            <div class="insight-label">Inclinación al finde</div>
+            <div class="insight-sub">${ADV.weekendLean > 55
+              ? 'Tu actividad se apoya más en el fin de semana que en la semana laboral (ajustado por días disponibles). Blindar un micro-hábito de 10 minutos entre semana repartiría la carga.'
+              : ADV.weekendLean < 45
+                ? 'Eres de entre semana: el fin de semana es tu punto ciego (ajustado por días disponibles). Un ancla fija el sábado por la mañana suele bastar para cubrirlo.'
+                : 'Reparto equilibrado entre semana laboral y fin de semana — el patrón más robusto frente a cambios de rutina.'}</div>
+          </div>
+        </div>
+        <div class="future-analysis-title">Radiografía psicológica · construida con tus datos</div>
+        <div class="future-insights">
+          <div class="insight-card">
+            <div class="insight-num">${ADV.selfEfficacy}/100</div>
+            <div class="insight-label">Autoeficacia</div>
+            <div class="habit-track"><div class="habit-fill" style="width:${ADV.selfEfficacy}%"></div></div>
+            <div class="insight-sub">Albert Bandura (1977) demostró que la fuente nº1 de la creencia "soy capaz" son las <em>experiencias de dominio</em>: haberlo hecho antes. Tus ${totalSessions} sesiones y tu récord de ${longestStreak} días son exactamente eso.</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">${ADV.grit}/100</div>
+            <div class="insight-label">Perseverancia (grit)</div>
+            <div class="habit-track"><div class="habit-fill" style="width:${ADV.grit}%"></div></div>
+            <div class="insight-sub">Angela Duckworth (2007) encontró que la combinación de pasión y perseverancia predice el éxito en West Point, el National Spelling Bee o la docencia mejor que el CI. Aquí se estima con tus rachas y tu velocidad de rebote tras pausas.</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">${ADV.identity}/100</div>
+            <div class="insight-label">Identidad en construcción</div>
+            <div class="habit-track"><div class="habit-fill" style="width:${ADV.identity}%"></div></div>
+            <div class="insight-sub">Daphna Oyserman: la motivación que dura es la <em>basada en identidad</em>. Cada sesión registrada es un voto por "${dominant.phrase}" — llevas ${totalSessions} voto${totalSessions === 1 ? '' : 's'} emitido${totalSessions === 1 ? '' : 's'}.</div>
+          </div>
+        </div>
+        <div class="future-note">Las estimaciones psicológicas son orientativas: se construyen solo con tu comportamiento registrado en FOCUS y no sustituyen a ningún test validado.</div>
+        <div class="future-note">Las proyecciones asumen que tu ritmo medio (${Math.round(dailyRateAll)} min/día desde que empezaste) se mantiene. No son una promesa: son la dirección en la que apunta tu comportamiento actual.</div>
         <div class="yvy-wrap">
           <div class="future-eyebrow">Tú contra ti</div>
           <p class="yvy-intro">Toca la mente, el corazón o el cuerpo de la figura para ver en quién te estás convirtiendo.</p>
@@ -855,39 +1244,153 @@
     const COMPANION_PROMPTS = [
       { key: 'why', label: '¿Por qué empecé esto?' },
       { key: 'improving', label: '¿De verdad estoy mejorando?' },
+      { key: 'trend', label: '¿Voy a mejor o a peor?' },
+      { key: 'hsi', label: '¿Cómo de fuerte es mi hábito?' },
       { key: 'quit', label: 'Hoy quiero rendirme.' },
+      { key: 'streakBroken', label: 'He roto mi racha, ¿y ahora qué?' },
+      { key: 'noMotivation', label: 'No tengo ganas hoy.' },
+      { key: 'selfefficacy', label: 'No me creo capaz de esto.' },
+      { key: 'mindset', label: 'Siento que no valgo para esto.' },
+      { key: 'grit', label: '¿Tengo constancia de verdad?' },
+      { key: 'identity', label: '¿Esto está cambiando quién soy?' },
+      { key: 'bestDay', label: '¿Cuál es mi mejor día de la semana?' },
+      { key: 'weekend', label: '¿Rindo mejor entre semana o el finde?' },
+      { key: 'regularity', label: '¿Soy regular o voy a rachas?' },
+      { key: 'recovery', label: '¿Cuánto tardo en volver tras una pausa?' },
+      { key: 'weakSpot', label: '¿Dónde estoy flojeando?' },
+      { key: 'lastMonth', label: '¿Cómo voy respecto al mes pasado?' },
+      { key: 'nextMonth', label: '¿Qué me espera el mes que viene?' },
+      { key: 'weekPlan', label: 'Hazme un plan para esta semana.' },
+      { key: 'goal', label: '¿Cómo me pongo una buena meta?' },
+      { key: 'automatic', label: '¿Cuánto falta para que sea automático?' },
+      { key: 'balance', label: '¿Estoy equilibrado o muy centrado en una cosa?' },
+      { key: 'flow', label: 'Me cuesta concentrarme.' },
+      { key: 'compare', label: 'Me comparo con los demás.' },
+      { key: 'perfect', label: 'Siento que nunca es suficiente.' },
+      { key: 'overwhelmed', label: 'Estoy agobiado.' },
+      { key: 'rest', label: 'Me siento culpable por descansar.' },
+      { key: 'sleep', label: '¿El sueño importa tanto?' },
+      { key: 'celebrate', label: '¿Tengo algo que celebrar ya?' },
+      { key: 'science', label: '¿Qué dice la ciencia sobre las rachas?' },
       { key: 'future', label: '¿Qué debería saber mi yo futuro?' }
     ];
     const COMPANION_RESPONSES = {
       why: () => (profileInfo.reason && profileInfo.reason.trim())
         ? `Te dijiste a ti mismo: &ldquo;${escapeHtml(profileInfo.reason)}&rdquo; — eso sigue siendo verdad hoy. ${totalSessions} ${totalSessions === 1 ? 'sesión' : 'sesiones'} después, lo estás demostrando.`
-        : `Todavía no has escrito tu porqué — abre la pestaña "¿Por qué?" y hazlo primero. Hará esta respuesta mucho más potente la próxima vez que preguntes.`,
+        : `Todavía no has escrito tu porqué — abre la pestaña "¿Por qué?" y hazlo primero. El estudio de la Dra. Gail Matthews mostró que escribir el objetivo aumenta mucho la probabilidad de cumplirlo, y hará esta respuesta más potente la próxima vez que preguntes.`,
       improving: () => totalMinutes > 0
-        ? `Sí — ${totalHours.toFixed(1)} horas acumuladas, una mejor racha de ${longestStreak} días, y una tendencia clara hacia convertirte en ${dominant.phrase}. Eso no es poca cosa.`
+        ? `Sí, y no es una opinión: ${totalHours.toFixed(1)} horas acumuladas, mejor racha de ${longestStreak} días, consistencia del ${ANALYTICS.consistencyPct}%${ANALYTICS.momentumPct !== null ? ` y un momentum de ${ANALYTICS.momentumPct >= 0 ? '+' : ''}${ANALYTICS.momentumPct}% frente al mes anterior` : ''}. Tendencia clara hacia convertirte en ${dominant.phrase}. Amabile y Kramer (Harvard) lo llaman el "principio del progreso": ver avance real es el mayor motor de motivación que existe — y tú lo tienes por escrito.`
         : `Los datos no mienten: todavía no hay nada registrado. Eso es lo único que te separa de poder responder a esto con números reales.`,
-      quit: () => `Sentir que quieres rendirte hoy no borra las ${totalSessions} vez${totalSessions === 1 ? '' : 'es'} que no lo hiciste. Un día difícil no deshace ${daysSinceStart} día${daysSinceStart === 1 ? '' : 's'} apareciendo. Registra algo pequeño hoy — cuenta más de lo que parece.`,
-      future: () => `Tu yo futuro probablemente diría: cuida la racha más de lo que persigues la sesión perfecta. ${currentStreak > 0 ? `Llevas ${currentStreak} día${currentStreak === 1 ? '' : 's'} — no la rompas hoy.` : `Empieza la racha hoy, por pequeña que sea.`}`
+      quit: () => `Sentir que quieres rendirte hoy no borra las ${totalSessions} vez${totalSessions === 1 ? '' : 'es'} que no lo hiciste. Un día difícil no deshace ${daysSinceStart} día${daysSinceStart === 1 ? '' : 's'} apareciendo. La psicología llama "efecto qué-más-da" (Polivy y Herman) a convertir un tropiezo en excusa para abandonarlo todo — se desactiva con una acción mínima. Registra algo pequeño hoy: cuenta más de lo que parece.`,
+      streakBroken: () => `Respira: Lally et al. (UCL, 2010) comprobaron que saltarse un día <em>no</em> reduce de forma medible la formación del hábito. Lo que sí lo erosiona es encadenar ausencias — de ahí la regla "nunca dos días seguidos". Tu mayor hueco hasta ahora ha sido de ${ANALYTICS.longestGap} día${ANALYTICS.longestGap === 1 ? '' : 's'} y tu récord de racha es ${longestStreak}: la capacidad ya está demostrada. Además, Milkman (Wharton) documentó el "efecto de borrón y cuenta nueva": hoy es exactamente esa ventana. Empieza la racha 2.0.`,
+      noMotivation: () => `Dato incómodo y liberador: la motivación suele llegar <em>después</em> de la acción, no antes. BJ Fogg (Stanford) diseñó los "hábitos mínimos" justo para esto: reduce la sesión de hoy a algo casi ridículo — 5 minutos de ${ANALYTICS.weakestCatLabel.toLowerCase()} o de lo que toque — y deja que el arranque haga el resto. ${currentStreak > 0 ? `Llevas ${currentStreak} día${currentStreak === 1 ? '' : 's'} de racha: hoy solo hay que no romperla, no batir récords.` : `Hoy no hay que batir ningún récord: solo abrir la puerta.`}`,
+      bestDay: () => ANALYTICS.activeDays >= 7
+        ? `Tu día más fuerte es el <strong>${ANALYTICS.bestDow}</strong> (${ANALYTICS.bestDowCount} días activos) y el más flojo el <strong>${ANALYTICS.worstDow}</strong> (${ANALYTICS.worstDowCount}). Úsalo: programa lo importante en tu mejor día y ancla una versión mínima del hábito al flojo. Wood y Neal (Duke) mostraron que los hábitos viven pegados al contexto — mismo día, misma hora, mismo lugar — más que a la fuerza de voluntad.`
+        : `Aún tengo pocos días registrados para detectar tu patrón semanal con fiabilidad (llevas ${ANALYTICS.activeDays}). A partir de una semana activa te lo diré con datos.`,
+      weakSpot: () => `Dos frentes: tu categoría menos trabajada es <strong>${ANALYTICS.weakestCatLabel}</strong> (${Math.round(timeSpent[ANALYTICS.weakestCat])} min acumulados) y tu día más flojo es el <strong>${ANALYTICS.worstDow}</strong>. No hace falta arreglar los dos a la vez: elige uno y ponle una versión de 10 minutos esta semana. El progreso desigual no es un fallo — es un mapa.`,
+      lastMonth: () => ANALYTICS.momentumPct === null
+        ? `Aún no tienes 60 días de historial para comparar meses completos. Llevas ${ANALYTICS.last30} día${ANALYTICS.last30 === 1 ? '' : 's'} activo${ANALYTICS.last30 === 1 ? '' : 's'} en los últimos 30 — esa será tu línea base el mes que viene.`
+        : `Últimos 30 días: ${ANALYTICS.last30} días activos. Los 30 anteriores: ${ANALYTICS.prev30}. Eso es un ${ANALYTICS.momentumPct >= 0 ? '+' : ''}${ANALYTICS.momentumPct}% de momentum. ${ANALYTICS.momentumPct >= 0 ? 'Estás acelerando: protege lo que está funcionando y no cambies nada grande.' : 'Vas más lento que el mes pasado. Sin drama: identifica qué cambió (horario, sueño, contexto) y recupera solo la versión mínima del hábito esta semana.'}`,
+      weekPlan: () => `Plan simple basado en tus datos: (1) tu sesión importante de la semana, ponla el <strong>${ANALYTICS.bestDow}</strong>, que es cuando más apareces; (2) el <strong>${ANALYTICS.worstDow}</strong>, tu día más flojo, solo pide 10 minutos de ${ANALYTICS.weakestCatLabel.toLowerCase()} — versión mínima, sin negociar; (3) el resto de días, mantén tu ritmo normal (~${Math.max(1, Math.round(totalMinutes / daysSinceStart))} min/día). Gollwitzer llama a esto "intenciones de implementación": decidir el cuándo y el dónde por adelantado duplica la probabilidad de cumplirlo.`,
+      automatic: () => `Llevas ${ANALYTICS.activeDays} día${ANALYTICS.activeDays === 1 ? '' : 's'} activo${ANALYTICS.activeDays === 1 ? '' : 's'}: un ${ANALYTICS.habitPct}% del camino hacia los 66 días que Lally et al. (UCL, 2010) midieron como media para que un hábito se vuelva automático. Ojo al dato completo: en su estudio el rango real fue de 18 a 254 días según la persona y el hábito. Así que no es un contrato con fecha — es una brújula. Lo que sí es seguro: cada repetición baja el coste de la siguiente.`,
+      balance: () => `Tu índice de equilibrio es ${ANALYTICS.balance}/100. ${ANALYTICS.balance >= 60 ? 'Perfil equilibrado: repartes tu energía entre varias áreas, lo que amortigua las malas semanas — si una falla, las otras sostienen la identidad.' : `Perfil especialista: tu tiempo se concentra en ${dominant.phrase.replace('alguien que ', '').toLowerCase()}, y tu área más descuidada es ${ANALYTICS.weakestCatLabel}. Ser especialista no es malo — la práctica deliberada de Ericsson lo avala — pero si quieres abrir el abanico, 10 minutos de ${ANALYTICS.weakestCatLabel.toLowerCase()} en tu ${ANALYTICS.bestDow} es la entrada más fácil.`}`,
+      rest: () => `El descanso no es la ausencia de progreso: es parte del mecanismo. La consolidación de lo aprendido y la adaptación muscular ocurren sobre todo durmiendo y en recuperación (Matthew Walker lo documenta extensamente en su investigación sobre sueño). Tu consistencia es del ${ANALYTICS.consistencyPct}% — descansar un día planificado no la amenaza; lo que la amenaza es el "efecto qué-más-da" de convertir un descanso en una semana en blanco. Descansa hoy sin culpa y vuelve mañana.`,
+      science: () => `Lo esencial en cuatro hallazgos: (1) Lally (UCL): media de 66 días para automatizar un hábito, y saltarse un día suelto no lo estropea. (2) Wood y Neal (Duke): los hábitos se disparan por contexto — mismo momento y lugar — no por motivación. (3) Amabile y Kramer (Harvard): el progreso visible es el mayor motivador que existe; por eso FOCUS te enseña tus números. (4) Hershfield (UCLA): cuanto más conectas con tu yo futuro, mejores decisiones tomas hoy. Tu racha de ${currentStreak} día${currentStreak === 1 ? '' : 's'} está usando los cuatro a la vez.`,
+      future: () => `Tu yo futuro probablemente diría: cuida la racha más de lo que persigues la sesión perfecta. ${currentStreak > 0 ? `Llevas ${currentStreak} día${currentStreak === 1 ? '' : 's'} — no la rompas hoy.` : `Empieza la racha hoy, por pequeña que sea.`} Y añadiría lo de Hershfield: cada registro es un mensaje que le mandas — ${ANALYTICS.activeDays} enviado${ANALYTICS.activeDays === 1 ? '' : 's'} hasta ahora.`,
+      trend: () => ADV.weeksTracked >= 3
+        ? `He pasado una regresión lineal por tus ${ADV.weeksTracked} semanas de historial: tu tendencia es de <strong>${ADV.trendPerMonth >= 0 ? '+' : ''}${ADV.trendPerMonth.toFixed(1)} días activos al mes</strong>. ${ADV.trendPerMonth >= 0 ? `Vas a mejor — si nada cambia, el próximo mes apunta a ~${ADV.expNext30} días activos. Protege lo que estás haciendo.` : `La pendiente baja un poco. No es una sentencia: identifica qué cambió en tu rutina y recupera solo la versión mínima esta semana — las tendencias se doblan rápido con pocos días.`}`
+        : `Necesito al menos 3 semanas de historial para calcular tu línea de tendencia con regresión (llevas ${ADV.weeksTracked}). Cada día que registres afina el cálculo.`,
+      hsi: () => `Tu índice de fuerza del hábito es <strong>${ADV.hsi}/100</strong> — un compuesto de consistencia (${ANALYTICS.consistencyPct}%), automatización (${ANALYTICS.habitPct}%), regularidad (${ADV.regularity}/100) y momentum. Está inspirado en el Self-Report Habit Index de Verplanken y Orbell (2003), el cuestionario estándar en la investigación de hábitos. ${ADV.hsi >= 70 ? 'Un hábito así de asentado sobrevive a semanas malas: ya no depende de la motivación diaria.' : ADV.hsi >= 40 ? 'Está en construcción sólida — la palanca más eficaz ahora es la regularidad: mismo momento, mismo lugar.' : 'Aún es una planta joven: riega con versiones mínimas diarias antes que con sesiones heroicas sueltas.'}`,
+      selfefficacy: () => `Bandura pasó décadas demostrando que la creencia "soy capaz" no se fabrica con frases — se fabrica con <em>experiencias de dominio</em>: pruebas de que ya lo hiciste. Tú tienes ${totalSessions} ${totalSessions === 1 ? 'prueba' : 'pruebas'}, una racha récord de ${longestStreak} días y una autoeficacia estimada de ${ADV.selfEfficacy}/100 según tus propios registros. No hace falta que te lo creas hoy: los datos ya lo creen por ti. Haz la sesión mínima y súmale una prueba más al expediente.`,
+      mindset: () => `Carol Dweck (Stanford) llamó <em>mentalidad fija</em> a tratar cada tropiezo como un veredicto sobre lo que eres, y <em>mentalidad de crecimiento</em> a tratarlo como información sobre lo que aún estás entrenando. Sus estudios muestran que la segunda predice más aprendizaje y persistencia — y se entrena. Tu historial es el argumento: ${ANALYTICS.activeDays} días activos y ${ADV.streaks3} racha${ADV.streaks3 === 1 ? '' : 's'} de 3+ días no los hace alguien que "no vale": los hace alguien en mitad del entrenamiento.`,
+      grit: () => `Duckworth define el grit como pasión + perseverancia a largo plazo, y encontró que predice quién termina — en West Point, en el Spelling Bee — mejor que el talento. La señal clave no es no caerse: es cuánto tardas en volver. Tus números: ${ADV.gapsCount === 0 ? 'todavía cero pausas' : `vuelves de media en ${ADV.avgGap.toFixed(1)} día${ADV.avgGap.toFixed(1) === '1.0' ? '' : 's'} tras cada pausa`}, ${ADV.streaks3} racha${ADV.streaks3 === 1 ? '' : 's'} de 3+ días y una perseverancia estimada de ${ADV.grit}/100. Eso ya es grit medible, no una sensación.`,
+      identity: () => `Sí, y es la parte más importante. Daphna Oyserman demostró que la motivación duradera es la <em>basada en identidad</em>: no "tengo que hacer X" sino "soy alguien que hace X". Cada sesión registrada es un voto por esa identidad — llevas <strong>${totalSessions} voto${totalSessions === 1 ? '' : 's'}</strong>, la mayoría a favor de ${dominant.phrase}. Con ${ADV.identity}/100 en el índice de identidad, la pregunta ya no es si está cambiando quién eres: es hacia quién estás votando esta semana.`,
+      weekend: () => `Ajustado por días disponibles (5 laborales frente a 2 de finde), tu inclinación al fin de semana es del <strong>${ADV.weekendLean}%</strong>. ${ADV.weekendLean > 55 ? 'Eres de fin de semana: la semana laboral es tu terreno frágil. Un micro-hábito fijo de 10 minutos un día laborable repartiría la carga y protegería la racha.' : ADV.weekendLean < 45 ? 'Eres de entre semana: cuando llega el sábado se te descoloca el contexto (Wood y Neal demostraron que los hábitos viven pegados al contexto). Un ancla fija — sábado tras el desayuno, por ejemplo — suele resolverlo.' : 'Reparto casi perfecto entre semana y finde: es el patrón más resistente a vacaciones y cambios de rutina.'}`,
+      regularity: () => `Midiendo la variabilidad de los intervalos entre tus días activos, tu regularidad es de <strong>${ADV.regularity}/100</strong>. ${ADV.regularity >= 70 ? 'Ritmo de metrónomo: tus sesiones llegan a intervalos muy estables, que es exactamente como se ancla un hábito al contexto según Wood y Neal.' : 'Funcionas a rachas: etapas densas y luego pausas. Para estabilizarlo, Gollwitzer propone las "intenciones de implementación": decide por adelantado el cuándo y el dónde ("después de comer, 10 minutos de X") — en sus estudios eso duplica el cumplimiento.'} Tu racha media es de ${ADV.avgStreak.toFixed(1)} días.`,
+      recovery: () => ADV.gapsCount === 0
+        ? `Todavía no has tenido ninguna pausa que medir — rebote perfecto por definición. Cuando llegue (llegará, y no pasa nada), lo que importará es una sola cosa: que la pausa no se encadene. Regla de oro: nunca dos días seguidos en blanco.`
+        : `Has tenido ${ADV.gapsCount} pausa${ADV.gapsCount === 1 ? '' : 's'} y vuelves de media en <strong>${ADV.avgGap.toFixed(1)} día${ADV.avgGap.toFixed(1) === '1.0' ? '' : 's'}</strong>. ${ADV.avgGap <= 2 ? 'Ese rebote rápido es la marca del grit según Duckworth — caerse no puntúa, volver sí.' : 'Ahí está tu mayor margen de mejora: acortar el regreso. El "efecto de borrón y cuenta nueva" de Milkman ayuda — usa cualquier inicio (un lunes, un día 1) como puerta de reentrada, con una sesión mínima.'}`,
+      nextMonth: () => ADV.weeksTracked >= 3
+        ? `Proyección para los próximos 30 días combinando tu base reciente (${ANALYTICS.last30} días activos el último mes) con tu tendencia (${ADV.trendPerMonth >= 0 ? '+' : ''}${ADV.trendPerMonth.toFixed(1)} días/mes): <strong>~${ADV.expNext30} días activos</strong>, que a tu ritmo medio serían unas ${((totalMinutes / daysSinceStart) * ADV.expNext30 / 60).toFixed(0)} horas más. No es una promesa — es hacia dónde apunta tu comportamiento si no tocas nada. Si quieres superarlo, la palanca más barata sigue siendo tu ${ANALYTICS.worstDow}.`
+        : `Con menos de 3 semanas de historial mi proyección sería humo. Lo que sí puedo decirte: tu línea base actual son ${ANALYTICS.last30} días activos en los últimos 30 — el objetivo del mes que viene es simplemente superarla.`,
+      goal: () => `Locke y Latham, tras 35 años de investigación sobre fijación de metas, lo resumen en dos condiciones: <strong>específica</strong> y <strong>exigente pero alcanzable</strong> — las metas vagas ("hacer más") rinden sistemáticamente peor. Con tus datos, una meta bien calibrada sería: ${ADV.expNext30 > 0 ? `${Math.min(30, ADV.expNext30 + 2)} días activos el próximo mes (tu proyección es ${ADV.expNext30}, así que exige sin romper)` : `superar tus ${ANALYTICS.last30} días activos del último mes`}, con la sesión clave los ${ANALYTICS.bestDow} y la versión de 10 minutos los ${ANALYTICS.worstDow}. Y por escrito: el estudio de Gail Matthews muestra que escribir la meta dispara su cumplimiento.`,
+      flow: () => `Csikszentmihalyi estudió durante décadas el estado de <em>flow</em> — esa concentración total en la que el tiempo desaparece — y encontró sus condiciones: objetivo claro, feedback inmediato y un reto a la altura de tu habilidad. Para entrar más fácil: (1) define qué vas a conseguir en la sesión antes de empezarla, (2) quita el móvil de la vista — el mero hecho de verlo drena atención (Ward et al., 2017, el efecto "brain drain") — y (3) empieza por 10 minutos: el arranque es la parte más cara. Tu mejor ventana estadística es el ${ANALYTICS.bestDow}.`,
+      compare: () => `Festinger describió en 1954 la comparación social: nos medimos con otros por defecto, sobre todo cuando no tenemos una vara propia. FOCUS existe para darte esa vara: la única comparación con señal de verdad es <strong>tú contra ti</strong>. Y ahí los datos son claros: ${totalHours.toFixed(1)} horas acumuladas, ${ANALYTICS.consistencyPct}% de consistencia${ANALYTICS.momentumPct !== null ? `, ${ANALYTICS.momentumPct >= 0 ? '+' : ''}${ANALYTICS.momentumPct}% de momentum` : ''}. La persona de hace ${daysSinceStart} días no tenía nada de esto. Esa es tu liga.`,
+      perfect: () => `Amabile y Kramer analizaron 12.000 diarios de trabajo y encontraron que lo que más sostiene la motivación no son los grandes logros: son las <em>pequeñas victorias</em> visibles. El perfeccionismo hace trampa — compara tu día real con un estándar imaginario y siempre pierde el real. Tus números no son imaginarios: ${totalSessions} sesiones, ${totalHours.toFixed(1)} horas, ${ADV.streaks3} racha${ADV.streaks3 === 1 ? '' : 's'} de 3+ días. "Suficiente" no es un sentimiento: es un registro, y el tuyo existe.`,
+      overwhelmed: () => `Primero: agobiarse con muchas cosas a la vez es una respuesta normal, no un fallo tuyo. La salida práctica casi nunca es hacer más — es reducir la apuesta de hoy a una sola acción mínima (BJ Fogg): 5 minutos de lo más fácil, y considerar el día ganado. Tu racha no exige heroísmo, solo presencia${currentStreak > 0 ? ` — llevas ${currentStreak} día${currentStreak === 1 ? '' : 's'} y hoy basta con no romperla` : ''}. Y si el agobio va más allá de los hábitos y se te hace grande de verdad, hablarlo con alguien de confianza o con un profesional no es rendirse: es otra forma de cuidar el legado.`,
+      sleep: () => `Sí — probablemente más que casi todo lo demás. La investigación de Matthew Walker (Berkeley) muestra que durante el sueño se consolida lo aprendido en el día (la memoria se "guarda" durmiendo) y se recupera el músculo entrenado; dormir poco degrada atención, ánimo y autocontrol, justo los recursos que tus hábitos necesitan. Traducción práctica: una hora más de sueño suele rendir más que una hora más de sesión. Si tu ${ANALYTICS.worstDow} flojea, mira primero cómo dormiste la noche anterior.`,
+      celebrate: () => {
+        const wins = [];
+        if (longestStreak >= 3) wins.push(`una racha récord de ${longestStreak} días`);
+        if (totalHours >= 1) wins.push(`${totalHours.toFixed(1)} horas acumuladas`);
+        if (ANALYTICS.activeDays >= 7) wins.push(`${ANALYTICS.activeDays} días activos`);
+        if (ADV.hsi >= 40) wins.push(`un índice de fuerza del hábito de ${ADV.hsi}/100`);
+        return wins.length
+          ? `Sí, y celebrarlo no es un capricho: BJ Fogg (Stanford) demostró que la emoción positiva justo después de la acción es lo que cablea el hábito — "las emociones crean hábitos, no la repetición sola". Sobre la mesa tienes ${wins.join(', ')}. Elige una, reconócetela en voz alta, y mañana seguimos.`
+          : `Todavía es pronto para medallas grandes, pero la primera ya está disponible: la sesión de hoy. Fogg demostró que celebrar en pequeño justo después de actuar es lo que fija el hábito — así que hazla, aunque sean 5 minutos, y date el reconocimiento.`;
+      },
     };
+    // Intérprete de texto libre: mapea lo que escribes a la consulta más cercana
+    const COMPANION_KEYWORDS = {
+      quit: ['rendir', 'dejar', 'abandon', 'tirar la toalla', 'no puedo mas', 'no puedo más'],
+      streakBroken: ['roto', 'rompi', 'rompí', 'perdido la racha', 'perdí la racha', 'fallado', 'fallé', 'falle'],
+      noMotivation: ['ganas', 'motivacion', 'motivación', 'pereza', 'vago', 'cansado de esto', 'desmotiv'],
+      bestDay: ['mejor dia', 'mejor día', 'que dia', 'qué día', 'dia de la semana', 'día de la semana'],
+      weakSpot: ['flojeando', 'flojo', 'peor', 'debil', 'débil', 'descuid', 'fallando'],
+      lastMonth: ['mes pasado', 'ultimo mes', 'último mes', 'comparado', 'antes', 'progreso este mes'],
+      weekPlan: ['plan', 'semana', 'organiza', 'horario', 'rutina'],
+      automatic: ['automatico', 'automático', '66', 'habito', 'hábito', 'cuanto falta', 'cuánto falta'],
+      balance: ['equilibr', 'balance', 'centrado', 'obsesion', 'obsesión', 'variedad'],
+      rest: ['descans', 'culpa', 'parar', 'pausa', 'vacaciones', 'dia libre', 'día libre'],
+      science: ['ciencia', 'estudio', 'racha', 'investigacion', 'investigación', 'psicolog'],
+      improving: ['mejorando', 'mejoro', 'avanzo', 'avanzando', 'sirve de algo', 'vale la pena', 'merece la pena'],
+      why: ['por que empece', 'por qué empecé', 'porque empece', 'mi porque', 'mi porqué', 'proposito', 'propósito', 'razon', 'razón'],
+      future: ['yo futuro', 'futuro yo', 'consejo', 'que deberia saber', 'qué debería saber'],
+      trend: ['tendencia', 'a mejor', 'a peor', 'mejorando o empeorando', 'regresion', 'regresión', 'pendiente'],
+      hsi: ['fuerte', 'fuerza del habito', 'fuerza del hábito', 'indice', 'índice', 'consolidado', 'solido', 'sólido'],
+      selfefficacy: ['capaz', 'no puedo con esto', 'autoeficacia', 'no me creo', 'incapaz', 'no sirvo'],
+      mindset: ['no valgo', 'inutil', 'inútil', 'mentalidad', 'fracaso', 'fracasado', 'no soy bueno', 'malo en esto'],
+      grit: ['constancia', 'perseveran', 'grit', 'disciplina', 'fuerza de voluntad'],
+      identity: ['quien soy', 'quién soy', 'identidad', 'cambiando', 'convirtiendo', 'persona que'],
+      weekend: ['finde', 'fin de semana', 'entre semana', 'laborable', 'sabado', 'sábado', 'domingo'],
+      regularity: ['regular', 'ritmo', 'a rachas', 'intervalos', 'constante', 'irregular'],
+      recovery: ['volver', 'recupera', 'rebote', 'pausa', 'cuanto tardo', 'cuánto tardo', 'retomar'],
+      nextMonth: ['mes que viene', 'proximo mes', 'próximo mes', 'que me espera', 'qué me espera', 'prediccion', 'predicción', 'proyeccion', 'proyección'],
+      goal: ['meta', 'objetivo', 'proponerme', 'ponerme una', 'smart'],
+      flow: ['concentra', 'flow', 'distraigo', 'distraccion', 'distracción', 'foco', 'atencion', 'atención', 'movil', 'móvil'],
+      compare: ['comparo', 'comparar', 'los demas', 'los demás', 'otros', 'envidia', 'redes sociales'],
+      perfect: ['suficiente', 'perfecto', 'perfeccion', 'perfección', 'nunca es', 'no llego', 'exigente'],
+      overwhelmed: ['agobiado', 'agobio', 'estres', 'estrés', 'ansiedad', 'saturado', 'demasiado', 'no doy abasto', 'abrumado'],
+      sleep: ['sueño', 'dormir', 'duermo', 'descanso nocturno', 'trasnochar', 'insomnio'],
+      celebrate: ['celebrar', 'logro', 'orgulloso', 'conseguido', 'medalla', 'premio']
+    };
+    function matchPrompt(text) {
+      const t = text.toLowerCase();
+      for (const [key, words] of Object.entries(COMPANION_KEYWORDS)) {
+        if (words.some(w => t.includes(w))) return key;
+      }
+      return null;
+    }
     function genericReply() {
       const pool = [
-        "Todavía soy una versión temprana de tu compañero — una conversación real y abierta está por llegar. Por ahora, prueba una de las preguntas de abajo.",
-        "Esa es una conversación más grande de la que puedo tener todavía — pero las preguntas de abajo son un buen punto de partida, y están construidas con tus datos reales.",
-        "Todavía no tengo una respuesta libre para eso. Toca una de las preguntas de abajo y usaré tus números reales."
+        "Esa se me escapa todavía — pero ahora entiendo muchas más preguntas que antes. Prueba a reformularla, o toca una de las consultas de abajo: todas usan tus datos reales.",
+        "No tengo una respuesta libre para eso aún. Si me hablas de tu racha, tu motivación, tu plan semanal o tus puntos flojos, te contesto con tus números.",
+        "Esa es una conversación más grande de la que puedo tener todavía. Las consultas de abajo son un buen punto de partida — están construidas con tus datos reales."
       ];
       return pool[Math.floor(Math.random() * pool.length)];
     }
     function renderCompanion() {
       const el = document.getElementById('companionContent');
       el.innerHTML = `
-        <div class="companion-intro">Tu compañero lee tus datos de FOCUS — sesiones, rachas, tu "porqué" — para responder. Es una versión temprana: por ahora, elige una pregunta o escribe la tuya y hará lo posible.</div>
+        <div class="companion-intro">Tu Mentor lee tus datos de FOCUS — sesiones, rachas, patrones semanales, tu "porqué" — y te responde con números reales y respaldo de la investigación en psicología. No opina: analiza. Elige una consulta o escribe la tuya.</div>
         <div class="companion-chat" id="companionChat">
-          <div class="companion-bubble assistant">Hola — he estado siguiendo tu camino: ${totalSessions} ${totalSessions === 1 ? 'sesión' : 'sesiones'}, una racha actual de ${currentStreak} días, sobre todo ${dominant.phrase}. ¿Qué tienes en mente?</div>
+          <div class="companion-bubble assistant">Aquí tu Mentor. He estado siguiendo tu camino: ${totalSessions} ${totalSessions === 1 ? 'sesión' : 'sesiones'}, una racha actual de ${currentStreak} días, sobre todo ${dominant.phrase}. ¿Qué tienes en mente?</div>
         </div>
         <div class="companion-prompts" id="companionPrompts">
           ${COMPANION_PROMPTS.map(p => `<button class="prompt-chip" data-key="${p.key}">${p.label}</button>`).join('')}
         </div>
         <div class="companion-input-row">
-          <input type="text" id="companionInput" placeholder="Pregúntale a tu compañero...">
+          <input type="text" id="companionInput" placeholder="Pregúntale a tu Mentor...">
           <button id="companionSendBtn">Enviar</button>
         </div>
       `;
@@ -912,7 +1415,8 @@
         if (!val) return;
         pushBubble('user', escapeHtml(val));
         input.value = '';
-        setTimeout(() => pushBubble('assistant', genericReply()), 350);
+        const matched = matchPrompt(val);
+        setTimeout(() => pushBubble('assistant', matched ? COMPANION_RESPONSES[matched]() : genericReply()), 350);
       }
       document.getElementById('companionSendBtn').addEventListener('click', handleSend);
       document.getElementById('companionInput').addEventListener('keydown', (e) => {

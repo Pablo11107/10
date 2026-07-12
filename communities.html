@@ -240,6 +240,69 @@
       opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease; z-index: 1200;
     }
     .focus-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    /* ===== Mejoras estéticas e interactivas ===== */
+    .chat-item { position: relative; }
+    .chat-item.active::before {
+      content: ""; position: absolute; left: 0; top: 18%; bottom: 18%;
+      width: 3px; border-radius: 0 3px 3px 0; background: #D4AF6D;
+    }
+    .chat-item .chat-avatar, .chat-header-left .chat-avatar-lg {
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.08);
+    }
+    .message-row { animation: msgIn 0.22s cubic-bezier(0.2, 0.8, 0.3, 1) both; }
+    @keyframes msgIn { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: none; } }
+    .message-time { font-size: 0.62rem; color: #666; margin-top: 0.22rem; padding: 0 0.35rem; }
+    .message.mine + .message-time, .message-row.mine .message-time { text-align: right; }
+    .day-divider {
+      align-self: center; font-size: 0.68rem; font-weight: 600; color: #888;
+      background: rgba(255,255,255,0.05); border-radius: 999px;
+      padding: 0.28rem 0.85rem; margin: 0.9rem 0 1rem; letter-spacing: 0.04em;
+    }
+    .chat-footer button { transition: background-color 0.2s, opacity 0.2s, transform 0.12s; }
+    .chat-footer button:active { transform: scale(0.94); }
+    .empty-chat .icon { position: relative; }
+    .empty-chat .icon::before, .empty-chat .icon::after {
+      content: ""; position: absolute; inset: -14px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.10); animation: emptyPulse 2.6s ease-out infinite;
+    }
+    .empty-chat .icon::after { animation-delay: 1.3s; }
+    @keyframes emptyPulse { 0% { transform: scale(0.6); opacity: 0.9; } 100% { transform: scale(1.5); opacity: 0; } }
+
+    .back-btn {
+      display: none; background: none; border: none; color: #F5F5F7;
+      width: 38px; height: 38px; border-radius: 50%; cursor: pointer;
+      align-items: center; justify-content: center; flex-shrink: 0;
+      transition: background-color 0.2s;
+    }
+    .back-btn:hover { background-color: rgba(255,255,255,0.08); }
+    .back-btn svg { width: 20px; height: 20px; }
+
+    /* ===== Móvil: patrón de dos vistas (lista ↔ conversación) ===== */
+    @media (max-width: 768px) {
+      .header { padding: 1.2rem 1rem 0.8rem; }
+      .header h1 { font-size: 1.8rem; }
+      .header .page-tagline { font-size: 0.75rem; }
+      .main-container { position: relative; }
+      .sidebar {
+        position: absolute; inset: 0; width: 100%; z-index: 5;
+        border-right: none;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+      }
+      body.chat-open .sidebar { transform: translateX(-12%); opacity: 0; pointer-events: none; }
+      .chat-area { width: 100%; }
+      .back-btn { display: flex; }
+      .chat-header { padding: 0.7rem 0.8rem; }
+      .chat-header-left { gap: 0.55rem; min-width: 0; }
+      .chat-header-left h2 { font-size: 0.98rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .chat-header-left .chat-avatar-lg { width: 38px; height: 38px; }
+      .chat-header-right button { font-size: 0.72rem; padding: 0.45rem 0.7rem; }
+      .messages { padding: 1rem 0.8rem; }
+      .message { max-width: 80%; }
+      .chat-footer { padding: 0.7rem 0.8rem calc(0.7rem + env(safe-area-inset-bottom)); }
+      .nav-item span { font-size: 0.72rem; }
+      .image { width: 34px; height: 34px; }
+    }
   </style>
 </head>
 <body>
@@ -262,6 +325,7 @@
     <section class="chat-area">
       <div class="chat-header">
         <div class="chat-header-left">
+          <button class="back-btn" id="backToChatsBtn" aria-label="Volver a chats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
           <div class="chat-avatar-lg" id="chatAvatar">·</div>
           <div class="chat-header-left-text">
             <h2 id="chatTitle">Select a chat</h2>
@@ -428,6 +492,16 @@
       }
     });
 
+    // Gradiente estable por nombre de chat (cuando no hay foto)
+    const AVATAR_HUES = [36, 210, 152, 268, 4, 190, 320, 96];
+    function avatarStyle(chat) {
+      if (chat.avatar) return `background-image:url(${chat.avatar})`;
+      let h = 0;
+      for (const ch of (chat.name || '?')) h = (h * 31 + ch.charCodeAt(0)) % 997;
+      const hue = AVATAR_HUES[h % AVATAR_HUES.length];
+      return `background:linear-gradient(135deg, hsl(${hue},38%,34%), hsl(${(hue + 40) % 360},30%,20%))`;
+    }
+
     function renderChatList() {
       if (myChats.length === 0) {
         chatList.innerHTML = `<p class="sidebar-empty">You're not in any chats yet. Create one, or ask a friend to invite you by your FOCUS email.</p>`;
@@ -437,7 +511,7 @@
         const initial = (chat.name || "?").charAt(0).toUpperCase();
         return `
           <div class="chat-item ${chat.id === currentChatId ? 'active' : ''}" data-chat-id="${chat.id}">
-            <div class="chat-avatar" style="${chat.avatar ? `background-image:url(${chat.avatar})` : ''}">
+            <div class="chat-avatar" style="${avatarStyle(chat)}">
               ${chat.avatar ? '' : initial}
             </div>
             <div class="chat-item-text">
@@ -457,7 +531,7 @@
     function renderChatHeader(chat) {
       const initial = (chat.name || "?").charAt(0).toUpperCase();
       chatTitle.textContent = chat.name;
-      chatAvatar.style.backgroundImage = chat.avatar ? `url(${chat.avatar})` : "none";
+      chatAvatar.style.cssText = avatarStyle(chat);
       chatAvatar.textContent = chat.avatar ? "" : initial;
       chatMemberCount.textContent = `${(chat.members || []).length} member${(chat.members || []).length === 1 ? '' : 's'}`;
     }
@@ -466,6 +540,8 @@
       currentChatId = chatId;
       const chat = myChats.find(c => c.id === chatId);
       if (!chat) return;
+
+      document.body.classList.add('chat-open'); // móvil: pasar a la vista de conversación
 
       renderChatHeader(chat);
       renderChatList();
@@ -483,21 +559,53 @@
       });
     }
 
+    function msgDate(msg) {
+      try { return msg.createdAt && msg.createdAt.toDate ? msg.createdAt.toDate() : null; }
+      catch { return null; }
+    }
+    function dayLabel(d) {
+      const today = new Date(); today.setHours(0,0,0,0);
+      const day = new Date(d); day.setHours(0,0,0,0);
+      const diff = Math.round((today - day) / 864e5);
+      if (diff === 0) return 'Hoy';
+      if (diff === 1) return 'Ayer';
+      return d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+    }
+
     function renderMessages(messages) {
       if (messages.length === 0) {
         messagesContainer.innerHTML = `<div class="empty-chat"><span class="icon">${twemojiImg("270d")}</span><p>No messages yet. Say hello!</p></div>`;
         return;
       }
+      let lastDayKey = null;
       messagesContainer.innerHTML = messages.map(msg => {
         const mine = msg.senderId === uid;
+        const d = msgDate(msg);
+        let divider = '';
+        if (d) {
+          const key = d.toDateString();
+          if (key !== lastDayKey) { divider = `<div class="day-divider">${dayLabel(d)}</div>`; lastDayKey = key; }
+        }
+        const time = d ? `<span class="message-time">${d.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</span>` : '';
         return `
+          ${divider}
           <div class="message-row ${mine ? 'mine' : 'other'}">
             ${!mine ? `<span class="message-sender">${escapeHtml(msg.senderName || 'FocusUser')}</span>` : ''}
             <div class="message ${mine ? 'mine' : 'other'}">${escapeHtml(msg.text)}</div>
+            ${time}
           </div>`;
       }).join('');
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
+
+    // Volver a la lista (móvil)
+    document.getElementById('backToChatsBtn').addEventListener('click', () => {
+      document.body.classList.remove('chat-open');
+    });
+    // El botón Enviar solo se activa con texto
+    messageInput.addEventListener('input', () => {
+      if (currentChatId) sendBtn.disabled = messageInput.value.trim().length === 0;
+    });
 
     async function handleSend() {
       if (!currentChatId) return;
