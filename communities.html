@@ -426,10 +426,12 @@
     const user = await requireAuth();
     const uid = user.uid;
 
-    const TWEMOJI_BASE = "https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/";
-    function twemojiImg(code, alt = "") {
-      return `<img src="${TWEMOJI_BASE}${code}.svg" alt="${alt}" style="width:1.6em;height:1.6em;object-fit:contain;">`;
-    }
+    // Set de iconos FOCUS: linea fina dorada, coherente con la marca
+    const FOCUS_ICONS = {
+      '231b': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;vertical-align:-0.125em"><path d="M6.5 3.5h11M6.5 20.5h11M8 3.5v2.8c0 2 1.5 3.2 4 5.7-2.5 2.5-4 3.7-4 5.7v2.8M16 3.5v2.8c0 2-1.5 3.2-4 5.7 2.5 2.5 4 3.7 4 5.7v2.8"/></svg>`,
+      '270d': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;vertical-align:-0.125em"><path d="M4 20l1-4L16.5 4.5a2.12 2.12 0 0 1 3 3L8 19l-4 1Z"/><path d="M14.5 6.5l3 3"/></svg>`
+    };
+    function twemojiImg(code, alt = "") { return FOCUS_ICONS[code] || ''; }
     const savedData = await loadUserDoc(uid);
     const profileInfo = savedData.profileInfo || {};
     const myName = profileInfo.userName || profileInfo.realName || "FocusUser";
