@@ -1,7 +1,10 @@
 /* ==========================================================
    YOU VS YOU — componente visual aislado
-   Silueta humana limpia + botones "de masa" (blanco/gris tipo
-   chicle, con acento sutil en hover/activo), fondo negro plano.
+   Silueta humana limpia + masas WebGL "Strands": esferas de
+   cristal con hebras luminosas dentro, una por zona (mente,
+   corazón, cuerpo). Fondo negro plano.
+   Si WebGL2 no está disponible se muestra la masa CSS anterior
+   (.yvy2-hotspot-dot) como fallback.
    No depende de ningún otro estilo de la página que lo monta:
    la tipografía se importa aquí mismo.
    ========================================================== */
@@ -10,6 +13,8 @@
 
 .yvy2-wrap {
   --yvy2-font-display: 'Archivo', 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  /* Tamaño de la masa: pensado para móvil primero. */
+  --yvy2-orb-size: 58px;
   position: relative;
   width: 100%;
   aspect-ratio: 3 / 4;
@@ -19,6 +24,11 @@
   border-radius: 20px;
   overflow: visible;
   touch-action: none;
+}
+
+/* En pantallas algo más anchas la masa crece un poco. */
+@media (min-width: 480px) {
+  .yvy2-wrap { --yvy2-orb-size: 70px; }
 }
 
 .yvy2-figure {
@@ -33,8 +43,8 @@
 .yvy2-hotspot {
   position: absolute;
   z-index: 3;
-  width: 54px;
-  height: 54px;
+  width: var(--yvy2-orb-size);
+  height: var(--yvy2-orb-size);
   transform: translate(-50%, -50%);
   background: none;
   border: none;
@@ -43,10 +53,58 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* --- Masa/chicle: forma orgánica que respira y muta de contorno --- */
-.yvy2-hotspot-dot {
+/* --- Masa Strands: contenedor del canvas WebGL --- */
+.yvy2-orb {
   position: absolute;
   inset: 0;
+  display: block;
+  border-radius: 50%;
+  transition: transform 0.28s cubic-bezier(0.33, 1, 0.68, 1), filter 0.3s ease;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.yvy2-orb-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  background: transparent;
+}
+
+/* Respiración sutil de la masa (solo transform, el movimiento
+   interno lo hacen las hebras del shader). */
+@keyframes yvy2OrbBreath {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
+}
+.yvy2-hotspot.has-orb .yvy2-orb {
+  animation: yvy2OrbBreath 5.5s ease-in-out infinite;
+}
+
+.yvy2-hotspot.has-orb:hover .yvy2-orb,
+.yvy2-hotspot.has-orb:focus-visible .yvy2-orb {
+  animation: none;
+  transform: scale(1.18);
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.18));
+}
+
+.yvy2-hotspot.has-orb.is-active .yvy2-orb {
+  animation: none;
+  transform: scale(1.24);
+  filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.26));
+}
+
+/* Cuando la masa WebGL está montada, el dot CSS se oculta. */
+.yvy2-hotspot.has-orb .yvy2-hotspot-dot {
+  display: none;
+}
+
+/* --- Fallback CSS (masa/chicle anterior) si no hay WebGL2 --- */
+.yvy2-hotspot-dot {
+  position: absolute;
+  inset: 6%;
   background:
     radial-gradient(circle at 32% 28%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.55) 18%, rgba(226,230,240,0.9) 42%, rgba(196,201,214,0.92) 72%, rgba(178,184,198,0.95) 100%);
   border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
@@ -121,4 +179,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .yvy2-hotspot-dot { animation: none; }
+  .yvy2-hotspot.has-orb .yvy2-orb { animation: none; }
 }

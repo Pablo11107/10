@@ -1,11 +1,12 @@
 // ==========================================================
 // YOU VS YOU — componente visual aislado y reutilizable
-// Silueta humana frontal, plana y vectorial, estilo plantilla
-// médica/fitness: relleno sólido turquesa, contorno blanco fino,
-// sin gradientes, sin brillo, sin textura. + 3 puntos interactivos
-// tipo "masa/chicle". Fondo negro plano, sin líneas de fondo.
+// Silueta humana frontal (contorno blanco fino sobre negro)
+// + 3 masas interactivas renderizadas en WebGL: esferas de
+// cristal con hebras luminosas dentro (efecto "Strands"),
+// una sobre la cabeza (mente), otra sobre el corazón y otra
+// sobre el bíceps (cuerpo).
 //
-// Uso:
+// Uso (sin cambios respecto a la versión anterior):
 //   import { mountYouVsYou } from "./you-vs-you.js";
 //   const instance = mountYouVsYou(containerEl, {
 //     onSelect: (zone) => { ... } // zone: "mind" | "heart" | "body"
@@ -13,23 +14,39 @@
 //   instance.setActive("heart");
 //   instance.destroy();
 //
-// No depende de ningún otro módulo ni estilo de la página que lo monta
-// (salvo you-vs-you.css). No modifica nada fuera del contenedor recibido.
+// Dependencia: ogl (cargado como módulo ES desde CDN). Si WebGL2
+// no está disponible o el CDN falla, se usa automáticamente la
+// masa CSS anterior como fallback (clase .yvy2-hotspot-dot).
 // ==========================================================
+
+import {
+  Renderer,
+  Program,
+  Mesh,
+  Color,
+  Triangle,
+  RenderTarget
+} from "https://cdn.jsdelivr.net/npm/ogl@1.0.11/src/index.js";
 
 const ZONES = ["mind", "heart", "body"];
 const ZONE_LABELS = { mind: "Mente", heart: "Corazón", body: "Cuerpo" };
-// Posición relativa (0..1) de cada punto sobre el contenedor.
+// Posición relativa (0..1) de cada masa sobre el contenedor:
+// cabeza, corazón y bíceps.
 const ZONE_POSITIONS = {
   mind:  { x: 0.49,  y: 0.07 },
   heart: { x: 0.515, y: 0.265 },
   body:  { x: 0.64,  y: 0.275 }
 };
 
-// Silueta humana trazada directamente desde la imagen real subida
-// por el usuario (contorno extraído por visión artificial a partir
-// del PNG/JPG original, no dibujado a mano). Un solo contorno
-// continuo, sin relleno, solo la línea blanca.
+// Paleta de hebras por zona (coherente con la marca: fondo
+// oscuro, dorado #D4AF6D como acento).
+const ZONE_COLORS = {
+  mind:  ["#7C3AED", "#06B6D4", "#EAB308"],
+  heart: ["#FF4D6D", "#FF9AB5", "#D4AF6D"],
+  body:  ["#D4AF6D", "#E8CA8E", "#06B6D4"]
+};
+
+// ---------- silueta (sin cambios) ----------
 const FIGURE_OUTLINE_PATH =
   "M95.64,6.22 L90.09,7.83 L85.19,11.06 L81.47,15.8 L79.37,22.11 L79.26,27.82 " +
   "L80.39,32.07 L79.05,31.53 L78.02,32.4 L77.64,34.01 L77.81,38.05 L80.93,43.49 " +
@@ -80,6 +97,344 @@ function figureSvgMarkup() {
     </svg>`;
 }
 
+// ==========================================================
+// STRANDS ORB — puerto vanilla del componente React "Strands"
+// (ogl). Hebras luminosas dentro de una esfera de cristal con
+// refracción y dispersión en el borde. Un renderer por masa.
+// ==========================================================
+
+const MAX_STRANDS = 12;
+const MAX_COLORS = 8;
+
+const VERT = `#version 300 es
+in vec2 position;
+void main() {
+  gl_Position = vec4(position, 0.0, 1.0);
+}
+`;
+
+const FRAG = `#version 300 es
+precision highp float;
+
+uniform float uTime;
+uniform vec2 uResolution;
+uniform vec3 uColors[${MAX_COLORS}];
+uniform int uColorCount;
+uniform int uStrandCount;
+uniform float uSpeed;
+uniform float uAmplitude;
+uniform float uWaviness;
+uniform float uThickness;
+uniform float uGlow;
+uniform float uTaper;
+uniform float uSpread;
+uniform float uHueShift;
+uniform float uIntensity;
+uniform float uOpacity;
+uniform float uScale;
+uniform float uSaturation;
+
+out vec4 fragColor;
+
+const float PI = 3.14159265;
+
+vec3 spectrum(float t) {
+  return 0.5 + 0.5 * cos(2.0 * PI * (t + vec3(0.00, 0.33, 0.67)));
+}
+
+vec3 samplePalette(float t) {
+  t = fract(t);
+  float scaled = t * float(uColorCount);
+  int idx = int(floor(scaled));
+  float blend = fract(scaled);
+  int nextIdx = idx + 1;
+  if (nextIdx >= uColorCount) nextIdx = 0;
+  return mix(uColors[idx], uColors[nextIdx], blend);
+}
+
+vec3 strandColor(float t) {
+  if (uColorCount > 0) return samplePalette(t);
+  return spectrum(t);
+}
+
+void main() {
+  vec2 uv = (gl_FragCoord.xy - 0.5 * uResolution) / uResolution.y;
+  uv /= max(uScale, 0.0001);
+
+  float e = 0.06 + uIntensity * 0.94;
+  float env = pow(max(cos(uv.x * PI * 1.3), 0.0), uTaper);
+
+  vec3 col = vec3(0.0);
+
+  for (int i = 0; i < ${MAX_STRANDS}; i++) {
+    if (i >= uStrandCount) break;
+
+    float fi = float(i);
+    float ph = fi * 1.7 * uSpread;
+    float freq = (2.0 + fi * 0.35) * uWaviness;
+    float spd = 1.4 + fi * 1.2;
+
+    float tt = uTime * uSpeed;
+    float w = sin(uv.x * freq + tt * spd + ph) * 0.60
+            + sin(uv.x * freq * 1.1 - tt * spd * 0.7 + ph * 1.7) * 0.40;
+
+    float amp = (0.1 + 0.02 * e) * env * uAmplitude;
+    float y = w * amp;
+
+    float d = abs(uv.y - y);
+    float thick = (0.001 + 0.05 * e) * (0.35 + env) * uThickness;
+    float g = thick / (d + thick * 0.45);
+    g = g * g;
+
+    float h = fi / float(uStrandCount) + uv.x * 0.30 + uTime * 0.04 + uHueShift;
+    col += strandColor(h) * g * env;
+  }
+
+  col *= 0.45 + 0.7 * e;
+  col = 1.0 - exp(-col * uGlow);
+
+  float gray = dot(col, vec3(0.2126, 0.7152, 0.0722));
+  col = max(mix(vec3(gray), col, uSaturation), 0.0);
+
+  float lum = max(max(col.r, col.g), col.b);
+  float alpha = clamp(lum, 0.0, 1.0) * uOpacity;
+
+  fragColor = vec4(col * uOpacity, alpha);
+}
+`;
+
+const GLASS_FRAG = `#version 300 es
+precision highp float;
+
+uniform sampler2D uScene;
+uniform vec2 uResolution;
+uniform float uRadius;
+uniform float uRefraction;
+uniform float uDispersion;
+
+out vec4 fragColor;
+
+vec2 toUv(vec2 p) {
+  return p * (uResolution.y / uResolution) + 0.5;
+}
+
+void main() {
+  vec2 p = (gl_FragCoord.xy - 0.5 * uResolution) / uResolution.y;
+  float d = length(p);
+  float r = uRadius;
+
+  float edge = fwidth(d) * 1.5;
+  float mask = 1.0 - smoothstep(r - edge, r + edge, d);
+  if (mask <= 0.0) {
+    fragColor = vec4(0.0);
+    return;
+  }
+
+  float z = sqrt(max(r * r - d * d, 0.0)) / r;
+  float nd = d / r;
+
+  vec2 dir = d > 0.0 ? p / d : vec2(0.0);
+  float lens = smoothstep(0.85, 1.0, nd) * pow(nd, 6.0);
+  vec2 offset = -dir * lens * uRefraction * 0.15;
+  vec2 disp = -dir * lens * uDispersion * 0.012;
+
+  vec3 light;
+  light.r = texture(uScene, toUv(p + offset - disp)).r;
+  light.g = texture(uScene, toUv(p + offset)).g;
+  light.b = texture(uScene, toUv(p + offset + disp)).b;
+
+  float fres = pow(1.0 - z, 3.0);
+  vec3 rim = vec3(1.0) * fres * 0.18;
+
+  vec2 lightDir = normalize(vec2(-0.55, 0.6));
+  float spec = pow(max(dot(p / max(r, 1e-4), lightDir), 0.0), 6.0);
+  spec *= smoothstep(r, r * 0.55, d);
+
+  vec3 emissive = light + rim + vec3(spec) * 0.4;
+  float emissiveA = clamp(max(max(emissive.r, emissive.g), emissive.b), 0.0, 1.0);
+
+  float bodyA = 0.05 + fres * 0.05;
+
+  float outA = emissiveA + bodyA * (1.0 - emissiveA);
+  vec3 outRGB = emissive;
+
+  outRGB *= mask;
+  outA *= mask;
+
+  fragColor = vec4(outRGB, outA);
+}
+`;
+
+function buildPalette(colors) {
+  const filled = colors && colors.length ? colors : ["#ffffff"];
+  const padded = [];
+  for (let i = 0; i < MAX_COLORS; i++) {
+    const hex = filled[i] ?? filled[filled.length - 1];
+    const c = new Color(hex);
+    padded.push([c.r, c.g, c.b]);
+  }
+  return padded;
+}
+
+// Parámetros afinados para una masa pequeña (≈56-68 px) en móvil.
+const ORB_BASE = {
+  count: 4,
+  speed: 0.5,
+  amplitude: 1.1,
+  waviness: 1.2,
+  thickness: 0.9,
+  glow: 2.6,
+  taper: 2.4,
+  spread: 1,
+  hueShift: 0,
+  intensity: 0.6,
+  saturation: 1.5,
+  opacity: 1,
+  scale: 1.15,
+  refraction: 1,
+  dispersion: 1,
+  glassSize: 1
+};
+
+// Estado "activa/hover": las hebras se aceleran e iluminan.
+const ORB_EXCITED = {
+  speed: 1.25,
+  intensity: 1.0,
+  glow: 3.3,
+  thickness: 1.05
+};
+
+const REDUCED_MOTION =
+  typeof window !== "undefined" &&
+  window.matchMedia &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/**
+ * Crea una masa Strands dentro de `host` (un elemento posicionado
+ * del tamaño de la masa). Devuelve { setExcited(bool), destroy() }
+ * o `null` si WebGL2 no está disponible.
+ */
+function createStrandsOrb(host, colors) {
+  let renderer;
+  try {
+    renderer = new Renderer({
+      alpha: true,
+      premultipliedAlpha: true,
+      antialias: true,
+      dpr: Math.min(window.devicePixelRatio || 1, 2),
+      webgl: 2
+    });
+  } catch {
+    return null;
+  }
+  const gl = renderer.gl;
+  if (!gl || typeof WebGL2RenderingContext === "undefined" ||
+      !(gl instanceof WebGL2RenderingContext)) {
+    return null;
+  }
+
+  gl.clearColor(0, 0, 0, 0);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+  gl.canvas.classList.add("yvy2-orb-canvas");
+
+  const geometry = new Triangle(gl);
+  if (geometry.attributes.uv) delete geometry.attributes.uv;
+
+  const state = { ...ORB_BASE, colors, excited: false };
+
+  const program = new Program(gl, {
+    vertex: VERT,
+    fragment: FRAG,
+    uniforms: {
+      uTime: { value: 0 },
+      uResolution: { value: [1, 1] },
+      uColors: { value: buildPalette(colors) },
+      uColorCount: { value: Math.min(colors.length, MAX_COLORS) },
+      uStrandCount: { value: state.count },
+      uSpeed: { value: state.speed },
+      uAmplitude: { value: state.amplitude },
+      uWaviness: { value: state.waviness },
+      uThickness: { value: state.thickness },
+      uGlow: { value: state.glow },
+      uTaper: { value: state.taper },
+      uSpread: { value: state.spread },
+      uHueShift: { value: state.hueShift },
+      uIntensity: { value: state.intensity },
+      uOpacity: { value: state.opacity },
+      uScale: { value: state.scale },
+      uSaturation: { value: state.saturation }
+    }
+  });
+  const mesh = new Mesh(gl, { geometry, program });
+
+  const renderTarget = new RenderTarget(gl, { width: 2, height: 2 });
+  const glassProgram = new Program(gl, {
+    vertex: VERT,
+    fragment: GLASS_FRAG,
+    uniforms: {
+      uScene: { value: renderTarget.texture },
+      uResolution: { value: [1, 1] },
+      uRadius: { value: 0.46 * state.glassSize },
+      uRefraction: { value: state.refraction },
+      uDispersion: { value: state.dispersion }
+    }
+  });
+  const glassMesh = new Mesh(gl, { geometry, program: glassProgram });
+
+  host.appendChild(gl.canvas);
+
+  function resize() {
+    const w = host.offsetWidth || 56;
+    const h = host.offsetHeight || 56;
+    renderer.setSize(w, h);
+    program.uniforms.uResolution.value = [gl.canvas.width, gl.canvas.height];
+    renderTarget.setSize(gl.canvas.width, gl.canvas.height);
+    glassProgram.uniforms.uResolution.value = [gl.canvas.width, gl.canvas.height];
+  }
+  resize();
+  const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(resize) : null;
+  ro?.observe(host);
+
+  // Transición suave entre reposo y excitado.
+  let mix = 0; // 0 = reposo, 1 = excitado
+  let animateId = 0;
+  let lastT = 0;
+
+  function update(t) {
+    animateId = requestAnimationFrame(update);
+    const dt = lastT ? Math.min((t - lastT) / 1000, 0.1) : 0.016;
+    lastT = t;
+
+    const target = state.excited ? 1 : 0;
+    mix += (target - mix) * Math.min(dt * 7, 1);
+
+    const lerp = (a, b) => a + (b - a) * mix;
+    program.uniforms.uTime.value = REDUCED_MOTION ? 0 : t * 0.001;
+    program.uniforms.uSpeed.value = REDUCED_MOTION ? 0 : lerp(ORB_BASE.speed, ORB_EXCITED.speed);
+    program.uniforms.uIntensity.value = lerp(ORB_BASE.intensity, ORB_EXCITED.intensity);
+    program.uniforms.uGlow.value = lerp(ORB_BASE.glow, ORB_EXCITED.glow);
+    program.uniforms.uThickness.value = lerp(ORB_BASE.thickness, ORB_EXCITED.thickness);
+
+    renderer.render({ scene: mesh, target: renderTarget });
+    glassProgram.uniforms.uScene.value = renderTarget.texture;
+    renderer.render({ scene: glassMesh });
+  }
+  animateId = requestAnimationFrame(update);
+
+  return {
+    setExcited(on) {
+      state.excited = !!on;
+    },
+    destroy() {
+      cancelAnimationFrame(animateId);
+      ro?.disconnect();
+      if (gl.canvas.parentNode === host) host.removeChild(gl.canvas);
+      gl.getExtension("WEBGL_lose_context")?.loseContext();
+    }
+  };
+}
+
 /**
  * Monta el componente YOU VS YOU dentro de `container`.
  * @param {HTMLElement} container
@@ -95,18 +450,47 @@ export function mountYouVsYou(container, options = {}) {
       (z) => `
       <button type="button" class="yvy2-hotspot" data-zone="${z}" aria-label="${ZONE_LABELS[z]}"
         style="left:${ZONE_POSITIONS[z].x * 100}%; top:${ZONE_POSITIONS[z].y * 100}%;">
-        <span class="yvy2-hotspot-dot"></span>
+        <span class="yvy2-orb" aria-hidden="true"></span>
+        <span class="yvy2-hotspot-dot" aria-hidden="true"></span>
         <span class="yvy2-tooltip">${ZONE_LABELS[z]}</span>
       </button>`
     ).join("")}
   `;
 
   const hotspots = Array.from(container.querySelectorAll(".yvy2-hotspot"));
+  const orbs = new Map(); // zone -> instancia strands (o null si fallback CSS)
+
+  hotspots.forEach((btn) => {
+    const zone = btn.dataset.zone;
+    const host = btn.querySelector(".yvy2-orb");
+    let orb = null;
+    try {
+      orb = createStrandsOrb(host, ZONE_COLORS[zone]);
+    } catch {
+      orb = null;
+    }
+    if (orb) {
+      btn.classList.add("has-orb"); // oculta el dot CSS de fallback
+    }
+    orbs.set(zone, orb);
+
+    // Hover/focus también excita la masa (además del estado activo).
+    const excite = (on) => {
+      const isActive = btn.classList.contains("is-active");
+      orbs.get(zone)?.setExcited(on || isActive);
+    };
+    btn.addEventListener("pointerenter", () => excite(true));
+    btn.addEventListener("pointerleave", () => excite(false));
+    btn.addEventListener("focus", () => excite(true));
+    btn.addEventListener("blur", () => excite(false));
+  });
 
   let activeZone = initialActive;
   function applyActiveClass() {
     hotspots.forEach((btn) => {
-      btn.classList.toggle("is-active", btn.dataset.zone === activeZone);
+      const isActive = btn.dataset.zone === activeZone;
+      btn.classList.toggle("is-active", isActive);
+      orbs.get(btn.dataset.zone)?.setExcited(isActive);
     });
   }
   function setActive(zone, { silent = false } = {}) {
@@ -124,6 +508,8 @@ export function mountYouVsYou(container, options = {}) {
   return {
     setActive,
     destroy() {
+      orbs.forEach((orb) => orb?.destroy());
+      orbs.clear();
       container.innerHTML = "";
       container.classList.remove("yvy2-wrap");
     }
