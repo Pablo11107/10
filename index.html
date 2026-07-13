@@ -730,42 +730,8 @@
   </section>
 
   <!-- Footer con menú de navegación inferior -->
-  <footer class="footer">
-    <nav class="bottom-nav">
-      <div class="nav-item">
-        <a href="memories.html">
-          <div class="image image-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="8.5" cy="10" r="1.6"/><path d="M4 17l4.5-4.5a1.5 1.5 0 0 1 2.1 0L13 15l2-2a1.5 1.5 0 0 1 2.1 0L20 16"/></svg>
-          </div>
-          <span>Memories.</span>
-        </a>
-      </div>
-      <div class="nav-item">
-        <a href="socialclub.html">
-            <div class="image image-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5v-7Z"/></svg>
-            </div>
-            <span>Socialclub.</span>
-          </a>
-      </div>
-      <div class="nav-item">
-        <a href="communities.html">
-            <div class="image image-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2.3"/><circle cx="6" cy="17" r="2.3"/><circle cx="18" cy="17" r="2.3"/><path d="M10.3 7.3 7.3 15.1M13.7 7.3l3 7.8M8.3 17h7.4"/></svg>
-            </div>
-            <span>Communities.</span>
-          </a>
-      </div>
-      <div class="nav-item">
-        <a href="legacy.html">
-            <div class="image image-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12c0-4-3-6-7-6 0 4 3 6 7 6Z"/><path d="M12 15c0-4 3-6 7-6 0 4-3 6-7 6Z"/></svg>
-            </div>
-            <span>Legacy.</span>
-          </a>
-      </div>
-    </nav>
-  </footer>
+  <!-- Navegación inferior: dock (dock-nav.js se auto-monta) -->
+  <div id="dockNav"></div>
 
   <!-- Modal: Yes/No (prayed, diet) -->
   <div class="modal-overlay" id="yesNoModal">
@@ -1258,5 +1224,6 @@
       });
     });
   </script>
+  <script type="module" src="dock-nav.js"></script>
 </body>
 </html>
