@@ -53,6 +53,13 @@ const DOCK_CSS = `
 }
 .dock-panel {
   pointer-events: auto;
+  /* Clave para móvil: sin esto, deslizar el dedo por el dock se
+     interpreta como scroll y el navegador CANCELA los pointermove,
+     dejando la lente y la magnificación congeladas. */
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
   display: flex;
   align-items: flex-end;
   gap: 0.7rem;
@@ -391,7 +398,17 @@ export function mountDockNav(container, options = {}) {
     }
   }
 
-  function onMove(e) { pointerX = e.clientX; wake(); }
+  function onMove(e) {
+    // En táctil, el pointerdown sobre un enlace captura implícitamente
+    // el puntero en ese elemento; lo liberamos para que el arrastre
+    // del dedo siga fluyendo por todo el panel (lente + magnificación)
+    // y el pointerleave funcione al salir del dock.
+    if (e.type === "pointerdown" && e.pointerType === "touch") {
+      try { e.target.releasePointerCapture?.(e.pointerId); } catch { /* no capturado */ }
+    }
+    pointerX = e.clientX;
+    wake();
+  }
   function onLeave() { pointerX = Infinity; wake(); }
 
   panel.addEventListener("pointermove", onMove);
