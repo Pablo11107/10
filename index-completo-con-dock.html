@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Focus - Main Page</title>
+  
+  <!-- Fuente Inter desde Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link 
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" 
+    rel="stylesheet"
+  >
+  
+  <style>
+    /* Reset simple */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif; 
+      background-color: #100F19; 
+      color: #fff;
+      line-height: 1.5;
+      opacity: 0;
+      animation: pageFadeIn 0.4s ease forwards;
+    }
+    @keyframes pageFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Header */
+    .header {
+      background-color: #00000A;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    .header h1 { font-size: 3rem; font-weight: 700; }
+    .header .page-tagline {
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 0.4rem;
+      letter-spacing: 0.02em;
+    }
+    .header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    .header h1 a {
+      text-decoration: none;
+      color: #ffffff;
+    }
+
+    /* Sección: Year progress */
+    .year-progress-section {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    .year-progress-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    #yearProgressLabel {
+      margin-top: 1rem;
+      font-size: 1rem;
+    }
+
+    /* Barra de progreso base */
+    .progress-container {
+      width: 80%;
+      margin: 0 auto;
+      background-color: #201F28; 
+      border-radius: 50px;
+      height: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%; 
+      background: linear-gradient(90deg, #55525f, #d9d8e0 70%, #F5F5F7);
+      border-radius: 50px;
+      transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .progress-container.small {
+      height: 14px;
+      background-color: #201F28;
+    }
+
+    /* Sección: categorías */
+    .categories-section {
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+    .categories-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      font-weight: 600;
+    }
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Tarjetas de cada categoría: tiles con icono */
+    .category-card {
+      background: linear-gradient(180deg, #201F28, #171620);
+      padding: 1.5rem 1rem 1.25rem;
+      border-radius: 20px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.05);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+    }
+    .category-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.35);
+    }
+    .category-card:active {
+      transform: translateY(-1px);
+    }
+
+    .category-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 28%, #2E2C3A, #1D1C28 75%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: box-shadow 0.3s ease;
+    }
+    .category-icon img { width: 52%; height: 52%; object-fit: contain; }
+    .category-icon svg { width: 44%; height: 44%; color: #D4AF6D; transition: color 0.25s ease, filter 0.3s ease; }
+    .category-card:hover .category-icon {
+      box-shadow: inset 0 0 0 1px rgba(212,175,109,0.4), 0 0 20px -6px rgba(212,175,109,0.45);
+    }
+    .category-card:hover .category-icon svg {
+      color: #E8CB8F;
+      filter: drop-shadow(0 0 5px rgba(212,175,109,0.45));
+    }
+
+    .category-stat {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #F5F5F7;
+      line-height: 1;
+    }
+    .category-stat .unit {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #888;
+      margin-left: 1px;
+    }
+
+    .category-label {
+      font-size: 0.72rem;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+      margin-top: -0.35rem;
+    }
+
+    /* Sección: botones y opciones */
+    .next-actions-section {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    .next-actions-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+    .btn.action-btn {
+      display: block;
+      width: 70%;
+      margin: 0.5rem auto;
+      padding: 1rem;
+      background-color: #2F2E37;
+      color: #F5F5F7;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: 600;
+    }
+    .btn.action-btn:hover {
+      background-color: #3F3D46;
+    }
+
+    /* Icono de configuración */
+    .settings-icon {
+      margin-top: 2rem;
+    }
+    .settings-icon .gear {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      background-color: #3F3D46;
+      border-radius: 10px;
+      position: relative;
+    }
+    .settings-icon .gear::before,
+    .settings-icon .gear::after {
+      content: '';
+      position: absolute;
+      background-color: #201F28;
+      border-radius: 50%;
+    }
+    .settings-icon .gear::before {
+      width: 8px;
+      height: 8px;
+      left: calc(50% - 4px);
+      top: calc(50% - 4px);
+    }
+    .settings-icon .gear::after {
+      width: 6px;
+      height: 6px;
+      left: calc(50% - 3px);
+      top: calc(50% - 3px);
+      background-color: #100F19;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: #00000A;
+      padding: 1rem 0;
+    }
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .nav-item {
+      text-align: center;
+      cursor: pointer;
+    }
+    .nav-item a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: #fff;
+    }
+    .nav-item a:hover {
+      color: #ccc; 
+    }
+    .nav-item .image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 48px; 
+      height: 48px;
+      margin-bottom: 0.5rem; 
+      overflow: hidden;
+      border-radius: 50%; 
+      background-color: #201F28;
+    }
+    .nav-item .image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .nav-item .image-icon svg { width: 50%; height: 50%; color: #777; transition: color 0.2s; }
+    .nav-item.active .image-icon svg { color: #D4AF6D; }
+    .nav-item span {
+      font-size: 0.9rem;
+      font-weight: 400;
+      margin-top: 0.2rem;
+    }
+
+    /* ============================
+       Modales — rediseño FOCUS
+       ============================ */
+    .modal-overlay, .modal-overlay-minutes, .modal-overlay-profile {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0,0,0,0.65);
+      backdrop-filter: blur(3px);
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .modal-overlay.open, .modal-overlay-minutes.open, .modal-overlay-profile.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal, .modal-minutes, .modal-profile {
+      position: relative;
+      background: linear-gradient(180deg, #2F2E37, #100F19);
+      padding: 2rem 1.75rem 1.75rem;
+      border-radius: 20px;
+      max-width: 90%;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.9rem;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.08);
+      transform: scale(0.9) translateY(8px);
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .modal-overlay.open .modal,
+    .modal-overlay-minutes.open .modal-minutes,
+    .modal-overlay-profile.open .modal-profile {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal { width: 300px; }
+    .modal-minutes { width: 300px; }
+    .modal-profile { width: 320px; align-items: stretch; }
+
+    .modal-icon {
+      font-size: 2.2rem;
+      line-height: 1;
+      margin-bottom: -0.2rem;
+    }
+    .modal-icon img { width: 2.2rem; height: 2.2rem; object-fit: contain; display: block; margin: 0 auto; }
+    .modal-icon svg { width: 2.2rem; height: 2.2rem; display: block; margin: 0 auto; color: #D4AF6D; }
+
+    .modal h3, .modal-minutes h3, .modal-profile h3 {
+      font-weight: 600;
+      font-size: 1.15rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .modal-profile h3 { text-align: left; margin-bottom: 0.2rem; }
+
+    /* Botón de cerrar: círculo discreto en la esquina */
+    .modal .close-btn, 
+    .modal-minutes .close-minutes-btn,
+    .modal-profile .close-profile-btn {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(255,255,255,0.08);
+      color: #ccc;
+      font-size: 0.85rem;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .modal .close-btn:hover, 
+    .modal-minutes .close-minutes-btn:hover,
+    .modal-profile .close-profile-btn:hover {
+      background-color: rgba(255,255,255,0.18);
+      color: #fff;
+    }
+
+    /* Toggle Yes/No */
+    .toggle-group {
+      display: flex;
+      gap: 0.6rem;
+      width: 100%;
+    }
+    .toggle-btn {
+      flex: 1;
+      padding: 0.7rem 0;
+      background-color: #201F28;
+      border: 2px solid #2F2E37;
+      color: #ccc;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .toggle-btn:hover { border-color: #6e6b7b; }
+    .toggle-btn.selected {
+      background-color: #F5F5F7;
+      border-color: #F5F5F7;
+      color: #100F19;
+    }
+    .toggle-btn.selected.no-style {
+      background-color: #3F3D46;
+      border-color: #55525f;
+      color: #fff;
+    }
+
+    /* Chips de minutos rápidos */
+    .chip-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      width: 100%;
+    }
+    .chip {
+      padding: 0.4rem 0.9rem;
+      background-color: #201F28;
+      border: 1.5px solid #2F2E37;
+      color: #ddd;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .chip:hover { border-color: #6e6b7b; }
+    .chip.selected {
+      background-color: #F5F5F7;
+      border-color: #F5F5F7;
+      color: #100F19;
+    }
+
+    .minutes-input-wrap {
+      position: relative;
+      width: 100%;
+    }
+    .minutes-input-wrap input[type="number"] {
+      width: 100%;
+      padding: 0.7rem 3rem 0.7rem 1rem;
+      background-color: #100F19;
+      color: #fff;
+      border: 2px solid #2F2E37;
+      border-radius: 12px;
+      outline: none;
+      font-size: 1.6rem;
+      font-weight: 700;
+      text-align: center;
+      transition: border-color 0.2s;
+      -moz-appearance: textfield;
+    }
+    .minutes-input-wrap input[type="number"]:focus {
+      border-color: #F5F5F7;
+    }
+    .minutes-unit {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 0.85rem;
+      font-weight: 600;
+      pointer-events: none;
+    }
+
+    /* Botones, selects, inputs en modals */
+    .modal button, .modal-minutes button, .modal-profile button {
+      background-color: #F5F5F7;
+      border: none;
+      color: #100F19;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.15s;
+      width: 100%;
+    }
+    .modal button:hover, .modal-minutes button:hover, .modal-profile button:hover {
+      background-color: #E3E3E8;
+    }
+    .modal button:active, .modal-minutes button:active, .modal-profile button:active {
+      transform: scale(0.97);
+    }
+
+    .modal-profile input[type="text"], 
+    .modal-profile textarea,
+    .modal-profile input[type="file"] {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      background-color: #100F19;
+      color: #fff;
+      border: 2px solid #2F2E37;
+      border-radius: 10px;
+      outline: none;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .modal-profile input[type="text"]:focus,
+    .modal-profile textarea:focus {
+      border-color: #F5F5F7;
+    }
+    .modal-profile label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #999;
+      margin-bottom: -0.4rem;
+      margin-top: 0.3rem;
+    }
+
+    .avatar-preview {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      align-self: center;
+      background-color: #333;
+      background-size: cover;
+      background-position: center;
+      border: 2px solid #F5F5F7;
+      margin-bottom: 0.2rem;
+    }
+
+    /* ============================
+       Toast — sustituye a alert()
+       ============================ */
+    .focus-toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translate(-50%, 16px);
+      background-color: #201F28;
+      color: #F5F5F7;
+      padding: 0.8rem 1.4rem;
+      border-radius: 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+      max-width: 85%;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.07);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 1200;
+    }
+    .focus-toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    /* ============================
+       Rodillo numérico (efecto slot machine)
+       ============================ */
+    .reel-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      background-color: rgba(0,0,0,0.78);
+      backdrop-filter: blur(6px);
+      z-index: 1100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .reel-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .reel-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #999;
+      text-align: center;
+      max-width: 80%;
+    }
+    .reel-container {
+      display: flex;
+      gap: 5px;
+    }
+    .reel-digit {
+      width: 48px;
+      height: 68px;
+      overflow: hidden;
+      position: relative;
+      background-color: #201F28;
+      border-radius: 12px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07);
+    }
+    .reel-strip {
+      display: flex;
+      flex-direction: column;
+      transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reel-strip span {
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: #F5F5F7;
+      font-variant-numeric: tabular-nums;
+    }
+    .reel-suffix {
+      font-size: 1rem;
+      color: #888;
+      font-weight: 600;
+    }
+  
+    /* Categorías personalizadas */
+    .category-card.add-cat {
+      border: 1.5px dashed rgba(255,255,255,0.18);
+      background: transparent;
+      justify-content: center;
+    }
+    .category-card.add-cat:hover { border-color: rgba(212,175,109,0.55); }
+    .category-card.add-cat .category-icon { background: none; box-shadow: none; }
+    .category-card.add-cat .category-icon svg { color: rgba(255,255,255,0.4); transition: color 0.25s; }
+    .category-card.add-cat:hover .category-icon svg { color: #D4AF6D; }
+    .category-card { position: relative; }
+    .cat-del {
+      position: absolute; top: 8px; right: 8px; width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; background: rgba(255,255,255,0.06); color: #999;
+      font-size: 0.8rem; cursor: pointer; opacity: 0; transition: opacity 0.2s, background 0.2s;
+    }
+    .category-card:hover .cat-del { opacity: 1; }
+    .cat-del:hover { background: rgba(255,80,80,0.2); color: #ff9c9c; }
+    .icon-picker {
+      display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem;
+    }
+    .icon-choice {
+      aspect-ratio: 1; border-radius: 12px; background: #1D1C28;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07);
+      transition: box-shadow 0.2s;
+    }
+    .icon-choice svg { width: 52%; height: 52%; color: #B4B3BE; transition: color 0.2s; }
+    .icon-choice:hover svg { color: #D4AF6D; }
+    .icon-choice.selected { box-shadow: inset 0 0 0 1.5px #D4AF6D, 0 0 14px -5px rgba(212,175,109,0.6); }
+    .icon-choice.selected svg { color: #D4AF6D; }
+</style>
+</head>
+<body>
+  <!-- Animación de entrada FOCUS (lente enfocando + iris). Debe ir lo primero del body. -->
+  <script src="splash.js"></script>
+
+  <!-- Encabezado -->
+  <header class="header">
+    <h1>
+      <a href="index.html" style="text-decoration: none; color: #fff;">Focus.</a>
+    </h1>
+    <div class="page-tagline">Your progress, 1% at a time</div>
+  </header>
+
+  <!-- Sección: Barra de progreso anual -->
+  <section class="year-progress-section">
+    <h2>Year progress bar.</h2>
+    <div class="progress-container">
+      <div class="progress-bar" id="yearProgressBar"></div>
+    </div>
+    <p id="yearProgressLabel">
+      You have improved <span id="yearProgressValue">-</span>% and you know that the work is not finished.
+    </p>
+  </section>
+
+  <!-- Sección: Progresión por categorías -->
+  <section class="categories-section">
+    <h2>Progression by categories.</h2>
+    <div class="categories-grid">
+
+      <!-- Leer (1%/20 min) -->
+      <div class="category-card" data-cat="read">
+        <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.6C10.3 4.3 8 3.9 5.5 3.9c-.8 0-1.5.6-1.5 1.4v11.5c0 .8.7 1.4 1.5 1.4 2.5 0 4.8.4 6.5 1.7 1.7-1.3 4-1.7 6.5-1.7.8 0 1.5-.6 1.5-1.4V5.3c0-.8-.7-1.4-1.5-1.4-2.5 0-4.8.4-6.5 1.7Z"/><path d="M12 5.6v14.3"/></svg></div>
+        <div class="category-stat"><span id="readValue">0</span><span class="unit">%</span></div>
+        <div class="category-label">Reading</div>
+        <div class="progress-container small">
+          <div class="progress-bar" id="readProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Entrenar (1%/60 min) -->
+      <div class="category-card" data-cat="trained">
+        <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.8 6.8v10.4M3.8 9.2v5.6M17.2 6.8v10.4M20.2 9.2v5.6M6.8 12h10.4"/></svg></div>
+        <div class="category-stat"><span id="trainedValue">0</span><span class="unit">%</span></div>
+        <div class="category-label">Training</div>
+        <div class="progress-container small">
+          <div class="progress-bar" id="trainedProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Meditar (1%/10 min) -->
+      <div class="category-card" data-cat="meditated">
+        <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.8c1.5 1.9 2.3 3.7 2.3 5.6 0 1.9-.8 3.3-2.3 4.3-1.5-1-2.3-2.4-2.3-4.3 0-1.9.8-3.7 2.3-5.6Z"/><path d="M5.2 9.2c2.7.4 4.7 1.5 6 3.4M18.8 9.2c-2.7.4-4.7 1.5-6 3.4"/><path d="M4.6 14.9c1.6 3 4.1 4.6 7.4 4.6s5.8-1.6 7.4-4.6c-2.4-.8-4.8-1.2-7.4-1.2s-5 .4-7.4 1.2Z"/></svg></div>
+        <div class="category-stat"><span id="meditatedValue">0</span><span class="unit">%</span></div>
+        <div class="category-label">Meditation</div>
+        <div class="progress-container small">
+          <div class="progress-bar" id="meditatedProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Trabajar (1%/60 min) -->
+      <div class="category-card" data-cat="worked">
+        <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="7.8" width="17" height="11.2" rx="2.2"/><path d="M9 7.8V6.1A2.1 2.1 0 0 1 11.1 4h1.8A2.1 2.1 0 0 1 15 6.1v1.7M3.5 12.4h17"/></svg></div>
+        <div class="category-stat"><span id="workedValue">0</span><span class="unit">%</span></div>
+        <div class="category-label">Work</div>
+        <div class="progress-container small">
+          <div class="progress-bar" id="workedProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Rezar (Yes/No) -->
+      <div class="category-card" data-cat="prayed">
+        <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6c-2.3 3.1-3.9 6.2-3.9 9.7v4A2.7 2.7 0 0 0 10.8 20h2.4a2.7 2.7 0 0 0 2.7-2.7v-4c0-3.5-1.6-6.6-3.9-9.7Z"/><path d="M12 7.6V20"/></svg></div>
+        <div class="category-stat"><span id="prayedValue">0</span><span class="unit">%</span></div>
+        <div class="category-label">Prayer</div>
+        <div class="progress-container small">
+          <div class="progress-bar" id="prayedProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Dieta (Yes/No) -->
+      <div class="category-card" data-cat="diet">
+        <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7.6c-1-1-2.3-1.5-3.7-1.3C5.6 6.7 4 9.1 4.4 12c.5 3.7 2.8 7.4 5.3 7.4 1 0 1.6-.5 2.3-.5s1.3.5 2.3.5c2.5 0 4.8-3.7 5.3-7.4.4-2.9-1.2-5.3-3.9-5.7-1.4-.2-2.7.3-3.7 1.3Z"/><path d="M12 7.6c0-2.1 1.3-3.6 3.2-4.1"/></svg></div>
+        <div class="category-stat"><span id="dietValue">0</span><span class="unit">%</span></div>
+        <div class="category-label">Diet</div>
+        <div class="progress-container small">
+          <div class="progress-bar" id="dietProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Estudiar (1%/240 min = 4 h) -->
+      <div class="category-card" data-cat="studied">
+        <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4 3.5 8.5 12 13l8.5-4.5L12 4Z"/><path d="M6.5 10.8V15c0 1.7 2.5 3 5.5 3s5.5-1.3 5.5-3v-4.2M20.5 9.2v4.3"/></svg></div>
+        <div class="category-stat"><span id="studiedValue">0</span><span class="unit">%</span></div>
+        <div class="category-label">Study</div>
+        <div class="progress-container small">
+          <div class="progress-bar" id="studiedProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Dormir (1%/420 min = 7 h) -->
+      <div class="category-card" data-cat="slept">
+        <div class="category-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13.6A8 8 0 0 1 10.4 4 8 8 0 1 0 20 13.6Z"/></svg></div>
+        <div class="category-stat"><span id="sleptValue">0</span><span class="unit">%</span></div>
+        <div class="category-label">Sleep</div>
+        <div class="progress-container small">
+          <div class="progress-bar" id="sleptProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Crear categoría propia -->
+      <div class="category-card add-cat" id="addCatCard" data-nocat="1">
+        <div class="category-icon add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div>
+        <div class="category-label" style="margin-top:0.6rem">New category</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Sección: Botones y opciones -->
+  <section class="next-actions-section">
+    <h2>The show must go on so...</h2>
+    
+    <!-- Botón "Reset progress bars" -->
+    <button class="btn action-btn" id="resetBtn">Reset progress bars</button>
+
+    <!-- Botón "Upload profile information" -->
+    <button class="btn action-btn" id="uploadProfileBtn">Upload profile information</button>
+
+    <a href="books.html" class="btn action-btn" style="display:block; text-decoration:none; box-sizing:border-box;">📚 Book recommendations</a>
+
+    <button class="btn action-btn" id="logoutBtn">Log out</button>
+    
+    <!-- Icono de configuración (decorativo) -->
+    <div class="settings-icon">
+      <div class="gear"></div>
+    </div>
+  </section>
+
+  <!-- Footer con menú de navegación inferior -->
+  <!-- Navegación inferior: dock (dock-nav.js se auto-monta) -->
+  <div id="dockNav"></div>
+
+  <!-- Modal: Yes/No (prayed, diet) -->
+  <div class="modal-overlay" id="yesNoModal">
+    <div class="modal">
+      <button class="close-btn" id="closeYesNoModal">✕</button>
+      <span class="modal-icon" id="yesNoModalIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.6c-2.3 3.1-3.9 6.2-3.9 9.7v4A2.7 2.7 0 0 0 10.8 20h2.4a2.7 2.7 0 0 0 2.7-2.7v-4c0-3.5-1.6-6.6-3.9-9.7Z"/><path d="M12 7.6V20"/></svg></span>
+      <h3 id="yesNoModalTitle">Have you followed your diet today?</h3>
+      <div class="toggle-group" id="yesNoToggleGroup">
+        <button type="button" class="toggle-btn" data-value="Yes">Yes</button>
+        <button type="button" class="toggle-btn no-style" data-value="No">No</button>
+      </div>
+      <button id="saveYesNoBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Modal: minutos para las demás categorías -->
+  <div class="modal-overlay-minutes" id="minutesModal">
+    <div class="modal-minutes">
+      <button class="close-minutes-btn" id="closeMinutesModal">✕</button>
+      <span class="modal-icon" id="minutesModalIcon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5.6C10.3 4.3 8 3.9 5.5 3.9c-.8 0-1.5.6-1.5 1.4v11.5c0 .8.7 1.4 1.5 1.4 2.5 0 4.8.4 6.5 1.7 1.7-1.3 4-1.7 6.5-1.7.8 0 1.5-.6 1.5-1.4V5.3c0-.8-.7-1.4-1.5-1.4-2.5 0-4.8.4-6.5 1.7Z"/><path d="M12 5.6v14.3"/></svg></span>
+      <h3 id="minutesModalTitle">How many minutes did you spend?</h3>
+      <div class="chip-group" id="minutesChipGroup">
+        <button type="button" class="chip" data-min="5">5</button>
+        <button type="button" class="chip" data-min="10">10</button>
+        <button type="button" class="chip" data-min="15">15</button>
+        <button type="button" class="chip" data-min="30">30</button>
+        <button type="button" class="chip" data-min="60">60</button>
+      </div>
+      <div class="minutes-input-wrap">
+        <input type="number" min="0" id="minutesInput" placeholder="0" />
+        <span class="minutes-unit">min</span>
+      </div>
+      <button id="saveMinutesBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Modal: Profile Info -->
+  <div class="modal-overlay-profile" id="profileModal">
+    <div class="modal-profile">
+      <button class="close-profile-btn" id="closeProfileModal">✕</button>
+      <h3>Upload Profile Information</h3>
+
+      <div class="avatar-preview" id="avatarPreview"></div>
+
+      <label for="realName">Real Name</label>
+      <input type="text" id="realName" placeholder="John Doe">
+
+      <label for="userName">Username</label>
+      <input type="text" id="userName" placeholder="johndoe123">
+
+      <label for="description">Description</label>
+      <textarea id="description" rows="3" placeholder="Tell us about yourself..."></textarea>
+
+      <label for="profilePic">Profile Picture</label>
+      <input type="file" id="profilePic" accept="image/*">
+
+      <button id="saveProfileBtn">Save</button>
+    </div>
+  </div>
+
+  <!-- Toast de notificaciones -->
+  <div class="focus-toast" id="focusToast"></div>
+
+  <!-- Overlay del rodillo numérico (efecto slot machine) -->
+  <div class="reel-overlay" id="reelOverlay">
+    <span class="reel-label" id="reelLabel"></span>
+    <div class="reel-container" id="reelContainer"></div>
+    <span class="reel-suffix" id="reelSuffix"></span>
+  </div>
+
+  
+  <!-- Modal: crear categoría propia -->
+  <div class="modal-overlay" id="customCatModal">
+    <div class="modal">
+      <div class="close-btn" id="closeCustomCatModal">✕</div>
+      <h3>Create your category</h3>
+      <label>Name</label>
+      <input type="text" id="customCatName" maxlength="18" placeholder="e.g. Music, Coding, Languages...">
+      <label>Minutes for each 1% of progress</label>
+      <input type="number" id="customCatRate" min="1" max="1440" placeholder="e.g. 30">
+      <label>Icon</label>
+      <div class="icon-picker" id="customCatIcons"></div>
+      <button id="saveCustomCatBtn">Create category</button>
+    </div>
+  </div>
+
+<script type="module">
+    import { requireAuth, loadUserDoc, saveUserDoc, logout, resizeImageFile } from "./firebase-init.js";
+
+    // Esperamos a saber quién ha iniciado sesión (si no hay nadie, nos manda a login.html)
+    const user = await requireAuth();
+    const uid = user.uid;
+
+    // Cargamos los datos guardados de este usuario en Firestore
+    const savedData = await loadUserDoc(uid);
+
+    // timeSpent para cada cat
+    let timeSpent = savedData.timeSpent || {
+      read: 0,
+      trained: 0,
+      meditated: 0,
+      worked: 0,
+      studied: 0,
+      slept: 0,
+      prayedYesCount: 0,
+      dietYesCount: 0,
+      readSessions: 0,
+      trainedSessions: 0,
+      meditatedSessions: 0,
+      workedSessions: 0,
+      studiedSessions: 0,
+      sleptSessions: 0
+    };
+    // Compatibilidad con cuentas creadas antes de añadir campos nuevos
+    ["read","trained","meditated","worked","studied","slept",
+     "readSessions","trainedSessions","meditatedSessions","workedSessions",
+     "studiedSessions","sleptSessions","prayedYesCount","dietYesCount"].forEach(k => {
+      if (typeof timeSpent[k] !== "number") timeSpent[k] = 0;
+    });
+
+    // Categorías creadas por el usuario: [{ key, label, rate (min por 1%), icon }]
+    let customCats = Array.isArray(savedData.customCats) ? savedData.customCats : [];
+
+    // Profile info
+    let profileInfo = savedData.profileInfo || {
+      realName: "",
+      userName: "",
+      description: "",
+      profilePic: ""
+    };
+
+    document.getElementById("logoutBtn").addEventListener("click", logout);
+
+    // Iconos por categoría, usados en los modales
+    // Set de iconos FOCUS: linea fina dorada, coherente con la marca
+    const FOCUS_ICONS = {
+      '2705': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;vertical-align:-0.125em"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>`,
+      '23f1': `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em;vertical-align:-0.125em"><circle cx="12" cy="13.5" r="7"/><path d="M12 13.5V10M9.8 3h4.4M12 3v3.5"/></svg>`
+    };
+    function twemojiImg(code, alt = "") { return FOCUS_ICONS[code] || ''; }
+    // Iconos: se leen de la tarjeta viva (cubre también las personalizadas)
+    function getCatIcon(catKey) {
+      const el = document.querySelector(`.category-card[data-cat="${catKey}"] .category-icon`);
+      return el ? el.innerHTML : '';
+    }
+
+    // Animación tipo "cuentakilómetros": sube rápido del valor actual al nuevo
+    function animateNumber(el, from, to, duration = 700) {
+      if (!el) return;
+      from = Number(from) || 0;
+      to = Number(to) || 0;
+      if (from === to) { el.textContent = to; return; }
+
+      const start = performance.now();
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        // easeOutExpo: arranca muy rápido y frena al final, como un odómetro
+        const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const current = Math.round(from + (to - from) * eased);
+        el.textContent = current;
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = to;
+      }
+      requestAnimationFrame(tick);
+    }
+
+    /* -- Toast: sustituye a los alert() nativos -- */
+    const focusToast = document.getElementById("focusToast");
+    let toastTimer;
+    function showToast(message) {
+      focusToast.textContent = message;
+      focusToast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => focusToast.classList.remove("show"), 2400);
+    }
+
+    /* -- Rodillo numérico tipo tragaperras (para el total de minutos) -- */
+    const reelOverlay   = document.getElementById("reelOverlay");
+    const reelLabel     = document.getElementById("reelLabel");
+    const reelContainer = document.getElementById("reelContainer");
+    const reelSuffix    = document.getElementById("reelSuffix");
+
+    function buildReelDigit(targetDigit) {
+      const digitEl = document.createElement("div");
+      digitEl.className = "reel-digit";
+      const strip = document.createElement("div");
+      strip.className = "reel-strip";
+      // 3 vueltas de 0-9 para que el rodillo gire varias veces antes de frenar
+      for (let cycle = 0; cycle < 3; cycle++) {
+        for (let d = 0; d <= 9; d++) {
+          const span = document.createElement("span");
+          span.textContent = d;
+          strip.appendChild(span);
+        }
+      }
+      digitEl.appendChild(strip);
+      return { digitEl, strip, targetDigit };
+    }
+
+    function showMinutesReel(catKey, toTotal) {
+      const digitsStr = String(toTotal).padStart(2, "0");
+      reelContainer.innerHTML = "";
+      const strips = [];
+
+      [...digitsStr].forEach((ch) => {
+        const { digitEl, strip, targetDigit } = buildReelDigit(parseInt(ch, 10));
+        reelContainer.appendChild(digitEl);
+        strips.push({ strip, targetDigit });
+      });
+
+      reelLabel.textContent = `Total minutes on ${catLabel(catKey)} this year`;
+      reelSuffix.textContent = "min";
+      reelOverlay.classList.add("show");
+
+      // Reseteamos posición antes de animar (sin transición) y forzamos reflow
+      strips.forEach(({ strip }) => {
+        strip.style.transitionDuration = "0s";
+        strip.style.transform = "translateY(0)";
+      });
+      // eslint-disable-next-line no-unused-expressions
+      reelContainer.offsetHeight;
+
+      let maxDuration = 0;
+      strips.forEach(({ strip, targetDigit }, i) => {
+        const duration = 900 + i * 220;
+        const delay = i * 90;
+        maxDuration = Math.max(maxDuration, duration + delay);
+        strip.style.transitionDuration = `${duration}ms`;
+        strip.style.transitionDelay = `${delay}ms`;
+        const landIndex = 20 + targetDigit; // aterriza en la 3ª vuelta
+        strip.style.transform = `translateY(-${landIndex * 68}px)`;
+      });
+
+      // Tras la animación + una pausa para leer el número, ocultamos el rodillo
+      setTimeout(() => {
+        reelOverlay.classList.remove("show");
+      }, maxDuration + 1300);
+    }
+
+    // Cálculo % en base a la catKey
+    function computeProgress(catKey) {
+      switch(catKey) {
+        case "read":
+          return Math.floor(timeSpent.read / 20);   // 1% / 20 min
+        case "trained":
+          return Math.floor(timeSpent.trained / 60);// 1% / 60 min
+        case "meditated":
+          return Math.floor(timeSpent.meditated / 10);// 1% / 10 min
+        case "worked":
+          return Math.floor(timeSpent.worked / 480);// 1% / 8h (480 min)
+        case "studied":
+          return Math.floor(timeSpent.studied / 240);// 1% / 4h (240 min)
+        case "slept":
+          return Math.floor(timeSpent.slept / 420); // 1% / 7h (420 min)
+        case "prayed":
+          return timeSpent.prayedYesCount;          
+        case "diet":
+          return timeSpent.dietYesCount;           
+      }
+      const custom = customCats.find(c => c.key === catKey);
+      if (custom) return Math.floor((timeSpent[catKey] || 0) / Math.max(1, custom.rate));
+      return 0;
+    }
+
+    // Todas las claves activas (fijas + personalizadas)
+    function allCatKeys() {
+      return ["read","trained","meditated","worked","studied","slept","prayed","diet",
+              ...customCats.map(c => c.key)];
+    }
+    // Nombre legible de cada categoría (para modales y rodillo)
+    const FIXED_LABELS = { read: "reading", trained: "training", meditated: "meditation",
+                           worked: "work", studied: "study", slept: "sleep",
+                           prayed: "prayer", diet: "diet" };
+    function catLabel(catKey) {
+      const custom = customCats.find(c => c.key === catKey);
+      return custom ? custom.label : (FIXED_LABELS[catKey] || catKey);
+    }
+
+    // Actualiza la barra y el texto de una categoría
+    function updateProgress(catKey) {
+      const val = computeProgress(catKey);
+      const finalVal = val > 400 ? 400 : val;
+
+      // Actualizar la barra (la transición CSS ya la anima)
+      const barElem = document.getElementById(catKey + "ProgressBar");
+      if (barElem) barElem.style.width = finalVal + "%";
+      
+      // Actualizar el texto con efecto de conteo
+      const labelElem = document.getElementById(catKey + "Value");
+      if (labelElem) {
+        const currentVal = parseInt(labelElem.textContent, 10) || 0;
+        animateNumber(labelElem, currentVal, finalVal);
+      }
+    }
+
+    // Calculamos la media de los 6 porcentajes para la barra principal
+    function updateYearBar() {
+      const cats = allCatKeys();
+      let sum = 0;
+      cats.forEach(c => sum += computeProgress(c));
+      const avg = Math.floor(sum / cats.length);
+      const finalAvg = avg > 400 ? 400 : avg;
+      
+      const yearBar = document.getElementById("yearProgressBar");
+      const yearVal = document.getElementById("yearProgressValue");
+      if (yearBar) yearBar.style.width = finalAvg + "%";
+      if (yearVal) {
+        const currentVal = parseInt(yearVal.textContent, 10) || 0;
+        animateNumber(yearVal, currentVal, finalAvg);
+      }
+    }
+
+    // Recalcula una categoría y después la barra principal
+    function recalcAll(catKey) {
+      updateProgress(catKey);
+      updateYearBar();
+    }
+
+    /* -- Modales prayed/diet -- */
+    const yesNoModal       = document.getElementById("yesNoModal");
+    const closeYesNoModal  = document.getElementById("closeYesNoModal");
+    const yesNoModalTitle  = document.getElementById("yesNoModalTitle");
+    const yesNoModalIcon   = document.getElementById("yesNoModalIcon");
+    const yesNoToggleGroup = document.getElementById("yesNoToggleGroup");
+    const saveYesNoBtn     = document.getElementById("saveYesNoBtn");
+    let yesNoChoice = "Yes";
+    let yesNoCategory = null;
+
+    function openYesNoModal(catKey) {
+      yesNoCategory = catKey;
+      yesNoChoice = "Yes";
+      yesNoModalIcon.innerHTML = getCatIcon(catKey) || twemojiImg("2705");
+      yesNoModalTitle.textContent = (catKey === "prayed")
+        ? "Have you prayed today?"
+        : "Have you followed your diet today?";
+
+      yesNoToggleGroup.querySelectorAll(".toggle-btn").forEach(btn => {
+        btn.classList.toggle("selected", btn.dataset.value === "Yes");
+      });
+
+      yesNoModal.classList.add("open");
+    }
+    function closeYesNo() {
+      yesNoModal.classList.remove("open");
+    }
+    closeYesNoModal.addEventListener("click", closeYesNo);
+
+    yesNoToggleGroup.querySelectorAll(".toggle-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        yesNoChoice = btn.dataset.value;
+        yesNoToggleGroup.querySelectorAll(".toggle-btn").forEach(b => {
+          b.classList.toggle("selected", b === btn);
+        });
+      });
+    });
+
+    saveYesNoBtn.addEventListener("click", () => {
+      const catKey = yesNoCategory;
+      if (yesNoChoice === "Yes") {
+        if (catKey === "prayed") {
+          timeSpent.prayedYesCount++;
+          showToast("Nice! +1% in prayed progress!");
+        } else {
+          timeSpent.dietYesCount++;
+          showToast("Great job! +1% in diet progress!");
+        }
+      } else {
+        showToast("No increment this time!");
+      }
+      saveUserDoc(uid, { timeSpent });
+      recalcAll(catKey);
+      closeYesNo();
+    });
+
+    /* -- Modal Minutos -- */
+    const minutesModal      = document.getElementById("minutesModal");
+    const closeMinutesModal = document.getElementById("closeMinutesModal");
+    const minutesModalTitle = document.getElementById("minutesModalTitle");
+    const minutesModalIcon  = document.getElementById("minutesModalIcon");
+    const minutesChipGroup  = document.getElementById("minutesChipGroup");
+    const minutesInput      = document.getElementById("minutesInput");
+    const saveMinutesBtn    = document.getElementById("saveMinutesBtn");
+
+    function openMinutesModal(catKey) {
+      minutesModalIcon.innerHTML = getCatIcon(catKey) || twemojiImg("23f1");
+      minutesModalTitle.textContent = `How many minutes did you spend on ${catLabel(catKey)} today?`;
+      minutesInput.value = "";
+      minutesInput.dataset.category = catKey;
+      minutesChipGroup.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
+
+      minutesModal.classList.add("open");
+      setTimeout(() => minutesInput.focus(), 200);
+    }
+    function closeModalMinutes() {
+      minutesModal.classList.remove("open");
+    }
+    closeMinutesModal.addEventListener("click", closeModalMinutes);
+
+    minutesChipGroup.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        minutesInput.value = chip.dataset.min;
+        minutesChipGroup.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
+        chip.classList.add("selected");
+      });
+    });
+    // Si el usuario escribe un valor manual, quitamos la selección de chips
+    minutesInput.addEventListener("input", () => {
+      const matchingChip = [...minutesChipGroup.querySelectorAll(".chip")]
+        .find(c => c.dataset.min === minutesInput.value);
+      minutesChipGroup.querySelectorAll(".chip").forEach(c => {
+        c.classList.toggle("selected", c === matchingChip);
+      });
+    });
+
+    saveMinutesBtn.addEventListener("click", () => {
+      const catKey = minutesInput.dataset.category;
+      const val = parseInt(minutesInput.value);
+      if (!isNaN(val) && val > 0) {
+        timeSpent[catKey] += val;
+        timeSpent[catKey + "Sessions"] = (timeSpent[catKey + "Sessions"] || 0) + 1;
+        saveUserDoc(uid, { timeSpent });
+        closeModalMinutes();
+        showMinutesReel(catKey, timeSpent[catKey]);
+        // Las barras se recalculan ya (quedan ocultas detrás del overlay del rodillo)
+        recalcAll(catKey);
+      } else {
+        closeModalMinutes();
+      }
+    });
+
+    /* -- Botón RESET -- */
+    const resetBtn = document.getElementById("resetBtn");
+    resetBtn.addEventListener("click", () => {
+      // Todos a 0
+      timeSpent.read          = 0;
+      timeSpent.trained       = 0;
+      timeSpent.meditated     = 0;
+      timeSpent.worked        = 0;
+      timeSpent.studied       = 0;
+      timeSpent.slept         = 0;
+      timeSpent.prayedYesCount= 0;
+      timeSpent.dietYesCount  = 0;
+      customCats.forEach(c => { timeSpent[c.key] = 0; timeSpent[c.key + "Sessions"] = 0; });
+
+      saveUserDoc(uid, { timeSpent });
+
+      allCatKeys().forEach(cat => {
+        updateProgress(cat);
+      });
+      updateYearBar();
+
+      showToast("All progress bars have been reset to 0!");
+    });
+
+    /* -- Modal Profile -- */
+    const uploadProfileBtn    = document.getElementById("uploadProfileBtn");
+    const profileModal        = document.getElementById("profileModal");
+    const closeProfileModalBtn= document.getElementById("closeProfileModal");
+    const realNameInput       = document.getElementById("realName");
+    const userNameInput       = document.getElementById("userName");
+    const descriptionInput    = document.getElementById("description");
+    const profilePicInput     = document.getElementById("profilePic");
+    const saveProfileBtn      = document.getElementById("saveProfileBtn");
+    const avatarPreview       = document.getElementById("avatarPreview");
+
+    function setAvatarPreview(src) {
+      avatarPreview.style.backgroundImage = src ? `url(${src})` : "none";
+    }
+
+    uploadProfileBtn.addEventListener("click", () => {
+      realNameInput.value    = profileInfo.realName || "";
+      userNameInput.value    = profileInfo.userName || "";
+      descriptionInput.value = profileInfo.description || "";
+      profilePicInput.value  = "";
+      delete profilePicInput.dataset.resized;
+      setAvatarPreview(profileInfo.profilePic);
+      profileModal.classList.add("open");
+    });
+
+    closeProfileModalBtn.addEventListener("click", () => {
+      profileModal.classList.remove("open");
+    });
+
+    profilePicInput.addEventListener("change", async () => {
+      const file = profilePicInput.files[0];
+      if (!file) return;
+      const resized = await resizeImageFile(file, 400, 0.8);
+      profilePicInput.dataset.resized = resized;
+      setAvatarPreview(resized);
+    });
+
+    saveProfileBtn.addEventListener("click", async () => {
+      profileInfo.realName    = realNameInput.value.trim();
+      profileInfo.userName    = userNameInput.value.trim();
+      profileInfo.description = descriptionInput.value.trim();
+
+      if (profilePicInput.dataset.resized) {
+        profileInfo.profilePic = profilePicInput.dataset.resized;
+      }
+      persistProfile();
+    });
+
+    function persistProfile() {
+      saveUserDoc(uid, { profileInfo });
+      showToast("Profile information saved!");
+      profileModal.classList.remove("open");
+    }
+
+    /* -- Inicializamos la página con los datos ya cargados de Firestore -- */
+    updateYearBar();
+    allCatKeys().forEach(cat => {
+      updateProgress(cat);
+    });
+
+    document.querySelector(".categories-grid").addEventListener("click", (e) => {
+      if (e.target.closest(".cat-del")) return;             // borrar tiene su propio handler
+      const card = e.target.closest(".category-card");
+      if (!card) return;
+      if (card.id === "addCatCard") { openCustomCatModal(); return; }
+      const catKey = card.getAttribute("data-cat");
+      if (!catKey) return;
+      if (catKey === "prayed" || catKey === "diet") {
+        openYesNoModal(catKey);
+      } else {
+        openMinutesModal(catKey);
+      }
+    });
+
+    /* -- Transición dinámica entre páginas -- */
+    /* ================= Categorías personalizadas ================= */
+    // Batería de iconos FOCUS para elegir (mismo lenguaje visual del set)
+    const wrapIcon = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+    const ICON_LIB = {
+      book:    wrapIcon('<path d="M12 5.6C10.3 4.3 8 3.9 5.5 3.9c-.8 0-1.5.6-1.5 1.4v11.5c0 .8.7 1.4 1.5 1.4 2.5 0 4.8.4 6.5 1.7 1.7-1.3 4-1.7 6.5-1.7.8 0 1.5-.6 1.5-1.4V5.3c0-.8-.7-1.4-1.5-1.4-2.5 0-4.8.4-6.5 1.7Z"/><path d="M12 5.6v14.3"/>'),
+      dumbbell:wrapIcon('<path d="M6.8 6.8v10.4M3.8 9.2v5.6M17.2 6.8v10.4M20.2 9.2v5.6M6.8 12h10.4"/>'),
+      lotus:   wrapIcon('<path d="M12 3.8c1.5 1.9 2.3 3.7 2.3 5.6 0 1.9-.8 3.3-2.3 4.3-1.5-1-2.3-2.4-2.3-4.3 0-1.9.8-3.7 2.3-5.6Z"/><path d="M5.2 9.2c2.7.4 4.7 1.5 6 3.4M18.8 9.2c-2.7.4-4.7 1.5-6 3.4"/><path d="M4.6 14.9c1.6 3 4.1 4.6 7.4 4.6s5.8-1.6 7.4-4.6c-2.4-.8-4.8-1.2-7.4-1.2s-5 .4-7.4 1.2Z"/>'),
+      case:    wrapIcon('<rect x="3.5" y="7.8" width="17" height="11.2" rx="2.2"/><path d="M9 7.8V6.1A2.1 2.1 0 0 1 11.1 4h1.8A2.1 2.1 0 0 1 15 6.1v1.7M3.5 12.4h17"/>'),
+      gradcap: wrapIcon('<path d="M12 4 3.5 8.5 12 13l8.5-4.5L12 4Z"/><path d="M6.5 10.8V15c0 1.7 2.5 3 5.5 3s5.5-1.3 5.5-3v-4.2M20.5 9.2v4.3"/>'),
+      moon:    wrapIcon('<path d="M20 13.6A8 8 0 0 1 10.4 4 8 8 0 1 0 20 13.6Z"/>'),
+      music:   wrapIcon('<path d="M9 17.5V6.3l10-2v11.2"/><circle cx="6.8" cy="17.5" r="2.2"/><circle cx="16.8" cy="15.5" r="2.2"/>'),
+      palette: wrapIcon('<path d="M12 3.8a8.2 8.2 0 1 0 0 16.4c1.1 0 1.8-.7 1.8-1.6 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.7-1.6 1.6-1.6h1.9c2.3 0 4-1.7 4-3.9-.2-4-3.9-6.9-8.3-6.9Z"/><circle cx="8" cy="10" r="1"/><circle cx="12" cy="7.6" r="1"/><circle cx="16" cy="10" r="1"/>'),
+      code:    wrapIcon('<path d="M8.5 7.5 4 12l4.5 4.5M15.5 7.5 20 12l-4.5 4.5"/>'),
+      heart:   wrapIcon('<path d="M12 19.5c-4.5-3-7.5-5.8-7.5-9.2A4 4 0 0 1 12 7.6a4 4 0 0 1 7.5 2.7c0 3.4-3 6.2-7.5 9.2Z"/>'),
+      globe:   wrapIcon('<circle cx="12" cy="12" r="8.2"/><path d="M3.8 12h16.4M12 3.8c2.3 2.3 3.4 5 3.4 8.2s-1.1 5.9-3.4 8.2c-2.3-2.3-3.4-5-3.4-8.2s1.1-5.9 3.4-8.2Z"/>'),
+      flame:   wrapIcon('<path d="M12 3.5c.6 2.5-.3 4.2-1.8 5.8-1.4 1.5-2.7 3-2.7 5.2a6.5 6.5 0 0 0 13 0c0-3.2-1.9-4.9-3.1-6.9-.6 1-1.4 1.6-2.3 1.7.3-2.1-.7-4.4-3.1-5.8Z"/>'),
+      camera:  wrapIcon('<rect x="3.5" y="7" width="17" height="12" rx="2.4"/><path d="M8.6 7l1.2-2.1h4.4L15.4 7"/><circle cx="12" cy="13" r="3.2"/>'),
+      pencil:  wrapIcon('<path d="M4 20l1-4L16.5 4.5a2.12 2.12 0 0 1 3 3L8 19l-4 1Z"/><path d="M14.5 6.5l3 3"/>'),
+      trophy:  wrapIcon('<path d="M8 4h8v5.2a4 4 0 0 1-8 0V4Z"/><path d="M8 5.5H5.2c.1 2.5 1.3 4 2.9 4.3M16 5.5h2.8c-.1 2.5-1.3 4-2.9 4.3M12 13.2v3.3M9.8 20l.6-3.5h3.2l.6 3.5M8.5 20h7"/>'),
+      spark:   wrapIcon('<path d="M12 3.8l1.7 4.5 4.5 1.7-4.5 1.7L12 16.2l-1.7-4.5L5.8 10l4.5-1.7L12 3.8Z"/><path d="M18.6 15.4l.7 1.9 1.9.7-1.9.7-.7 1.9-.7-1.9-1.9-.7 1.9-.7.7-1.9Z"/>'),
+      coins:   wrapIcon('<ellipse cx="12" cy="6.5" rx="7" ry="2.8"/><path d="M5 6.5v5c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-5M5 11.5v5c0 1.5 3.1 2.8 7 2.8s7-1.3 7-2.8v-5"/>'),
+      leaf:    wrapIcon('<path d="M5 19c0-7.5 4.5-13 14-13-.5 9.5-5 14-11.5 14A7 7 0 0 1 5 19Z"/><path d="M5 19c2.5-4.5 6-8 10-10"/>'),
+    };
+
+    const customCatModal    = document.getElementById("customCatModal");
+    const closeCustomCat    = document.getElementById("closeCustomCatModal");
+    const customCatName     = document.getElementById("customCatName");
+    const customCatRate     = document.getElementById("customCatRate");
+    const customCatIcons    = document.getElementById("customCatIcons");
+    const saveCustomCatBtn  = document.getElementById("saveCustomCatBtn");
+    let selectedIconKey = null;
+
+    // Pintar la batería de iconos una vez
+    customCatIcons.innerHTML = Object.entries(ICON_LIB)
+      .map(([k, svg]) => `<div class="icon-choice" data-icon="${k}">${svg}</div>`).join('');
+    customCatIcons.addEventListener("click", (e) => {
+      const choice = e.target.closest(".icon-choice");
+      if (!choice) return;
+      selectedIconKey = choice.dataset.icon;
+      customCatIcons.querySelectorAll(".icon-choice").forEach(c =>
+        c.classList.toggle("selected", c === choice));
+    });
+
+    function openCustomCatModal() {
+      customCatName.value = "";
+      customCatRate.value = "";
+      selectedIconKey = null;
+      customCatIcons.querySelectorAll(".icon-choice").forEach(c => c.classList.remove("selected"));
+      customCatModal.classList.add("open");
+      setTimeout(() => customCatName.focus(), 200);
+    }
+    closeCustomCat.addEventListener("click", () => customCatModal.classList.remove("open"));
+
+    // Construye e inserta la tarjeta de una categoría personalizada
+    function renderCustomCard(cat) {
+      const addCard = document.getElementById("addCatCard");
+      const card = document.createElement("div");
+      card.className = "category-card";
+      card.setAttribute("data-cat", cat.key);
+      card.innerHTML = `
+        <div class="cat-del" data-key="${cat.key}" title="Delete category">✕</div>
+        <div class="category-icon">${ICON_LIB[cat.icon] || ICON_LIB.spark}</div>
+        <div class="category-stat"><span id="${cat.key}Value">0</span><span class="unit">%</span></div>
+        <div class="category-label">${cat.label.replace(/[<>&"]/g, "")}</div>
+        <div class="progress-container small">
+          <div class="progress-bar" id="${cat.key}ProgressBar"></div>
+        </div>`;
+      addCard.parentNode.insertBefore(card, addCard);
+    }
+    customCats.forEach(cat => { renderCustomCard(cat); recalcAll(cat.key); });
+
+    saveCustomCatBtn.addEventListener("click", () => {
+      const label = customCatName.value.trim();
+      const rate = parseInt(customCatRate.value, 10);
+      if (!label) { customCatName.focus(); return; }
+      if (isNaN(rate) || rate < 1) { customCatRate.focus(); return; }
+      if (!selectedIconKey) { return; }
+      const cat = { key: "custom_" + Date.now(), label, rate, icon: selectedIconKey };
+      customCats.push(cat);
+      timeSpent[cat.key] = 0;
+      timeSpent[cat.key + "Sessions"] = 0;
+      saveUserDoc(uid, { customCats, timeSpent });
+      renderCustomCard(cat);
+      recalcAll(cat.key);
+      customCatModal.classList.remove("open");
+    });
+
+    // Borrar categoría personalizada (con confirmación)
+    document.querySelector(".categories-grid").addEventListener("click", (e) => {
+      const del = e.target.closest(".cat-del");
+      if (!del) return;
+      e.stopPropagation();
+      const key = del.dataset.key;
+      const cat = customCats.find(c => c.key === key);
+      if (!cat) return;
+      if (!confirm(`Delete "${cat.label}" and its progress?`)) return;
+      customCats = customCats.filter(c => c.key !== key);
+      delete timeSpent[key];
+      delete timeSpent[key + "Sessions"];
+      saveUserDoc(uid, { customCats, timeSpent });
+      const card = document.querySelector(`.category-card[data-cat="${key}"]`);
+      if (card) card.remove();
+      updateYearBar();
+    });
+
+    /* -- Transición dinámica entre páginas (v2) -- */
+    document.querySelectorAll('.nav-item a, .header h1 a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const href = link.getAttribute('href');
+        if (!href || href.startsWith('#')) return;
+        e.preventDefault();
+        document.body.style.transition = 'opacity 0.22s ease, transform 0.22s ease';
+        document.body.style.opacity = '0';
+        document.body.style.transform = 'translateY(-6px)';
+        setTimeout(() => { window.location.href = href; }, 200);
+      });
+    });
+  </script>
+  <script type="module" src="dock-nav.js"></script>
+</body>
+</html>
