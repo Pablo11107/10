@@ -114,7 +114,7 @@
 <body>
 
   <header class="header">
-    <h1>Focus.</h1>
+    <h1 id="focusTitle" aria-label="True Focus.">True Focus.</h1>
   </header>
 
   <div class="auth-container">
@@ -208,6 +208,18 @@
         errorMsg.textContent = translateError(err.code);
         submitBtn.disabled = false;
       }
+    });
+
+    // Wordmark animado "True Focus." (efecto autofocus)
+    import("./true-focus.js").then(({ mountTrueFocus }) => {
+      mountTrueFocus(document.getElementById("focusTitle"), {
+        sentence: "True Focus.",
+        blurAmount: 5,
+        borderColor: "#57e32c",
+        glowColor: "rgba(87, 227, 44, 0.6)",
+        animationDuration: 0.5,
+        pauseBetweenAnimations: 1.2
+      });
     });
 
     function translateError(code) {

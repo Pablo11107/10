@@ -146,6 +146,84 @@ const DOCK_CSS = `
 @media (prefers-reduced-motion: reduce) {
   .dock-label { transition: none; }
 }
+
+/* --- Lente "fluid glass": sigue al cursor/dedo sobre el dock.
+       Puerto ligero del modo lens de FluidGlass (React Bits):
+       refracción (clon aumentado del contenido), fresnel,
+       aberración cromática en el borde y brillo especular. --- */
+.dock-lens {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: var(--lens-size, 62px);
+  height: var(--lens-size, 62px);
+  margin-top: calc(var(--lens-size, 62px) / -2);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  overflow: hidden;
+  z-index: 5;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(2.5px) saturate(1.35) brightness(1.1);
+  -webkit-backdrop-filter: blur(2.5px) saturate(1.35) brightness(1.1);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.22),
+    inset -6px -9px 16px rgba(0, 0, 0, 0.28),
+    inset 6px 9px 16px rgba(255, 255, 255, 0.10),
+    0 8px 22px rgba(0, 0, 0, 0.4);
+}
+.dock-lens.visible { opacity: 1; }
+
+/* Contenido refractado: clon del panel, aumentado. */
+.dock-lens-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.dock-panel-clone {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.7rem;
+  padding: 0 0.6rem 0.55rem;
+  width: max-content;
+}
+.dock-lens .dock-label { display: none !important; }
+.dock-lens .dock-item { box-shadow: none; }
+
+/* Aberración cromática + fresnel en el borde de la lente. */
+.dock-lens::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 130deg,
+    rgba(255, 80, 120, 0.35),
+    rgba(120, 200, 255, 0.35),
+    rgba(150, 255, 160, 0.30),
+    rgba(255, 210, 120, 0.32),
+    rgba(255, 80, 120, 0.35)
+  );
+  -webkit-mask: radial-gradient(circle, transparent 62%, #000 78%, transparent 99%);
+  mask: radial-gradient(circle, transparent 62%, #000 78%, transparent 99%);
+  mix-blend-mode: screen;
+}
+
+/* Brillo especular arriba-izquierda (como la esfera de FluidGlass). */
+.dock-lens::after {
+  content: "";
+  position: absolute;
+  top: 8%;
+  left: 12%;
+  width: 42%;
+  height: 30%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 70%);
+  transform: rotate(-18deg);
+}
 `;
 
 const REDUCED_MOTION =
@@ -215,6 +293,34 @@ export function mountDockNav(container, options = {}) {
   const els = Array.from(container.querySelectorAll(".dock-item"));
   const springs = els.map(() => createSpring(baseItemSize, spring));
 
+  // ---------- lente fluid glass ----------
+  // Clon del contenido del panel dentro de una lente circular que
+  // sigue al puntero. El clon va escalado (LENS_ZOOM) y desplazado
+  // para que el punto bajo el puntero quede centrado en la lente:
+  // eso ES la refracción/aumento del modo lens de FluidGlass.
+  const LENS_SIZE = Math.round(baseItemSize * 1.4);
+  const LENS_ZOOM = 1.24;
+  const lens = document.createElement("div");
+  lens.className = "dock-lens";
+  lens.setAttribute("aria-hidden", "true");
+  lens.style.setProperty("--lens-size", `${LENS_SIZE}px`);
+  const lensContent = document.createElement("div");
+  lensContent.className = "dock-lens-content";
+  const panelClone = document.createElement("div");
+  panelClone.className = "dock-panel-clone";
+  const cloneEls = els.map((el) => {
+    const c = el.cloneNode(true);
+    c.removeAttribute("href");
+    c.setAttribute("tabindex", "-1");
+    panelClone.appendChild(c);
+    return c;
+  });
+  lensContent.appendChild(panelClone);
+  lens.appendChild(lensContent);
+  panel.appendChild(lens);
+  // Muelle propio para la lente: más blando, se siente "líquida".
+  const lensSpring = createSpring(0, { mass: 0.18, stiffness: 120, damping: 14 });
+
   let pointerX = Infinity;
   let raf = 0;
   let running = false;
@@ -241,8 +347,34 @@ export function mountDockNav(container, options = {}) {
 
       el.style.width = `${size}px`;
       el.style.height = `${size}px`;
+      // El clon dentro de la lente replica el tamaño del item real
+      // para que la refracción sea coherente con lo que hay debajo.
+      cloneEls[i].style.width = `${size}px`;
+      cloneEls[i].style.height = `${size}px`;
       if (!springs[i].settled) anySettling = true;
     });
+
+    // ---------- lente fluid glass ----------
+    const panelRect = panel.getBoundingClientRect();
+    const over = pointerX !== Infinity;
+    if (over) {
+      // Objetivo: posición X del puntero relativa al panel, acotada.
+      const localX = Math.max(0, Math.min(pointerX - panelRect.left, panelRect.width));
+      lensSpring.setTarget(localX);
+    }
+    const lensX = REDUCED_MOTION
+      ? (lensSpring.snap(lensSpring.value), lensSpring.value)
+      : lensSpring.step(dt);
+    if (!lensSpring.settled) anySettling = true;
+
+    lens.classList.toggle("visible", over && !REDUCED_MOTION);
+    lens.style.transform = `translateX(${lensX - LENS_SIZE / 2}px)`;
+    // Refracción: el punto (lensX, centroY) del panel debe quedar en
+    // el centro de la lente, aumentado LENS_ZOOM veces.
+    const centerY = panelRect.height / 2;
+    lensContent.style.transform =
+      `translate(${LENS_SIZE / 2 - lensX * LENS_ZOOM}px, ` +
+      `${LENS_SIZE / 2 - centerY * LENS_ZOOM}px) scale(${LENS_ZOOM})`;
 
     if (anySettling || pointerX !== Infinity) {
       raf = requestAnimationFrame(frame);
