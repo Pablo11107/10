@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap"
     rel="stylesheet"
   >
 
@@ -27,9 +27,71 @@
     .header {
       background-color: #000;
       text-align: center;
-      padding: 2rem 1rem;
+      padding: 2.5rem 1rem;
     }
-    .header h1 { font-size: 3rem; font-weight: 700; }
+
+    /* =====================================================
+       TrueFocus — port a vanilla JS/CSS del componente React
+       (palabras desenfocadas + marco de esquinas animado)
+       ===================================================== */
+    .focus-container {
+      position: relative;
+      display: flex;
+      gap: 0.6em;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: clamp(2.2rem, 8vw, 3rem);
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .focus-word {
+      position: relative;
+      color: #fff;
+      cursor: default;
+      transition: filter 0.5s ease;
+    }
+
+    .focus-frame {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      box-sizing: content-box;
+      border: none;
+      transition:
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        width 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        height 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.3s ease;
+    }
+
+    .focus-frame .corner {
+      position: absolute;
+      width: 1rem;
+      height: 1rem;
+      border: 3px solid var(--border-color, #57e32c);
+      filter: drop-shadow(0 0 4px var(--glow-color, rgba(87, 227, 44, 0.6)));
+      border-radius: 3px;
+      transition: none;
+    }
+    .focus-frame .corner.top-left {
+      top: -10px; left: -10px;
+      border-right: none; border-bottom: none;
+    }
+    .focus-frame .corner.top-right {
+      top: -10px; right: -10px;
+      border-left: none; border-bottom: none;
+    }
+    .focus-frame .corner.bottom-left {
+      bottom: -10px; left: -10px;
+      border-right: none; border-top: none;
+    }
+    .focus-frame .corner.bottom-right {
+      bottom: -10px; right: -10px;
+      border-left: none; border-top: none;
+    }
 
     .auth-container {
       flex: 1;
@@ -145,7 +207,7 @@
 <body>
 
   <header class="header">
-    <h1>Focus.</h1>
+    <h1 class="focus-container" id="trueFocus" aria-label="Focus."></h1>
   </header>
 
   <div class="auth-container">
@@ -177,6 +239,84 @@
       </p>
     </div>
   </div>
+
+  <script>
+    // =====================================================
+    // TrueFocus (vanilla) — mismo comportamiento que el
+    // componente React: cada palabra se enfoca por turnos,
+    // el resto se desenfoca, y un marco de esquinas con glow
+    // viaja hasta la palabra activa.
+    // =====================================================
+    (function () {
+      // --- Configuración (equivalente a las props del componente) ---
+      const SENTENCE = "Focus. Progress. Legacy.";  // cámbialo por el texto que quieras
+      const SEPARATOR = " ";
+      const BLUR_AMOUNT = 5;                         // px de desenfoque
+      const BORDER_COLOR = "#57e32c";                // verde de la marca
+      const GLOW_COLOR = "rgba(87, 227, 44, 0.6)";
+      const ANIMATION_DURATION = 0.5;                // s
+      const PAUSE_BETWEEN = 1;                       // s
+
+      const container = document.getElementById("trueFocus");
+      const words = SENTENCE.split(SEPARATOR);
+      let currentIndex = 0;
+
+      // Palabras
+      const wordEls = words.map((word) => {
+        const span = document.createElement("span");
+        span.className = "focus-word";
+        span.textContent = word;
+        span.style.transition = `filter ${ANIMATION_DURATION}s ease`;
+        container.appendChild(span);
+        return span;
+      });
+
+      // Marco de esquinas
+      const frame = document.createElement("div");
+      frame.className = "focus-frame";
+      frame.style.setProperty("--border-color", BORDER_COLOR);
+      frame.style.setProperty("--glow-color", GLOW_COLOR);
+      frame.style.opacity = "0";
+      ["top-left", "top-right", "bottom-left", "bottom-right"].forEach((pos) => {
+        const c = document.createElement("span");
+        c.className = `corner ${pos}`;
+        frame.appendChild(c);
+      });
+      container.appendChild(frame);
+
+      function applyFocus(index) {
+        wordEls.forEach((el, i) => {
+          el.style.filter = i === index ? "blur(0px)" : `blur(${BLUR_AMOUNT}px)`;
+        });
+
+        const parentRect = container.getBoundingClientRect();
+        const activeRect = wordEls[index].getBoundingClientRect();
+        frame.style.width = `${activeRect.width}px`;
+        frame.style.height = `${activeRect.height}px`;
+        frame.style.transform =
+          `translate(${activeRect.left - parentRect.left}px, ${activeRect.top - parentRect.top}px)`;
+        frame.style.opacity = "1";
+      }
+
+      // Primer posicionamiento cuando la fuente Inter ya está cargada
+      // (si no, el marco se mediría con la fuente de sistema y quedaría torcido)
+      const start = () => {
+        applyFocus(currentIndex);
+        setInterval(() => {
+          currentIndex = (currentIndex + 1) % words.length;
+          applyFocus(currentIndex);
+        }, (ANIMATION_DURATION + PAUSE_BETWEEN) * 1000);
+      };
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(start);
+      } else {
+        window.addEventListener("load", start);
+      }
+
+      // Reposicionar el marco si cambia el tamaño de la ventana / giro del móvil
+      window.addEventListener("resize", () => applyFocus(currentIndex));
+    })();
+  </script>
 
   <script type="module">
     import { auth, loginWithGoogle } from "./firebase-init.js";
