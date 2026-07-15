@@ -332,7 +332,81 @@
 
     .modal { width: 300px; }
     .modal-minutes { width: 300px; }
-    .modal-profile { width: 320px; align-items: stretch; }
+    .modal-profile {
+      width: 340px;
+      align-items: stretch;
+      max-height: 85vh;
+      max-height: 85dvh;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    /* --- Menú de perfil: secciones --- */
+    .profile-section-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #8a8794;
+      margin-top: 1.4rem;
+      padding-top: 1.1rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .profile-section-title.danger { color: #ff6b6b; }
+
+    .avatar-row {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      margin-top: 0.6rem;
+    }
+    .avatar-row .avatar-preview { margin: 0; flex-shrink: 0; }
+    .avatar-change-btn {
+      background-color: #2F2E37;
+      color: #F5F5F7;
+      border-radius: 10px;
+      padding: 0.55rem 0.9rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      user-select: none;
+    }
+    .avatar-change-btn:hover { background-color: #3F3D46; }
+
+    .account-facts {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      margin-top: 0.6rem;
+      background: rgba(255,255,255,0.04);
+      border-radius: 10px;
+      padding: 0.7rem 0.8rem;
+    }
+    .account-fact { display: flex; justify-content: space-between; gap: 0.8rem; font-size: 0.8rem; }
+    .account-fact .fact-label { color: #8a8794; flex-shrink: 0; }
+    .account-fact .fact-value { color: #F5F5F7; text-align: right; word-break: break-all; }
+
+    .profile-error {
+      color: #ff6b6b;
+      font-size: 0.78rem;
+      min-height: 0.9rem;
+      margin-top: 0.4rem;
+    }
+
+    .modal-profile .danger-btn {
+      background-color: transparent;
+      color: #ff6b6b;
+      border: 1.5px solid rgba(255, 107, 107, 0.55);
+    }
+    .modal-profile .danger-btn:hover { background-color: rgba(255, 107, 107, 0.12); }
+    .danger-hint {
+      font-size: 0.76rem;
+      color: #8a8794;
+      line-height: 1.45;
+      margin-top: 0.5rem;
+    }
+    .danger-hint strong { color: #ff6b6b; }
 
     .modal-icon {
       font-size: 2.2rem;
@@ -775,10 +849,8 @@
     <!-- Botón "Reset progress bars" -->
     <button class="btn action-btn" id="resetBtn">Reset progress bars</button>
 
-    <!-- Botón "Upload profile information" -->
-    <button class="btn action-btn" id="uploadProfileBtn">Upload profile information</button>
-
-    <a href="books.html" class="btn action-btn" style="display:block; text-decoration:none; box-sizing:border-box;">📚 Book recommendations</a>
+    <!-- Botón "Profile & account" -->
+    <button class="btn action-btn" id="uploadProfileBtn">Profile &amp; account</button>
 
     <button class="btn action-btn" id="logoutBtn">Log out</button>
     
@@ -827,13 +899,20 @@
     </div>
   </div>
 
-  <!-- Modal: Profile Info -->
+  <!-- Modal: Profile & account -->
   <div class="modal-overlay-profile" id="profileModal">
     <div class="modal-profile">
       <button class="close-profile-btn" id="closeProfileModal">✕</button>
-      <h3>Upload Profile Information</h3>
+      <h3>Profile &amp; account</h3>
 
-      <div class="avatar-preview" id="avatarPreview"></div>
+      <!-- ===== Sección: perfil público ===== -->
+      <div class="profile-section-title">Profile</div>
+
+      <div class="avatar-row">
+        <div class="avatar-preview" id="avatarPreview"></div>
+        <label class="avatar-change-btn" for="profilePic">Change photo</label>
+        <input type="file" id="profilePic" accept="image/*" hidden>
+      </div>
 
       <label for="realName">Real Name</label>
       <input type="text" id="realName" placeholder="John Doe">
@@ -844,10 +923,41 @@
       <label for="description">Description</label>
       <textarea id="description" rows="3" placeholder="Tell us about yourself..."></textarea>
 
-      <label for="profilePic">Profile Picture</label>
-      <input type="file" id="profilePic" accept="image/*">
+      <button id="saveProfileBtn">Save profile</button>
 
-      <button id="saveProfileBtn">Save</button>
+      <!-- ===== Sección: cuenta y seguridad ===== -->
+      <div class="profile-section-title">Account &amp; security</div>
+
+      <div class="account-facts">
+        <div class="account-fact">
+          <span class="fact-label">Email</span>
+          <span class="fact-value" id="accountEmail">—</span>
+        </div>
+        <div class="account-fact">
+          <span class="fact-label">Member since</span>
+          <span class="fact-value" id="accountSince">—</span>
+        </div>
+      </div>
+
+      <label for="currentPassword">Current password</label>
+      <input type="password" id="currentPassword" placeholder="••••••••" autocomplete="current-password">
+
+      <label for="newPassword">New password</label>
+      <input type="password" id="newPassword" placeholder="At least 6 characters" autocomplete="new-password">
+
+      <label for="confirmPassword">Confirm new password</label>
+      <input type="password" id="confirmPassword" placeholder="Repeat the new password" autocomplete="new-password">
+
+      <p class="profile-error" id="passwordError"></p>
+      <button id="changePasswordBtn">Update password</button>
+
+      <!-- ===== Sección: zona de peligro ===== -->
+      <div class="profile-section-title danger">Danger zone</div>
+      <p class="danger-hint">Deleting your account is permanent: your profile and progress are removed and you'll be signed out. Type <strong>DELETE</strong> and enter your password to confirm.</p>
+      <input type="text" id="deleteConfirmText" placeholder='Type "DELETE" to confirm' autocomplete="off">
+      <input type="password" id="deletePassword" placeholder="Your password" autocomplete="current-password">
+      <p class="profile-error" id="deleteError"></p>
+      <button id="deleteAccountBtn" class="danger-btn">Delete account</button>
     </div>
   </div>
 
@@ -1298,6 +1408,106 @@
       showToast("Profile information saved!");
       profileModal.classList.remove("open");
     }
+
+    /* -- Cuenta y seguridad -- */
+    const accountEmail       = document.getElementById("accountEmail");
+    const accountSince       = document.getElementById("accountSince");
+    const currentPasswordIn  = document.getElementById("currentPassword");
+    const newPasswordIn      = document.getElementById("newPassword");
+    const confirmPasswordIn  = document.getElementById("confirmPassword");
+    const passwordError      = document.getElementById("passwordError");
+    const changePasswordBtn  = document.getElementById("changePasswordBtn");
+    const deleteConfirmText  = document.getElementById("deleteConfirmText");
+    const deletePasswordIn   = document.getElementById("deletePassword");
+    const deleteError        = document.getElementById("deleteError");
+    const deleteAccountBtn   = document.getElementById("deleteAccountBtn");
+
+    // Datos de la cuenta (solo lectura)
+    accountEmail.textContent = user.email || "—";
+    if (user.metadata?.creationTime) {
+      accountSince.textContent = new Date(user.metadata.creationTime)
+        .toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+    }
+
+    function translateAuthError(code) {
+      switch (code) {
+        case "auth/wrong-password":
+        case "auth/invalid-credential":     return "Incorrect current password.";
+        case "auth/weak-password":          return "The new password must be at least 6 characters.";
+        case "auth/too-many-requests":      return "Too many attempts. Try again in a few minutes.";
+        case "auth/requires-recent-login":  return "For security, log out and back in, then try again.";
+        default:                            return "Something went wrong. Please try again.";
+      }
+    }
+
+    changePasswordBtn.addEventListener("click", async () => {
+      passwordError.textContent = "";
+      const current = currentPasswordIn.value;
+      const next    = newPasswordIn.value;
+      const confirm = confirmPasswordIn.value;
+
+      if (!current || !next || !confirm) {
+        passwordError.textContent = "Fill in all three password fields."; return;
+      }
+      if (next.length < 6) {
+        passwordError.textContent = "The new password must be at least 6 characters."; return;
+      }
+      if (next !== confirm) {
+        passwordError.textContent = "The new passwords don't match."; return;
+      }
+
+      changePasswordBtn.disabled = true;
+      changePasswordBtn.textContent = "Updating...";
+      try {
+        const { EmailAuthProvider, reauthenticateWithCredential, updatePassword } =
+          await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+        const credential = EmailAuthProvider.credential(user.email, current);
+        await reauthenticateWithCredential(user, credential);
+        await updatePassword(user, next);
+        currentPasswordIn.value = newPasswordIn.value = confirmPasswordIn.value = "";
+        showToast("Password updated!");
+      } catch (err) {
+        console.error(err);
+        passwordError.textContent = translateAuthError(err.code);
+      } finally {
+        changePasswordBtn.disabled = false;
+        changePasswordBtn.textContent = "Update password";
+      }
+    });
+
+    deleteAccountBtn.addEventListener("click", async () => {
+      deleteError.textContent = "";
+      if (deleteConfirmText.value.trim() !== "DELETE") {
+        deleteError.textContent = 'Type "DELETE" (in capitals) to confirm.'; return;
+      }
+      if (!deletePasswordIn.value) {
+        deleteError.textContent = "Enter your password to confirm."; return;
+      }
+      if (!window.confirm("This will permanently delete your Focus account. Are you absolutely sure?")) {
+        return;
+      }
+
+      deleteAccountBtn.disabled = true;
+      deleteAccountBtn.textContent = "Deleting...";
+      try {
+        const { EmailAuthProvider, reauthenticateWithCredential, deleteUser } =
+          await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+        const { doc, deleteDoc } =
+          await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+        const { db } = await import("./firebase-init.js");
+
+        const credential = EmailAuthProvider.credential(user.email, deletePasswordIn.value);
+        await reauthenticateWithCredential(user, credential);
+        await deleteDoc(doc(db, "users", uid));   // documento principal del usuario
+        await deleteUser(user);                    // cuenta de autenticación
+        window.location.href = "login.html";
+      } catch (err) {
+        console.error(err);
+        deleteError.textContent = translateAuthError(err.code);
+        deleteAccountBtn.disabled = false;
+        deleteAccountBtn.textContent = "Delete account";
+      }
+    });
 
     /* -- Inicializamos la página con los datos ya cargados de Firestore -- */
     updateYearBar();
