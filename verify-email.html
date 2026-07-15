@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Focus. — Verifica tu email</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #0d0d0d;
+      color: #fff;
+      font-family: system-ui, -apple-system, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .header { padding: 1.2rem 1.5rem; }
+    .header h1 { margin: 0; font-size: 1.4rem; }
+    .box {
+      max-width: 420px;
+      margin: 10vh auto 0;
+      padding: 2rem;
+      background-color: #161616;
+      border-radius: 12px;
+      text-align: center;
+    }
+    .box h2 { margin-top: 0; }
+    .box p { color: #aaa; line-height: 1.5; }
+    .box strong { color: #fff; }
+    button {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #checkBtn { background-color: #57e32c; color: #000; }
+    #checkBtn:hover { background-color: #45c229; }
+    #resendBtn { background-color: #1f1f1f; color: #fff; }
+    #resendBtn:hover { background-color: #2a2a2a; }
+    #logoutLink {
+      display: inline-block;
+      margin-top: 1.2rem;
+      color: #57e32c;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    #logoutLink:hover { text-decoration: underline; }
+    #msg { min-height: 1.2rem; margin-top: 1rem; font-size: 0.85rem; }
+    #msg.ok { color: #57e32c; }
+    #msg.err { color: #ff6b6b; }
+  </style>
+</head>
+<body>
+
+  <header class="header"><h1>Focus.</h1></header>
+
+  <div class="box">
+    <h2>Verifica tu email</h2>
+    <p>Te hemos enviado un enlace de verificación a
+      <strong id="userEmail">tu correo</strong>.<br>
+      Ábrelo para confirmar que este email te pertenece.</p>
+
+    <button id="checkBtn">Ya lo he verificado</button>
+    <button id="resendBtn">Reenviar email</button>
+    <p id="msg"></p>
+    <a id="logoutLink">Usar otra cuenta</a>
+  </div>
+
+  <script type="module">
+    import { auth, logout } from "./firebase-init.js";
+    import {
+      onAuthStateChanged,
+      sendEmailVerification,
+      reload
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const userEmail = document.getElementById("userEmail");
+    const checkBtn  = document.getElementById("checkBtn");
+    const resendBtn = document.getElementById("resendBtn");
+    const msg       = document.getElementById("msg");
+
+    let currentUser = null;
+
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        // Nadie logueado: no hay nada que verificar
+        window.location.href = "login.html";
+        return;
+      }
+      if (user.emailVerified) {
+        window.location.href = "index.html";
+        return;
+      }
+      currentUser = user;
+      userEmail.textContent = user.email || "tu correo";
+    });
+
+    checkBtn.addEventListener("click", async () => {
+      if (!currentUser) return;
+      msg.textContent = "";
+      checkBtn.disabled = true;
+      try {
+        await reload(currentUser);
+        if (currentUser.emailVerified) {
+          window.location.href = "index.html";
+        } else {
+          msg.className = "err";
+          msg.textContent = "Todavía no aparece como verificado. Revisa tu bandeja (y spam).";
+        }
+      } finally {
+        checkBtn.disabled = false;
+      }
+    });
+
+    resendBtn.addEventListener("click", async () => {
+      if (!currentUser) return;
+      msg.textContent = "";
+      resendBtn.disabled = true;
+      try {
+        await sendEmailVerification(currentUser);
+        msg.className = "ok";
+        msg.textContent = "Email reenviado. Puede tardar un par de minutos.";
+      } catch (err) {
+        msg.className = "err";
+        msg.textContent = err.code === "auth/too-many-requests"
+          ? "Demasiados intentos. Espera unos minutos antes de reenviar."
+          : "No se pudo reenviar. Inténtalo de nuevo.";
+      } finally {
+        // Pequeño cooldown para no agotar la cuota de Firebase
+        setTimeout(() => { resendBtn.disabled = false; }, 30000);
+      }
+    });
+
+    document.getElementById("logoutLink").addEventListener("click", () => logout());
+  </script>
+</body>
+</html>
