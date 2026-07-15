@@ -7,7 +7,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
   getAuth,
   onAuthStateChanged,
-  signOut
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
   getFirestore,
@@ -79,12 +81,22 @@ export function resizeImageFile(file, maxWidth = 800, quality = 0.7) {
 
 // Espera a saber si hay usuario logueado.
 // Si NO lo hay, redirige a login.html.
-// Si lo hay, devuelve el objeto user.
+// Si lo hay pero se registró con contraseña y NO ha verificado
+// su email, lo manda a verify-email.html (candado global de la app).
+// Si todo está bien, devuelve el objeto user.
 export function requireAuth() {
   return new Promise((resolve) => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       unsubscribe();
       if (user) {
+        // Exigir email verificado a los usuarios de email+contraseña.
+        // (Google ya verifica el email por su cuenta, así que se salta este paso.)
+        const usaPassword = user.providerData.some(p => p.providerId === "password");
+        if (usaPassword && !user.emailVerified) {
+          window.location.href = "verify-email.html";
+          return;
+        }
+
         // Guardamos el email en su documento para poder encontrarlo al invitarlo a un chat
         try {
           await setDoc(doc(db, "users", user.uid), { email: (user.email || "").toLowerCase() }, { merge: true });
@@ -103,6 +115,18 @@ export function logout() {
   return signOut(auth).then(() => {
     window.location.href = "login.html";
   });
+}
+
+// =======================================================
+// Login social: Google
+// Google ya verifica el email por su cuenta, así que sus
+// usuarios entran directos sin paso de verificación.
+// =======================================================
+
+export async function loginWithGoogle() {
+  const provider = new GoogleAuthProvider();
+  const result = await signInWithPopup(auth, provider);
+  return result.user;
 }
 
 // =======================================================

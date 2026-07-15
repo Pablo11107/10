@@ -88,6 +88,37 @@
     }
     .auth-box button:hover { background-color: #45c229; }
 
+    /* Botón de Google */
+    .social-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 1.5rem 0 0;
+      color: #666;
+      font-size: 0.8rem;
+    }
+    .social-divider::before,
+    .social-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background-color: #3a3a3a;
+    }
+
+    .auth-box button.social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      background-color: #1f1f1f;
+      color: #fff;
+      border: 1px solid #3a3a3a;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .auth-box button.social-btn:hover { background-color: #2a2a2a; }
+
     .switch-mode {
       text-align: center;
       margin-top: 1.2rem;
@@ -114,7 +145,7 @@
 <body>
 
   <header class="header">
-    <h1 id="focusTitle" aria-label="Just Focus.">True Focus.</h1>
+    <h1>Focus.</h1>
   </header>
 
   <div class="auth-container">
@@ -131,6 +162,13 @@
         <button type="submit" id="submitBtn">Log in</button>
       </form>
 
+      <div class="social-divider"><span>o continúa con</span></div>
+
+      <button type="button" class="social-btn" id="googleBtn">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#4285F4" d="M23.5 12.3c0-.9-.1-1.5-.3-2.2H12v4.1h6.5c-.1 1.1-.8 2.7-2.4 3.8l3.7 2.9c2.2-2.1 3.7-5.1 3.7-8.6z"/><path fill="#34A853" d="M12 24c3.2 0 5.9-1.1 7.9-2.9l-3.7-2.9c-1 .7-2.4 1.2-4.2 1.2-3.2 0-5.9-2.1-6.8-5.1L1.3 17.2C3.3 21.2 7.3 24 12 24z"/><path fill="#FBBC05" d="M5.2 14.3c-.2-.7-.4-1.5-.4-2.3s.1-1.6.4-2.3L1.3 6.8C.5 8.4 0 10.1 0 12s.5 3.6 1.3 5.2l3.9-2.9z"/><path fill="#EA4335" d="M12 4.7c1.8 0 3 .8 3.7 1.4l3.3-3.2C17.9 1.1 15.2 0 12 0 7.3 0 3.3 2.8 1.3 6.8l3.9 2.9c.9-3 3.6-5 6.8-5z"/></svg>
+        Google
+      </button>
+
       <p id="errorMsg"></p>
 
       <p class="switch-mode">
@@ -141,18 +179,26 @@
   </div>
 
   <script type="module">
-    import { auth } from "./firebase-init.js";
+    import { auth, loginWithGoogle } from "./firebase-init.js";
     import {
       signInWithEmailAndPassword,
       createUserWithEmailAndPassword,
-      onAuthStateChanged
+      onAuthStateChanged,
+      sendEmailVerification
     } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    // Si ya hay sesión iniciada, vamos directos a la app
+    // Si ya hay sesión iniciada, decidimos a dónde va:
+    // - usuario de contraseña SIN verificar -> verify-email.html
+    // - resto -> directo a la app
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        sessionStorage.setItem("focus-entry", "login");
-        window.location.href = "index.html";
+        const usaPassword = user.providerData.some(p => p.providerId === "password");
+        if (usaPassword && !user.emailVerified) {
+          window.location.href = "verify-email.html";
+        } else {
+          sessionStorage.setItem("focus-entry", "login");
+          window.location.href = "index.html";
+        }
       }
     });
 
@@ -197,29 +243,42 @@
 
       try {
         if (mode === "login") {
-          await signInWithEmailAndPassword(auth, email, password);
+          const cred = await signInWithEmailAndPassword(auth, email, password);
+          // Candado: si nunca verificó su email, no entra a la app
+          if (!cred.user.emailVerified) {
+            window.location.href = "verify-email.html";
+            return;
+          }
+          sessionStorage.setItem("focus-entry", "login");
+          window.location.href = "index.html";
         } else {
-          await createUserWithEmailAndPassword(auth, email, password);
+          // SIGN UP: creamos la cuenta, enviamos el enlace de verificación
+          // y mandamos al usuario a la página de espera. No entra a la app
+          // hasta que pulse el enlace de su correo.
+          const cred = await createUserWithEmailAndPassword(auth, email, password);
+          await sendEmailVerification(cred.user);
+          sessionStorage.setItem("focus-entry", "signup");
+          window.location.href = "verify-email.html";
         }
-        // Marca la vía de entrada para que el splash salude según el caso.
-        sessionStorage.setItem("focus-entry", mode); // "login" | "signup"
-        window.location.href = "index.html";
       } catch (err) {
         errorMsg.textContent = translateError(err.code);
         submitBtn.disabled = false;
       }
     });
 
-    // Wordmark animado "True Focus." (efecto autofocus)
-    import("./true-focus.js").then(({ mountTrueFocus }) => {
-      mountTrueFocus(document.getElementById("focusTitle"), {
-        sentence: "Just Focus.",
-        blurAmount: 5,
-        borderColor: "#57e32c",
-        glowColor: "rgba(87, 227, 44, 0.6)",
-        animationDuration: 0.5,
-        pauseBetweenAnimations: 1.2
-      });
+    // ---- Login con Google ----
+    document.getElementById("googleBtn").addEventListener("click", async () => {
+      errorMsg.textContent = "";
+      try {
+        await loginWithGoogle();
+        sessionStorage.setItem("focus-entry", "login");
+        window.location.href = "index.html";
+      } catch (err) {
+        if (err.code !== "auth/popup-closed-by-user") {
+          console.error(err);
+          errorMsg.textContent = "No se pudo iniciar sesión con Google.";
+        }
+      }
     });
 
     function translateError(code) {
@@ -227,8 +286,10 @@
         case "auth/invalid-email": return "El email no es válido.";
         case "auth/user-not-found": return "No existe ninguna cuenta con ese email.";
         case "auth/wrong-password": return "Contraseña incorrecta.";
+        case "auth/invalid-credential": return "Email o contraseña incorrectos.";
         case "auth/email-already-in-use": return "Ya existe una cuenta con ese email.";
         case "auth/weak-password": return "La contraseña debe tener al menos 6 caracteres.";
+        case "auth/too-many-requests": return "Demasiados intentos. Espera unos minutos.";
         default: return "Algo ha ido mal. Inténtalo de nuevo.";
       }
     }
