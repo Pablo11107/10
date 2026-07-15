@@ -341,20 +341,31 @@
       cursor: pointer; transition: background-color 0.2s, border-color 0.2s;
     }
     .prompt-chip:hover { background-color: #2F2E37; border-color: #D4AF6D; }
-    .companion-input-row { display: flex; gap: 0.5rem; }
-    .companion-input-row input {
-      flex: 1; border: 2px solid #2F2E37; border-radius: 20px;
-      padding: 0.65rem 1rem; outline: none; font-size: 0.92rem;
-      background-color: #100F19; color: #fff; font-family: inherit;
-      transition: border-color 0.2s;
+    /* Banner "Soon": la IA conversacional aún no está disponible */
+    .companion-soon {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      background: rgba(212, 175, 109, 0.06);
+      border: 1px dashed rgba(212, 175, 109, 0.4);
+      border-radius: 14px;
+      padding: 0.85rem 1rem;
+      margin-top: 0.8rem;
     }
-    .companion-input-row input:focus { border-color: #D4AF6D; }
-    .companion-input-row button {
-      background-color: #D4AF6D; border: none; color: #100F19; font-weight: 700;
-      border-radius: 20px; padding: 0 1.3rem; cursor: pointer; font-size: 0.85rem;
-      transition: background-color 0.2s;
+    .companion-soon-text { display: flex; flex-direction: column; gap: 0.2rem; flex: 1; }
+    .companion-soon-text strong { font-size: 0.85rem; color: #F5F5F7; }
+    .companion-soon-text span { font-size: 0.76rem; color: #999; line-height: 1.45; }
+    .soon-badge {
+      flex-shrink: 0;
+      background: #D4AF6D;
+      color: #100F19;
+      font-size: 0.66rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.6rem;
+      border-radius: 999px;
     }
-    .companion-input-row button:hover { background-color: #e3c184; }
 
     .footer-space { height: 2.5rem; }
 
@@ -1442,68 +1453,22 @@
           : `Todavía es pronto para medallas grandes, pero la primera ya está disponible: la sesión de hoy. Fogg demostró que celebrar en pequeño justo después de actuar es lo que fija el hábito — así que hazla, aunque sean 5 minutos, y date el reconocimiento.`;
       },
     };
-    // Intérprete de texto libre: mapea lo que escribes a la consulta más cercana
-    const COMPANION_KEYWORDS = {
-      quit: ['rendir', 'dejar', 'abandon', 'tirar la toalla', 'no puedo mas', 'no puedo más'],
-      streakBroken: ['roto', 'rompi', 'rompí', 'perdido la racha', 'perdí la racha', 'fallado', 'fallé', 'falle'],
-      noMotivation: ['ganas', 'motivacion', 'motivación', 'pereza', 'vago', 'cansado de esto', 'desmotiv'],
-      bestDay: ['mejor dia', 'mejor día', 'que dia', 'qué día', 'dia de la semana', 'día de la semana'],
-      weakSpot: ['flojeando', 'flojo', 'peor', 'debil', 'débil', 'descuid', 'fallando'],
-      lastMonth: ['mes pasado', 'ultimo mes', 'último mes', 'comparado', 'antes', 'progreso este mes'],
-      weekPlan: ['plan', 'semana', 'organiza', 'horario', 'rutina'],
-      automatic: ['automatico', 'automático', '66', 'habito', 'hábito', 'cuanto falta', 'cuánto falta'],
-      balance: ['equilibr', 'balance', 'centrado', 'obsesion', 'obsesión', 'variedad'],
-      rest: ['descans', 'culpa', 'parar', 'pausa', 'vacaciones', 'dia libre', 'día libre'],
-      science: ['ciencia', 'estudio', 'racha', 'investigacion', 'investigación', 'psicolog'],
-      improving: ['mejorando', 'mejoro', 'avanzo', 'avanzando', 'sirve de algo', 'vale la pena', 'merece la pena'],
-      why: ['por que empece', 'por qué empecé', 'porque empece', 'mi porque', 'mi porqué', 'proposito', 'propósito', 'razon', 'razón'],
-      future: ['yo futuro', 'futuro yo', 'consejo', 'que deberia saber', 'qué debería saber'],
-      trend: ['tendencia', 'a mejor', 'a peor', 'mejorando o empeorando', 'regresion', 'regresión', 'pendiente'],
-      hsi: ['fuerte', 'fuerza del habito', 'fuerza del hábito', 'indice', 'índice', 'consolidado', 'solido', 'sólido'],
-      selfefficacy: ['capaz', 'no puedo con esto', 'autoeficacia', 'no me creo', 'incapaz', 'no sirvo'],
-      mindset: ['no valgo', 'inutil', 'inútil', 'mentalidad', 'fracaso', 'fracasado', 'no soy bueno', 'malo en esto'],
-      grit: ['constancia', 'perseveran', 'grit', 'disciplina', 'fuerza de voluntad'],
-      identity: ['quien soy', 'quién soy', 'identidad', 'cambiando', 'convirtiendo', 'persona que'],
-      weekend: ['finde', 'fin de semana', 'entre semana', 'laborable', 'sabado', 'sábado', 'domingo'],
-      regularity: ['regular', 'ritmo', 'a rachas', 'intervalos', 'constante', 'irregular'],
-      recovery: ['volver', 'recupera', 'rebote', 'pausa', 'cuanto tardo', 'cuánto tardo', 'retomar'],
-      nextMonth: ['mes que viene', 'proximo mes', 'próximo mes', 'que me espera', 'qué me espera', 'prediccion', 'predicción', 'proyeccion', 'proyección'],
-      goal: ['meta', 'objetivo', 'proponerme', 'ponerme una', 'smart'],
-      flow: ['concentra', 'flow', 'distraigo', 'distraccion', 'distracción', 'foco', 'atencion', 'atención', 'movil', 'móvil'],
-      compare: ['comparo', 'comparar', 'los demas', 'los demás', 'otros', 'envidia', 'redes sociales'],
-      perfect: ['suficiente', 'perfecto', 'perfeccion', 'perfección', 'nunca es', 'no llego', 'exigente'],
-      overwhelmed: ['agobiado', 'agobio', 'estres', 'estrés', 'ansiedad', 'saturado', 'demasiado', 'no doy abasto', 'abrumado'],
-      sleep: ['sueño', 'dormir', 'duermo', 'descanso nocturno', 'trasnochar', 'insomnio'],
-      celebrate: ['celebrar', 'logro', 'orgulloso', 'conseguido', 'medalla', 'premio']
-    };
-    function matchPrompt(text) {
-      const t = text.toLowerCase();
-      for (const [key, words] of Object.entries(COMPANION_KEYWORDS)) {
-        if (words.some(w => t.includes(w))) return key;
-      }
-      return null;
-    }
-    function genericReply() {
-      const pool = [
-        "Esa se me escapa todavía — pero ahora entiendo muchas más preguntas que antes. Prueba a reformularla, o toca una de las consultas de abajo: todas usan tus datos reales.",
-        "No tengo una respuesta libre para eso aún. Si me hablas de tu racha, tu motivación, tu plan semanal o tus puntos flojos, te contesto con tus números.",
-        "Esa es una conversación más grande de la que puedo tener todavía. Las consultas de abajo son un buen punto de partida — están construidas con tus datos reales."
-      ];
-      return pool[Math.floor(Math.random() * pool.length)];
-    }
     function renderCompanion() {
       const el = document.getElementById('companionContent');
       el.innerHTML = `
-        <div class="companion-intro">Tu Mentor lee tus datos de FOCUS — sesiones, rachas, patrones semanales, tu "porqué" — y te responde con números reales y respaldo de la investigación en psicología. No opina: analiza. Elige una consulta o escribe la tuya.</div>
+        <div class="companion-intro">Tu Mentor lee tus datos de FOCUS — sesiones, rachas, patrones semanales, tu "porqué" — y te responde con números reales y respaldo de la investigación en psicología. No opina: analiza. Elige una consulta.</div>
         <div class="companion-chat" id="companionChat">
-          <div class="companion-bubble assistant">Aquí tu Mentor. He estado siguiendo tu camino: ${totalSessions} ${totalSessions === 1 ? 'sesión' : 'sesiones'}, una racha actual de ${currentStreak} días, sobre todo ${dominant.phrase}. ¿Qué tienes en mente?</div>
+          <div class="companion-bubble assistant">Aquí tu Mentor. He estado siguiendo tu camino: ${totalSessions} ${totalSessions === 1 ? 'sesión' : 'sesiones'}, una racha actual de ${currentStreak} días, sobre todo ${dominant.phrase}. Elige una consulta y te respondo con tus datos.</div>
         </div>
         <div class="companion-prompts" id="companionPrompts">
           ${COMPANION_PROMPTS.map(p => `<button class="prompt-chip" data-key="${p.key}">${p.label}</button>`).join('')}
         </div>
-        <div class="companion-input-row">
-          <input type="text" id="companionInput" placeholder="Pregúntale a tu Mentor...">
-          <button id="companionSendBtn">Enviar</button>
+        <div class="companion-soon" role="note">
+          <div class="companion-soon-text">
+            <strong>Hablar libremente con la IA de FOCUS</strong>
+            <span>Está en camino. Mientras tanto, todas las consultas de arriba responden ya con tus números reales.</span>
+          </div>
+          <span class="soon-badge">Soon</span>
         </div>
       `;
       const chat = document.getElementById('companionChat');
@@ -1520,19 +1485,6 @@
         const prompt = COMPANION_PROMPTS.find(p => p.key === btn.dataset.key);
         pushBubble('user', escapeHtml(prompt.label));
         setTimeout(() => pushBubble('assistant', COMPANION_RESPONSES[prompt.key]()), 350);
-      });
-      function handleSend() {
-        const input = document.getElementById('companionInput');
-        const val = input.value.trim();
-        if (!val) return;
-        pushBubble('user', escapeHtml(val));
-        input.value = '';
-        const matched = matchPrompt(val);
-        setTimeout(() => pushBubble('assistant', matched ? COMPANION_RESPONSES[matched]() : genericReply()), 350);
-      }
-      document.getElementById('companionSendBtn').addEventListener('click', handleSend);
-      document.getElementById('companionInput').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') handleSend();
       });
     }
     renderCompanion();
