@@ -787,6 +787,13 @@
       const repostBtn = e.target.closest('.repost-btn');
       const saveBtn = e.target.closest('.save-action');
       const addBookBtn = e.target.closest('.post-book-add-btn');
+      console.log('[DEBUG] handleFeedClick', {
+        target: e.target,
+        likeBtn, repostBtn, saveBtn, addBookBtn,
+        postIdFromBtn: (likeBtn || repostBtn || saveBtn)?.dataset.postId,
+        postsLength: posts.length,
+        postsIds: posts.map(p => p.id)
+      });
 
       if (addBookBtn && !addBookBtn.disabled) {
         addBookBtn.disabled = true;
@@ -847,7 +854,9 @@
       }
     }
 
-    postsContainer.addEventListener('click', (e) => handleFeedClick(e, posts));
+    postsContainer.addEventListener('click', (e) => {
+      handleFeedClick(e, posts).catch((err) => console.error('[DEBUG] handleFeedClick threw:', err));
+    });
 
     postText.addEventListener('input', () => {
       charCount.textContent = `${postText.value.length} / 500`;
