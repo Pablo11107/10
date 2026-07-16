@@ -2,14 +2,29 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Focus - Main Page</title>
-  
+
+  <!-- PWA: manifest -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#100F19">
+
+  <!-- PWA: soporte "Añadir a pantalla de inicio" en iOS Safari -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FOCUS">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="icons/icon-120.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+
   <!-- Fuente Inter desde Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link 
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" 
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
     rel="stylesheet"
   >
   
@@ -1649,5 +1664,16 @@
     });
   </script>
   <script type="module" src="dock-nav.js"></script>
+
+  <!-- PWA: registro del Service Worker (cache de assets estáticos) -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js").catch((err) => {
+          console.warn("No se pudo registrar el Service Worker:", err);
+        });
+      });
+    }
+  </script>
 </body>
 </html>
