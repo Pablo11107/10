@@ -7,27 +7,27 @@
 //
 // Sube este número cada vez que cambies archivos estáticos para forzar
 // que los usuarios reciban la versión nueva.
-const CACHE_VERSION = "focus-v1";
+const CACHE_VERSION = "focus-v2";
 
 const APP_SHELL = [
-  "/index.html",
-  "/login.html",
-  "/verify-email.html",
-  "/communities.html",
-  "/memories.html",
-  "/legacy.html",
-  "/socialclub.html",
-  "/books.html",
-  "/dock-nav.js",
-  "/firebase-init.js",
-  "/splash.js",
-  "/true-focus.js",
-  "/you-vs-you.js",
-  "/you-vs-you.css",
-  "/manifest.json",
-  "/icon-192.png",
-  "/icon-512.png",
-  "/apple-touch-icon.png"
+  "index.html",
+  "login.html",
+  "verify-email.html",
+  "communities.html",
+  "memories.html",
+  "legacy.html",
+  "socialclub.html",
+  "books.html",
+  "dock-nav.js",
+  "firebase-init.js",
+  "splash.js",
+  "true-focus.js",
+  "you-vs-you.js",
+  "you-vs-you.css",
+  "manifest.json",
+  "icon-192.png",
+  "icon-512.png",
+  "apple-touch-icon.png"
 ];
 
 self.addEventListener("install", (event) => {
