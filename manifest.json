@@ -1,6 +1,6 @@
 {
-  "name": "FOCUS",
-  "short_name": "FOCUS",
+  "name": "Focus",
+  "short_name": "Focus",
   "description": "Hábitos, rachas y legado: registra tu progreso diario con FOCUS.",
   "start_url": "index.html",
   "scope": "./",
