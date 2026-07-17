@@ -1,55 +1,86 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
-  <rect width="1024" height="1024" fill="#100F19"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <rect x="0" y="0" width="200" height="200" fill="#00000A"/>
 
-  <!-- Bisel exterior tipo reloj/brújula -->
-  <circle cx="512" cy="512" r="440" fill="none" stroke="#3a3a46" stroke-width="10"/>
-  <circle cx="512" cy="512" r="404" fill="none" stroke="#6c6c7a" stroke-width="18"/>
+  <!-- Barril del objetivo -->
+  <circle cx="100" cy="100" r="97" fill="#07070E"/>
+  <circle cx="100" cy="100" r="97" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="1"/>
 
-  <!-- Marcas del bisel: 12 mayores + 12 menores -->
-  <g stroke="#c9c9d4" stroke-linecap="round">
-    <g id="ticks-major" stroke-width="16">
-      <line x1="512" y1="82" x2="512" y2="132"/>
-    </g>
-    <g id="ticks-minor" stroke-width="9">
-      <line x1="512" y1="90" x2="512" y2="122"/>
-    </g>
+  <!-- Marcas del anillo, rotadas a la posición final de "enfoque bloqueado" -->
+  <g transform="rotate(34 100 100)">
+    <line x1="100" y1="6.5"  x2="100" y2="12" stroke="rgba(255,255,255,.4)"  stroke-width="2.2" transform="rotate(0 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(7.5 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(15 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(22.5 100 100)"/>
+    <line x1="100" y1="6.5"  x2="100" y2="12" stroke="rgba(255,255,255,.4)"  stroke-width="2.2" transform="rotate(30 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(37.5 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(45 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(52.5 100 100)"/>
+    <line x1="100" y1="6.5"  x2="100" y2="12" stroke="rgba(255,255,255,.4)"  stroke-width="2.2" transform="rotate(60 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(67.5 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(75 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(82.5 100 100)"/>
+    <line x1="100" y1="6.5"  x2="100" y2="12" stroke="rgba(255,255,255,.4)"  stroke-width="2.2" transform="rotate(90 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(97.5 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(105 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(112.5 100 100)"/>
+    <line x1="100" y1="6.5"  x2="100" y2="12" stroke="rgba(255,255,255,.4)"  stroke-width="2.2" transform="rotate(120 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(127.5 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(135 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(142.5 100 100)"/>
+    <line x1="100" y1="6.5"  x2="100" y2="12" stroke="rgba(255,255,255,.4)"  stroke-width="2.2" transform="rotate(150 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(157.5 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(165 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(172.5 100 100)"/>
+    <line x1="100" y1="6.5"  x2="100" y2="12" stroke="rgba(255,255,255,.4)"  stroke-width="2.2" transform="rotate(180 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(187.5 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(195 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(202.5 100 100)"/>
+    <line x1="100" y1="6.5"  x2="100" y2="12" stroke="rgba(255,255,255,.4)"  stroke-width="2.2" transform="rotate(210 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(217.5 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(225 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(232.5 100 100)"/>
+    <line x1="100" y1="6.5"  x2="100" y2="12" stroke="rgba(255,255,255,.4)"  stroke-width="2.2" transform="rotate(240 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(247.5 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(255 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(262.5 100 100)"/>
+    <line x1="100" y1="6.5"  x2="100" y2="12" stroke="rgba(255,255,255,.4)"  stroke-width="2.2" transform="rotate(270 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(277.5 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(285 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(292.5 100 100)"/>
+    <line x1="100" y1="6.5"  x2="100" y2="12" stroke="rgba(255,255,255,.4)"  stroke-width="2.2" transform="rotate(300 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(307.5 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(315 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(322.5 100 100)"/>
+    <line x1="100" y1="6.5"  x2="100" y2="12" stroke="rgba(255,255,255,.4)"  stroke-width="2.2" transform="rotate(330 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(337.5 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(345 100 100)"/>
+    <line x1="100" y1="8.5"  x2="100" y2="12" stroke="rgba(255,255,255,.18)" stroke-width="1.5" transform="rotate(352.5 100 100)"/>
   </g>
 
-  <g stroke="#c9c9d4" stroke-linecap="round">
-    <!-- 12 marcas mayores cada 30 grados -->
-    <line x1="512" y1="86" x2="512" y2="140" stroke-width="16" transform="rotate(0 512 512)"/>
-    <line x1="512" y1="86" x2="512" y2="140" stroke-width="16" transform="rotate(30 512 512)"/>
-    <line x1="512" y1="86" x2="512" y2="140" stroke-width="16" transform="rotate(60 512 512)"/>
-    <line x1="512" y1="86" x2="512" y2="140" stroke-width="16" transform="rotate(90 512 512)"/>
-    <line x1="512" y1="86" x2="512" y2="140" stroke-width="16" transform="rotate(120 512 512)"/>
-    <line x1="512" y1="86" x2="512" y2="140" stroke-width="16" transform="rotate(150 512 512)"/>
-    <line x1="512" y1="86" x2="512" y2="140" stroke-width="16" transform="rotate(180 512 512)"/>
-    <line x1="512" y1="86" x2="512" y2="140" stroke-width="16" transform="rotate(210 512 512)"/>
-    <line x1="512" y1="86" x2="512" y2="140" stroke-width="16" transform="rotate(240 512 512)"/>
-    <line x1="512" y1="86" x2="512" y2="140" stroke-width="16" transform="rotate(270 512 512)"/>
-    <line x1="512" y1="86" x2="512" y2="140" stroke-width="16" transform="rotate(300 512 512)"/>
-    <line x1="512" y1="86" x2="512" y2="140" stroke-width="16" transform="rotate(330 512 512)"/>
+  <!-- Anillo principal: verde de "enfoque bloqueado" -->
+  <circle cx="100" cy="100" r="88" fill="none" stroke="#57e32c" stroke-width="3.2"/>
 
-    <!-- 12 marcas menores intercaladas cada 30 grados (a +15) -->
-    <line x1="512" y1="94" x2="512" y2="128" stroke-width="9" opacity="0.75" transform="rotate(15 512 512)"/>
-    <line x1="512" y1="94" x2="512" y2="128" stroke-width="9" opacity="0.75" transform="rotate(45 512 512)"/>
-    <line x1="512" y1="94" x2="512" y2="128" stroke-width="9" opacity="0.75" transform="rotate(75 512 512)"/>
-    <line x1="512" y1="94" x2="512" y2="128" stroke-width="9" opacity="0.75" transform="rotate(105 512 512)"/>
-    <line x1="512" y1="94" x2="512" y2="128" stroke-width="9" opacity="0.75" transform="rotate(135 512 512)"/>
-    <line x1="512" y1="94" x2="512" y2="128" stroke-width="9" opacity="0.75" transform="rotate(165 512 512)"/>
-    <line x1="512" y1="94" x2="512" y2="128" stroke-width="9" opacity="0.75" transform="rotate(195 512 512)"/>
-    <line x1="512" y1="94" x2="512" y2="128" stroke-width="9" opacity="0.75" transform="rotate(225 512 512)"/>
-    <line x1="512" y1="94" x2="512" y2="128" stroke-width="9" opacity="0.75" transform="rotate(255 512 512)"/>
-    <line x1="512" y1="94" x2="512" y2="128" stroke-width="9" opacity="0.75" transform="rotate(285 512 512)"/>
-    <line x1="512" y1="94" x2="512" y2="128" stroke-width="9" opacity="0.75" transform="rotate(315 512 512)"/>
-    <line x1="512" y1="94" x2="512" y2="128" stroke-width="9" opacity="0.75" transform="rotate(345 512 512)"/>
+  <!-- Palas del diafragma, recortadas al interior, en verde de "enfoque bloqueado" -->
+  <clipPath id="fsClip"><circle cx="100" cy="100" r="86"/></clipPath>
+  <g clip-path="url(#fsClip)">
+    <circle cx="100" cy="100" r="86" fill="#100F19"/>
+    <g transform="rotate(0 100 100)"><g transform="rotate(26 178 100)"><path d="M178,100 L-120,100 L-120,300 L178,300 Z" fill="#0E0D17" stroke="#57e32c" stroke-width="2.6"/></g></g>
+    <g transform="rotate(45 100 100)"><g transform="rotate(26 178 100)"><path d="M178,100 L-120,100 L-120,300 L178,300 Z" fill="#0E0D17" stroke="#57e32c" stroke-width="2.6"/></g></g>
+    <g transform="rotate(90 100 100)"><g transform="rotate(26 178 100)"><path d="M178,100 L-120,100 L-120,300 L178,300 Z" fill="#0E0D17" stroke="#57e32c" stroke-width="2.6"/></g></g>
+    <g transform="rotate(135 100 100)"><g transform="rotate(26 178 100)"><path d="M178,100 L-120,100 L-120,300 L178,300 Z" fill="#0E0D17" stroke="#57e32c" stroke-width="2.6"/></g></g>
+    <g transform="rotate(180 100 100)"><g transform="rotate(26 178 100)"><path d="M178,100 L-120,100 L-120,300 L178,300 Z" fill="#0E0D17" stroke="#57e32c" stroke-width="2.6"/></g></g>
+    <g transform="rotate(225 100 100)"><g transform="rotate(26 178 100)"><path d="M178,100 L-120,100 L-120,300 L178,300 Z" fill="#0E0D17" stroke="#57e32c" stroke-width="2.6"/></g></g>
+    <g transform="rotate(270 100 100)"><g transform="rotate(26 178 100)"><path d="M178,100 L-120,100 L-120,300 L178,300 Z" fill="#0E0D17" stroke="#57e32c" stroke-width="2.6"/></g></g>
+    <g transform="rotate(315 100 100)"><g transform="rotate(26 178 100)"><path d="M178,100 L-120,100 L-120,300 L178,300 Z" fill="#0E0D17" stroke="#57e32c" stroke-width="2.6"/></g></g>
   </g>
 
-  <!-- Marca interior: trazo ascendente con dos picos, mucho más grueso -->
-  <polyline points="150,505 330,432 545,150" fill="none" stroke="#e7e7ee"
-            stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
-  <polyline points="290,432 265,285" fill="none" stroke="#e7e7ee"
-            stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
-  <line x1="330" y1="432" x2="770" y2="270" stroke="#e7e7ee"
-        stroke-width="34" stroke-linecap="round"/>
+  <!-- Esquinas AF (coordenadas exactas de afCorners() en splash.js) -->
+  <path d="M78,66 L66,66 L66,78"    fill="none" stroke="#57e32c" stroke-width="3.2"/>
+  <path d="M122,66 L134,66 L134,78" fill="none" stroke="#57e32c" stroke-width="3.2"/>
+  <path d="M78,134 L66,134 L66,122" fill="none" stroke="#57e32c" stroke-width="3.2"/>
+  <path d="M122,134 L134,134 L134,122" fill="none" stroke="#57e32c" stroke-width="3.2"/>
+
+  <!-- Wordmark, como en el splash -->
+  <text x="100" y="106" text-anchor="middle" font-family="Inter, Helvetica, Arial, sans-serif"
+        font-weight="700" font-size="17" fill="#ffffff">Focus.</text>
 </svg>
