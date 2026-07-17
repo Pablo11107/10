@@ -521,7 +521,7 @@
       <input type="file" id="profileAvatarInput" accept="image/*" hidden>
 
       <div class="profile-name-row">
-        <input type="text" id="profileUsernameInput" class="username-input" placeholder="username">
+        <input type="text" id="profileUsernameInput" class="username-input" placeholder="username" maxlength="60">
         <button class="save-username-btn" id="saveUsernameBtn">Save</button>
       </div>
       <p class="profile-bio" id="profileBio"></p>
@@ -615,10 +615,24 @@
     let myReadingList = await getItems(uid, "books", 200);
 
     function coverUrl(coverId, size = "M") {
-      return coverId ? `https://covers.openlibrary.org/b/id/${coverId}-${size}.jpg` : null;
+      // Solo dígitos: el coverId viene de datos compartidos/externos y acaba
+      // dentro de un atributo src, así que nunca debe llevar otra cosa.
+      const id = String(coverId || '').replace(/\D/g, '');
+      return id ? `https://covers.openlibrary.org/b/id/${id}-${size}.jpg` : null;
     }
     function escapeAttr(str) {
       return (str || '').replace(/"/g, '&quot;');
+    }
+    // Una URL solo es aceptable como imagen si es data:image/ (lo que genera la
+    // app) o https://. Se codifican los caracteres que permitirían escapar de un
+    // atributo HTML o de un url(...) de CSS.
+    function safeUrl(u) {
+      u = String(u || '');
+      if (!u.startsWith('data:image/') && !u.startsWith('https://')) return '';
+      return u.replace(/["'()\s\\<>]/g, (c) => encodeURIComponent(c));
+    }
+    function digitsOnly(v) {
+      return String(v || '').replace(/\D/g, '');
     }
 
     // ---- Adjuntar libro al post ----
@@ -654,11 +668,11 @@
         const author = (doc.author_name || []).slice(0, 2).join(', ');
         return `
           <div class="book-result-row"
-            data-work-key="${doc.key}"
+            data-work-key="${escapeAttr(doc.key)}"
             data-title="${escapeAttr(doc.title)}"
             data-author="${escapeAttr(author)}"
-            data-year="${doc.first_publish_year || ''}"
-            data-cover-id="${doc.cover_i || ''}">
+            data-year="${digitsOnly(doc.first_publish_year)}"
+            data-cover-id="${digitsOnly(doc.cover_i)}">
             <div class="book-result-cover">${doc.cover_i ? `<img src="${coverUrl(doc.cover_i)}" alt="">` : twemojiImg("1f4d5")}</div>
             <div class="book-result-text">
               <span class="book-result-title">${escapeHtml(doc.title)}</span>
@@ -725,11 +739,13 @@
       const inter = interactions[post.id] || { liked: false, reposted: false, saved: false };
       const initial = (post.authorName || "F").charAt(0).toUpperCase();
       const alreadyInList = post.book && myReadingList.some(b => b.workKey === post.book.workKey);
+      const avatarUrl = safeUrl(post.authorAvatar);
+      const imageUrl = safeUrl(post.image);
       return `
         <article class="post ${animate ? 'just-posted' : ''}">
           <div class="post-top">
-            <div class="avatar-circle post-avatar" style="${post.authorAvatar ? `background-image:url(${post.authorAvatar})` : ''}">
-              ${post.authorAvatar ? '' : initial}
+            <div class="avatar-circle post-avatar" style="${avatarUrl ? `background-image:url(${avatarUrl})` : ''}">
+              ${avatarUrl ? '' : initial}
             </div>
             <div class="post-user-text">
               <span class="post-username">@${escapeHtml(post.authorName || 'FocusUser')}</span>
@@ -738,7 +754,7 @@
           </div>
           <div class="post-body">
             <p>${escapeHtml(post.text)}</p>
-            ${post.image ? `<img src="${post.image}" alt="Post Image">` : ''}
+            ${imageUrl ? `<img src="${imageUrl}" alt="Post Image">` : ''}
             ${post.book ? `
               <div class="post-book-card">
                 <div class="post-book-cover">${post.book.coverId ? `<img src="${coverUrl(post.book.coverId)}" alt="">` : twemojiImg("1f4d5")}</div>
@@ -746,11 +762,11 @@
                   <span class="post-book-title">${escapeHtml(post.book.title)}</span>
                   <span class="post-book-author">${escapeHtml(post.book.author || 'Unknown author')}</span>
                   <button class="post-book-add-btn ${alreadyInList ? 'added' : ''}"
-                    data-work-key="${post.book.workKey}"
+                    data-work-key="${escapeAttr(post.book.workKey)}"
                     data-title="${escapeAttr(post.book.title)}"
                     data-author="${escapeAttr(post.book.author)}"
-                    data-year="${post.book.year || ''}"
-                    data-cover-id="${post.book.coverId || ''}"
+                    data-year="${digitsOnly(post.book.year)}"
+                    data-cover-id="${digitsOnly(post.book.coverId)}"
                     ${alreadyInList ? 'disabled' : ''}>
                     ${alreadyInList ? 'In your list ✓' : '+ Add to my list'}
                   </button>

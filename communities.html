@@ -346,7 +346,7 @@
       </div>
 
       <div class="chat-footer">
-        <input type="text" id="messageInput" placeholder="Write your message..." disabled />
+        <input type="text" id="messageInput" placeholder="Write your message..." maxlength="2000" disabled />
         <button id="sendBtn" disabled>Send</button>
       </div>
     </section>
@@ -361,7 +361,7 @@
       <div class="close-btn" id="closeNewChatModal">✕</div>
       <h3>Create a new Chat</h3>
       <label for="newChatName">Chat Name</label>
-      <input type="text" id="newChatName" placeholder="My new group...">
+      <input type="text" id="newChatName" placeholder="My new group..." maxlength="60">
       <button id="createChatBtn">Create Chat</button>
     </div>
   </div>
@@ -423,6 +423,14 @@
       div.textContent = str || '';
       return div.innerHTML;
     }
+    // Una URL solo es aceptable como imagen si es data:image/ (lo que genera la
+    // app) o https://. Se codifican los caracteres que permitirían escapar de un
+    // atributo HTML o de un url(...) de CSS.
+    function safeUrl(u) {
+      u = String(u || '');
+      if (!u.startsWith('data:image/') && !u.startsWith('https://')) return '';
+      return u.replace(/["'()\s\\<>]/g, (c) => encodeURIComponent(c));
+    }
 
     const chatList           = document.getElementById('chatList');
     const chatTitle          = document.getElementById('chatTitle');
@@ -471,7 +479,8 @@
     // Gradiente estable por nombre de chat (cuando no hay foto)
     const AVATAR_HUES = [36, 210, 152, 268, 4, 190, 320, 96];
     function avatarStyle(chat) {
-      if (chat.avatar) return `background-image:url(${chat.avatar})`;
+      const avatarUrl = safeUrl(chat.avatar);
+      if (avatarUrl) return `background-image:url(${avatarUrl})`;
       let h = 0;
       for (const ch of (chat.name || '?')) h = (h * 31 + ch.charCodeAt(0)) % 997;
       const hue = AVATAR_HUES[h % AVATAR_HUES.length];

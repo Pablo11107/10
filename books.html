@@ -217,7 +217,18 @@
     }
 
     function coverUrl(coverId, size = "M") {
-      return coverId ? `https://covers.openlibrary.org/b/id/${coverId}-${size}.jpg` : null;
+      // Solo dígitos: el coverId acaba dentro de un atributo src, así que
+      // nunca debe llevar otra cosa.
+      const id = String(coverId || '').replace(/\D/g, '');
+      return id ? `https://covers.openlibrary.org/b/id/${id}-${size}.jpg` : null;
+    }
+    // Para atributos HTML: escapeHtml no cubre las comillas, y un título con
+    // comillas (Open Library los tiene) rompería el atributo.
+    function escapeAttr(str) {
+      return escapeHtml(str).replace(/"/g, '&quot;');
+    }
+    function digitsOnly(v) {
+      return String(v || '').replace(/\D/g, '');
     }
 
     // ---- Lista de lectura guardada (Firestore) ----
@@ -237,7 +248,7 @@
           <div class="book-info">
             <span class="book-title">${escapeHtml(book.title)}</span>
             <span class="book-author">${escapeHtml(book.author || 'Unknown author')}</span>
-            ${book.year ? `<span class="book-year">${book.year}</span>` : ''}
+            ${book.year ? `<span class="book-year">${digitsOnly(book.year)}</span>` : ''}
             <button class="book-action-btn remove-btn" data-remove-id="${book.id}">Remove</button>
           </div>
         </div>
@@ -301,13 +312,13 @@
             <div class="book-info">
               <span class="book-title">${escapeHtml(doc.title)}</span>
               <span class="book-author">${escapeHtml(author || 'Unknown author')}</span>
-              ${doc.first_publish_year ? `<span class="book-year">${doc.first_publish_year}</span>` : ''}
+              ${doc.first_publish_year ? `<span class="book-year">${digitsOnly(doc.first_publish_year)}</span>` : ''}
               <button class="book-action-btn ${alreadyAdded ? 'added' : ''}"
-                data-work-key="${doc.key}"
-                data-title="${escapeHtml(doc.title)}"
-                data-author="${escapeHtml(author)}"
-                data-year="${doc.first_publish_year || ''}"
-                data-cover-id="${doc.cover_i || ''}"
+                data-work-key="${escapeAttr(doc.key)}"
+                data-title="${escapeAttr(doc.title)}"
+                data-author="${escapeAttr(author)}"
+                data-year="${digitsOnly(doc.first_publish_year)}"
+                data-cover-id="${digitsOnly(doc.cover_i)}"
                 ${alreadyAdded ? 'disabled' : ''}>
                 ${alreadyAdded ? 'Added ✓' : '+ Add'}
               </button>
