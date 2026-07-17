@@ -952,7 +952,11 @@
     }
 
     function rerenderCurrentView() {
-      if (profileView.style.display !== 'none') {
+      // Ojo: no comprobar profileView.style.display — al cargar la página el
+      // display inline está vacío (lo oculta el CSS), y eso hacía que el feed
+      // nunca se re-renderizase tras un like/repost. La pestaña activa es la
+      // fuente fiable de qué vista está en pantalla.
+      if (profileTabBtn.classList.contains('active')) {
         renderProfileTab();
       } else {
         renderPosts();
